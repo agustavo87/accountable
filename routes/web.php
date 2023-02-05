@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\Logout;
 use App\Http\Livewire\Account\{
     Create as AccountCreate,
     Index as AccountIndex
@@ -13,8 +14,7 @@ use App\Http\Livewire\User\{
     Create as UserCreate,
     Login
 };
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\{Auth, Route};
+use Illuminate\Support\Facades\Route;
 
 /*
 |--------------------------------------------------------------------------
@@ -34,14 +34,7 @@ Route::get('/', function () {
 
 Route::get('/user/register', UserCreate::class)->name('user.register');;
 Route::get('/user/login', Login::class)->name('user.login');
-Route::get('/user/logout', function (Request $request) {
-
-    Auth::logout();
-    $request->session()->invalidate();
-    $request->session()->regenerateToken();
-    return redirect('/');
-
-})->name('user.logout');
+Route::get('/user/logout', Logout::class)->name('user.logout');
 
 Route::middleware(['auth'])->group(function () {
     Route::get('/account/create', AccountCreate::class)->name('account.create');
