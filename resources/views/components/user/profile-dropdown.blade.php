@@ -19,8 +19,7 @@
             x-on:keydown.arrow-up.prevent="onArrowUp()"
             x-on:keydown.arrow-down.prevent="onArrowDown()"
         >
-            <span class="sr-only">Open user menu</span
-            >
+            <span class="sr-only">Open user menu</span>
             <img class="h-8 w-8 rounded-full" src="https://images.unsplash.com/photo-1472099645785-5658abf4ff4e?ixlib=rb-1.2.1&amp;ixid=eyJhcHBfaWQiOjEyMDd9&amp;auto=format&amp;fit=facearea&amp;facepad=2&amp;w=256&amp;h=256&amp;q=80" alt="" />
         </button>
     </div>
@@ -64,11 +63,11 @@
         <a
             href="{{ route('user.logout')}}"
             class="block px-4 py-2 text-sm text-gray-700"
-            x-bind:class="{ 'bg-gray-100': activeIndex === 2 }"
+            x-bind:class="{ 'bg-gray-100': activeIndex === 1 }"
             role="menuitem"
             tabindex="-1"
-            id="user-menu-item-2"
-            x-on:mouseenter="activeIndex = 2"
+            id="user-menu-item-1"
+            x-on:mouseenter="activeIndex = 1"
             x-on:mouseleave="activeIndex = -1"
             x-on:click="open = false; focusButton()"
             >Sign out</a

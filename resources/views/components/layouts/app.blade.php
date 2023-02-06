@@ -10,8 +10,10 @@
     <body class="h-full">
         <div class="min-h-full">
 
-            <x-layouts.top-nav-var :topbar="$topbar ?? ''" />
+            {{-- <x-layouts.top-nav-var :topbar="$topbar ?? ''" /> --}}
 
+            <x-layouts.top-nav-bar />
+            
             <div class="py-10">
                 @if ($title ?? null)
                     <header>

@@ -1,4 +1,4 @@
-@props(['topbar' => ''])
+@props(['topbar' => '', 'links' => []])
 
 @php
     $user = Auth::user();
