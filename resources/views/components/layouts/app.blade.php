@@ -1,29 +1,42 @@
-<head>
-    <title>Accounts</title>
-    @livewireStyles
-    @vite(['resources/css/app.css', 'resources/js/app.js'])
-</head>
-<body>
-    <div class="container">
-        <main>
-            <div class="top-bar">
-                <div class="logo">
-                    <a href="/">Accountable</a> 
-                </div>
-                <div class="options">
-                    @auth
-                        <nav>
-                            <li> <a href="{{ route('account.index') }}">Accounts</a></li>
-                            <li> <a href="{{ route('operation.create') }}"> Create Operation</a></li>
-                            <li> <a href="{{ route('operation.index') }}"> View Operations</a></li>
-                        </nav>
-                    @endauth
-                    <x-user-detail />
-                    {{ $topbar ?? '' }}
-                </div>
+<!DOCTYPE html>
+<html lang="en" class="h-full">
+    <head>
+        <meta charset="UTF-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+        <title>Accountable - {{ $title ?? 'Dashboard' }} </title>
+        @livewireStyles @vite(['resources/css/app.css', 'resources/js/app.js'])
+    </head>
+    <body class="h-full">
+        <div class="min-h-full">
+
+            <x-layouts.top-nav-var :topbar="$topbar ?? ''" />
+
+            <div class="py-10">
+                @if ($title ?? null)
+                    <header>
+                        <div class="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
+                            <h1
+                                class="text-3xl font-bold leading-tight tracking-tight text-gray-900"
+                            >
+                                {{ $title ?? 'Dashboard' }}
+                            </h1>
+                        </div>
+                    </header>
+                @endif
+                <main>
+                    <div class="mx-auto max-w-7xl sm:px-6 lg:px-8">
+                        <!-- Replace with your content -->
+                        <div class="px-4 py-8 sm:px-0">
+                            <div  class="h-96">
+                                {{ $slot }}
+                            </div>
+                        </div>
+                        <!-- /End replace -->
+                    </div>
+                </main>
             </div>
-            {{ $slot }}
-        </main>
-    </div>
-    @livewireScripts
-</body>
+        </div>
+        @livewireScripts
+    </body>
+</html>
