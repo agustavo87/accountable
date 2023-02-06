@@ -14,16 +14,9 @@
             <div class="flex">
                 {{-- Logo --}}
                 <a href="{{ route('home') }}" class="flex flex-shrink-0 items-center">
-                    <img
-                        class="block h-8 w-auto lg:hidden"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600"
-                        alt="Your Company"
-                    />
-                    <img
-                        class="hidden h-8 w-auto lg:block"
-                        src="https://tailwindui.com/img/logos/mark.svg?color=indigo&amp;shade=600"
-                        alt="Your Company"
-                    />
+                    <div class="font-black text-blue-800 tracking-tight">
+                        ACCOUNTABLE
+                    </div>
                 </a>
                 
                 {{-- Desktop Menu --}}
