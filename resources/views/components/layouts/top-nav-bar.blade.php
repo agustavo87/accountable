@@ -27,7 +27,6 @@
             </div>
             <div class="hidden sm:ml-6 sm:flex sm:items-center">
                 @auth
-                    {{-- <x-notifications-button /> --}}
 
                     {{-- Profile dropdown --}}
                     <x-user.profile-dropdown />
