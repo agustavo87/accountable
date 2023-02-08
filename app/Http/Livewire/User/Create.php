@@ -25,7 +25,10 @@ class Create extends Component
 
     public function render()
     {
-        return view('livewire.user.create');
+        return view('livewire.user.create')
+            ->layout('components.layouts.master', [
+                'attributes' => ['class' => 'bg-gray-50']
+            ]);
     }
 
     public function submit()
@@ -33,6 +36,6 @@ class Create extends Component
         $this->user->password = Hash::make($this->password);
         $this->user->save();
         Auth::login($this->user);
-        return redirect('/');
+        return redirect()->route('home');
     }
 }
