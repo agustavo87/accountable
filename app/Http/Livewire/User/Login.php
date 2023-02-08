@@ -11,6 +11,8 @@ class Login extends Component
 
     public $password;
 
+    public bool $remember = false;
+
     protected $rules = [
         'email' => 'required|email',
         'password' => 'required'
@@ -18,13 +20,16 @@ class Login extends Component
 
     public function render()
     {
-        return view('livewire.user.login');
+        return view('livewire.user.login')
+                ->layout('components.layouts.master', [
+                    'attributes' => ['class' => 'bg-gray-50']
+                ]);
     }
 
     public function submit()
     {
         $credentials = $this->validate();
-        Auth::attempt($credentials);
+        Auth::attempt($credentials, $this->remember);
         
         return redirect()->intended();
     }
