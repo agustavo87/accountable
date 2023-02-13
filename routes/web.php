@@ -10,6 +10,7 @@ use App\Http\Livewire\Operation\{
     Index as OperationIndex
 };
 use App\Http\Livewire\Category\Create as CategoryCreate;
+use App\Http\Livewire\Dashboard;
 use App\Http\Livewire\User\{
     Create as UserCreate,
     Login
@@ -27,16 +28,17 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-    return view('welcome');
-})->name('home');
-
-
-Route::get('/user/register', UserCreate::class)->name('user.register');;
-Route::get('/user/login', Login::class)->name('user.login');
-Route::get('/user/logout', Logout::class)->name('user.logout');
+Route::middleware('guest')->group(function () {
+    Route::get('/user/register', UserCreate::class)->name('user.register');;
+    Route::get('/user/login', Login::class)->name('user.login');
+});
 
 Route::middleware(['auth'])->group(function () {
+    Route::get('/user/logout', Logout::class)->name('user.logout');
+    Route::get('/', function () {
+        return redirect()->route('home');
+    })->name('landing');
+    Route::get('/home', Dashboard::class)->name('home');
     Route::get('/account/create', AccountCreate::class)->name('account.create');
     Route::get('/account/index', AccountIndex::class)->name('account.index');
     Route::get('/operation/create', OperationCreate::class)->name('operation.create');

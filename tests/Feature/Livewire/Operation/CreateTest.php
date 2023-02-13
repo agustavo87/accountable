@@ -16,6 +16,7 @@ class CreateTest extends TestCase
     /** @test */
     public function the_component_can_render()
     {
+        $this->withoutExceptionHandling();
         $component = Livewire::test(CreateOperation::class);
 
         $component->assertStatus(200);
