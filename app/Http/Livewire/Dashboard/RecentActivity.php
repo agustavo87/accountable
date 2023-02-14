@@ -80,13 +80,16 @@ class RecentActivity extends Component
                            ->with(['movements.account', 'category'])
                            ->withCount('movements');
 
-        
-
         $query->when($this->category, function(Builder $query, $category) {
                 $query->where('category_id', $category);
             })
             ->when($this->search, function(Builder $query, $search) {
-                $query->where('name', 'LIKE', "%{$search}%");
+                $query->join('movements', 'operations.id', '=',  'movements.operation_id')
+                      ->select('operations.*');
+                $query->where(function(Builder $query) use ($search) {
+                    $query->where('name', 'LIKE', "%{$search}%")
+                          ->orWhere('movements.note', 'LIKE', "%{$search}%");
+                });
             });
 
         $query->when($this->account, function(Builder $query, $account) {
