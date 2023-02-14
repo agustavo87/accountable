@@ -16,6 +16,8 @@ class RecentActivity extends Component
 
     public $pagination;
 
+    public $search;
+
     public $account = 0;
 
     public $category;
@@ -27,12 +29,18 @@ class RecentActivity extends Component
 
     protected $listeners = [
         'account-update' => 'updateAccount',
-        'category-update' => 'updateCategory'
+        'category-update' => 'updateCategory',
+        'search'
     ];
+
+    public function search($content)
+    {
+        $this->search = $content;
+        $this->fetchOperations();
+    }
 
     public function mount()
     {
-        $user = Auth::user();
         $this->fetchOperations();
     }
 
@@ -72,9 +80,14 @@ class RecentActivity extends Component
                            ->with(['movements.account', 'category'])
                            ->withCount('movements');
 
+        
+
         $query->when($this->category, function(Builder $query, $category) {
-            $query->where('category_id', $category);
-        });
+                $query->where('category_id', $category);
+            })
+            ->when($this->search, function(Builder $query, $search) {
+                $query->where('name', 'LIKE', "%{$search}%");
+            });
 
         $query->when($this->account, function(Builder $query, $account) {
             $query->whereHas('movements', function(Builder $query) use ($account) {
