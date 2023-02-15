@@ -18,10 +18,8 @@ class Dashboard extends Component
     public function render()
     {
         return view('livewire.dashboard')
-            ->layout('components.layouts.master', [
-                'attributes' => [
-                    'class' => "h-full bg-gray-100" 
-                ]
-            ]);
+                ->layout("components.layouts.with-sidebar", [
+                    'user' => $this->user
+                ]);
     }
 }

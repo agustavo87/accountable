@@ -2,17 +2,23 @@ const cachedNF = {
     cached:false,
     nf:null,
     currencyCode: null,
-    locale: null
+    locale: null,
+    supportedCodes: ['USD', 'ARS', 'EUR']
 }
 
-const supportedCodes = ['USD', 'ARS', 'EUR']
-
+export function setSuportedCodes(codes) {
+    cachedNF.supportedCodes = codes
+    console.log(cachedNF);
+}
 /**
  * @returns {Intl.NumberFormat}
  */
 export default (currencyCode, locale = 'en-US') => {
     currencyCode = currencyCode ?? 'USD'
-    if (!supportedCodes.includes(currencyCode)) currencyCode = 'USD'
+    if (!cachedNF.supportedCodes.includes(currencyCode)) {
+        // console.warn('currency unkown ' + currencyCode + "\n Known: ", JSON.stringify(cachedNF.supportedCodes))
+        currencyCode = 'USD'
+    } 
     if(
         cachedNF.cached 
         && cachedNF.currencyCode == currencyCode
