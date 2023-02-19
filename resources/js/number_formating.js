@@ -8,7 +8,6 @@ const cachedNF = {
 
 export function setSuportedCodes(codes) {
     cachedNF.supportedCodes = codes
-    console.log(cachedNF);
 }
 /**
  * @returns {Intl.NumberFormat}

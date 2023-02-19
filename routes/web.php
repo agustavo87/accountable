@@ -7,6 +7,7 @@ use App\Http\Livewire\Account\{
 };
 use App\Http\Livewire\Operation\{
     Create as OperationCreate,
+    CreateB,
     Index as OperationIndex
 };
 use App\Http\Livewire\Category\Create as CategoryCreate;

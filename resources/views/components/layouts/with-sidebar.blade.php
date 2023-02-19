@@ -89,7 +89,7 @@
                         >
                             <div class="space-y-1 px-2">
                                 <a
-                                    href="#"
+                                    href="{{ route('home') }}"
                                     class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
                                     x-state:on="Current"
                                     x-state:off="Default"
@@ -335,7 +335,7 @@
                     >
                         <div class="space-y-1 px-2">
                             <a
-                                href="#"
+                                href="{{ route('home') }}"
                                 class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
                                 x-state:on="Current"
                                 x-state:off="Default"

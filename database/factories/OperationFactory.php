@@ -2,7 +2,7 @@
 
 namespace Database\Factories;
 
-use App\Models\User;
+use App\Models\{OperationCategory, User};
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -19,7 +19,9 @@ class OperationFactory extends Factory
     {
         return [
             'user_id' => User::factory(),
-            'name' => $this->faker->word()
+            'category_id' => OperationCategory::factory(),
+            'name' => $this->faker->word(),
+            'notes' => $this->faker->sentence()
         ];
     }
 }

@@ -106,3 +106,17 @@ body {
 .table-container table.striped tr:nth-child(odd) {
     background-color: #def;
 }
+
+
+
+.parent-show:hover .md\:hidden-child {
+    opacity: 100%;
+}
+
+/* On screens that are 992px or less, set the background color to blue */
+@media screen and (min-width: 992px) {
+    .md\:hidden-child {
+        opacity: 0;
+    }
+  }
+  
