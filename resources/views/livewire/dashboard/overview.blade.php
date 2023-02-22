@@ -6,7 +6,7 @@
                 wire:model="account"
                 id="account" 
                 name="account" 
-                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white px-2 py-2 rounded-t sm:w-auto text-gray-900 text-lg w-full"
+                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white pl-2 pr-10 py-2 rounded-t sm:w-auto text-gray-900 text-lg w-full"
             >
               <option value="0">General</option>
               @foreach ($accounts as $account)
@@ -20,7 +20,7 @@
                 wire:model="category"
                 id="category" 
                 name="category" 
-                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white mr-1.5 px-2 py-1.5 rounded-t sm:w-auto text-gray-900 text-sm w-full"
+                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white mr-1.5 pl-2 pr-10 py-1.5 rounded-t sm:w-auto text-gray-900 text-sm w-full"
             >
                 <option value="0">All</option>
                 @foreach ($categories as $category)
