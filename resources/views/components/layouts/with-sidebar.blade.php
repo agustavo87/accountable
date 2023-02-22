@@ -77,11 +77,7 @@
                         </div>
     
                         <div class="flex flex-shrink-0 items-center px-4">
-                            <img
-                                class="h-8 w-auto"
-                                src="https://tailwindui.com/img/logos/mark.svg?color=cyan&amp;shade=300"
-                                alt="Easywire logo"
-                            />
+                            <x-logo class="h-12 text-blue-50 w-auto" />
                         </div>
                         <nav
                             class="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
@@ -157,11 +153,7 @@
                     class="flex flex-grow flex-col overflow-y-auto bg-cyan-700 pt-5 pb-4"
                 >
                     <div class="flex flex-shrink-0 items-center px-4">
-                        <img
-                            class="h-8 w-auto"
-                            src="https://tailwindui.com/img/logos/mark.svg?color=cyan&amp;shade=300"
-                            alt="Easywire logo"
-                        />
+                        <x-logo class="h-10 w-auto text-blue-50" />
                     </div>
                     <nav
                         class="mt-5 flex flex-1 flex-col divide-y divide-cyan-800 overflow-y-auto"
