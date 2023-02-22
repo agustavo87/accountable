@@ -7,7 +7,6 @@ use App\Http\Livewire\Account\{
 };
 use App\Http\Livewire\Operation\{
     Create as OperationCreate,
-    CreateB,
     Index as OperationIndex
 };
 use App\Http\Livewire\Category\Create as CategoryCreate;
@@ -43,6 +42,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account/create', AccountCreate::class)->name('account.create');
     Route::get('/account/index', AccountIndex::class)->name('account.index');
     Route::get('/operation/create', OperationCreate::class)->name('operation.create');
-    Route::get('/operation/index', OperationIndex::class)->name('operation.index');
     Route::get('/category/create', CategoryCreate::class)->name('category.create');
 });

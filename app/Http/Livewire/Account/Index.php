@@ -16,6 +16,9 @@ class Index extends Component
     
     public function render()
     {
-        return view('livewire.account.index');
+        return view('livewire.account.index')
+                ->layout('components.layouts.with-sidebar',  [
+                    'user' => Auth::user()
+                ]);
     }
 }

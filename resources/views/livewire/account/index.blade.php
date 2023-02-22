@@ -15,7 +15,7 @@
                     <td>{{ $account->name }}</td>
                     <td>{{ $account->currency }}</td>
                     <td>{{ $account->balance }}</td>
-                    <td> {{ $account->movements_count }} | <a href=" {{ route('operation.index', ['account' => $account->id])}}">View</a></td>
+                    <td> {{ $account->movements_count }} | <a href="#">View</a></td>
                 </tr>
             @endforeach
         </table>
