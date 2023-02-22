@@ -19,5 +19,6 @@
         {{ $slot }}
 
         @livewireScripts
+        @stack('modals')
     </body>
 </html>

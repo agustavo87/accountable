@@ -22,7 +22,7 @@
 
                                 <div class="grid grid-cols-6 gap-6">
                                     <div class="col-span-6 sm:col-span-3">
-                                        <label for="Name" class="block text-sm font-medium text-gray-700">
+                                        <label for="name" class="block text-sm font-medium text-gray-700">
                                             Name
                                         </label>
                                         <input type="text" name="name" id="name"
@@ -44,10 +44,10 @@
                                         </select>
                                         <div class="flex justify-end">
                                             <x-error class="flex-1" for="category" />
-                                            <a 
-                                                href="{{ route('category.create') }}" 
-                                                class="mt-1 mr-1 self-end text-xs text-cyan-500 hover:text-cyan-400 font-medium">Create new</a>
-
+                                            <button
+                                                type="button"
+                                                x-on:click="$dispatch('create-category')"
+                                                class="mt-1 mr-1 self-end text-xs text-cyan-500 hover:text-cyan-400 font-medium">Create new</button>
                                         </div>
                                     </div>
                                 </div>
@@ -232,5 +232,7 @@
                 </div>
             </div>
         </div>
-    </div>
 </div>
+@pushOnce('modals')
+    <livewire:category.create />
+@endPushOnce

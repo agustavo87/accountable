@@ -5,7 +5,7 @@ namespace App\Http\Livewire\Operation;
 use App\Models\{
     Account,
     Movement,
-    Operation
+    Operation,
 };
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
@@ -46,6 +46,8 @@ class Create extends Component
         'movement.account_id' => 'account'
     ];
 
+    protected $listeners = ['newCategory'];
+
 
     protected function getRules()
     {
@@ -56,10 +58,14 @@ class Create extends Component
     {
         $user = Auth::user();
         $this->accounts = $user->accounts ?? new EloquentCollection() ;
-
-        $this->categories = $user->operationCategories ?? new EloquentCollection();
+        $this->hidrateCategories();
         $this->operation = new Operation();
         $this->newMovement();
+    }
+
+    protected function hidrateCategories()
+    {
+        $this->categories = Auth::user()->operationCategories ?? new EloquentCollection();
     }
 
     public function commitMovement()
@@ -145,5 +151,11 @@ class Create extends Component
                 'user' => Auth::user(),
                 'searchBar' => false
             ]);
+    }
+
+    public function newCategory($id)
+    {
+        $this->hidrateCategories();
+        $this->category = $id;
     }
 }
