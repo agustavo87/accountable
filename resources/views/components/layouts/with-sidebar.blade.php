@@ -76,9 +76,9 @@
                             </button>
                         </div>
     
-                        <div class="flex flex-shrink-0 items-center px-4">
-                            <x-logo-horizontal class="h-14 text-cyan-400 w-auto" text-color="text-cyan-100" />
-                        </div>
+                        <a href="{{route('home')}}" class="flex flex-shrink-0 items-center px-4">
+                            <x-logo-horizontal class="h-14 text-cyan-50 w-auto hover:text-cyan-200 transition-colors duration-700" text-color="text-cyan-50" />
+                        </a>
                         <nav
                             class="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
                             aria-label="Sidebar"
@@ -152,9 +152,9 @@
                 <div
                     class="flex flex-grow flex-col overflow-y-auto bg-cyan-700 pt-5 pb-4"
                 >
-                    <div class="flex flex-shrink-0 items-center px-4">
-                        <x-logo-horizontal class="h-14 text-cyan-400 w-auto" text-color="text-cyan-100" />
-                    </div>
+                    <a href="{{route('home')}}" class="flex flex-shrink-0 items-center px-4">
+                        <x-logo-horizontal class="h-14 text-cyan-50 w-auto hover:text-cyan-200 transition-colors  duration-700" text-color="text-cyan-50" />
+                    </a>
                     <nav
                         class="mt-5 flex flex-1 flex-col divide-y divide-cyan-800 overflow-y-auto"
                         aria-label="Sidebar"

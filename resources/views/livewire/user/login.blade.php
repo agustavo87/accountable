@@ -2,7 +2,7 @@
     <div class="flex flex-col sm:max-w-md sm:mx-auto sm:w-full">
         <x-logo-vertical class="text-cyan-600 h-40 w-auto" text-color="text-gray-700"/>
         <h2
-            class="mt-6 text-center text-xl font-bold tracking-tight text-gray-500"
+            class="mt-6 text-center text-lg font-bold tracking-tight text-gray-500"
         >
             Sign in to your account
         </h2>
