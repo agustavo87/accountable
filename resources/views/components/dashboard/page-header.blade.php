@@ -28,13 +28,13 @@
             <div class="mt-6 flex space-x-3 md:mt-0 md:ml-4">
                 <a
                     href="{{route('account.create')}}"
-                    class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2"
                 >
                     Create Account
                 </a>
                 <a
                     href="{{route('operation.create')}}"
-                    class="inline-flex items-center rounded-md border border-transparent bg-cyan-600 px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                    class="inline-flex items-center rounded-md border border-transparent bg-brand px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2"
                 >
                     Create Operation
                 </a>

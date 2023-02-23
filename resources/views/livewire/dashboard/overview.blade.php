@@ -6,7 +6,7 @@
                 wire:model="account"
                 id="account" 
                 name="account" 
-                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white pl-2 pr-10 py-2 rounded-t sm:w-auto text-gray-900 text-lg w-full"
+                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white pl-2 pr-10 py-2 rounded-t sm:w-auto text-gray-900 text-lg w-full"
             >
               <option value="0">General</option>
               @foreach ($accounts as $account)
@@ -20,7 +20,7 @@
                 wire:model="category"
                 id="category" 
                 name="category" 
-                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white mr-1.5 pl-2 pr-10 py-1.5 rounded-t sm:w-auto text-gray-900 text-sm w-full"
+                class="bg-gray-50 border-gray-50 focus:border-gray-50 bg-transparent cursor-pointer focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2 focus:ring-offset-gray-100 font-medium hover:bg-white mr-1.5 pl-2 pr-10 py-1.5 rounded-t sm:w-auto text-gray-900 text-sm w-full"
             >
                 <option value="0">All</option>
                 @foreach ($categories as $category)
@@ -47,9 +47,9 @@
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
+                        {{-- Heroicon name: outline/scale --}}
                         <svg
                             class="h-6 w-6 text-gray-400"
-                            x-description="Heroicon name: outline/scale"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -87,7 +87,7 @@
                 <div class="text-sm">
                     <a
                         href="#"
-                        class="font-medium text-cyan-700 hover:text-cyan-900"
+                        class="font-medium text-brand-dark hover:text-brand-darker"
                         >View all</a
                     >
                 </div>
@@ -102,9 +102,9 @@
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
+                        {{-- Heroicon name: outline/check-circle --}}
                         <svg
                             class="h-6 w-6 text-gray-400"
-                            x-description="Heroicon name: outline/check-circle"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -142,7 +142,7 @@
                 <div class="text-sm">
                     <a
                         href="#"
-                        class="font-medium text-cyan-700 hover:text-cyan-900"
+                        class="font-medium text-brand-dark hover:text-brand-darker"
                         >View all</a
                     >
                 </div>
@@ -156,9 +156,9 @@
             <div class="p-5">
                 <div class="flex items-center">
                     <div class="flex-shrink-0">
+                        {{-- Heroicon name: outline/arrow-path --}}
                         <svg
                             class="h-6 w-6 text-gray-400"
-                            x-description="Heroicon name: outline/arrow-path"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -196,7 +196,7 @@
                 <div class="text-sm">
                     <a
                         href="#"
-                        class="font-medium text-cyan-700 hover:text-cyan-900"
+                        class="font-medium text-brand-dark hover:text-brand-darker"
                         >View all</a
                     >
                 </div>

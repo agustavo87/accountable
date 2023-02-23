@@ -8,13 +8,14 @@
             x-on:keydown.window.escape="open = false"
             class="min-h-full"
         >
+            {{-- Off-canvas menu for mobile, show/hide based on off-canvas menu state." --}}
             <div
                 x-show="open"
                 class="relative z-40 lg:hidden"
-                x-description="Off-canvas menu for mobile, show/hide based on off-canvas menu state."
                 x-ref="dialog"
                 aria-modal="true"
             >
+                {{-- Off-canvas menu backdrop, show/hide based on off-canvas menu state. --}}
                 <div
                     x-show="open"
                     x-transition:enter="transition-opacity ease-linear duration-300"
@@ -23,11 +24,11 @@
                     x-transition:leave="transition-opacity ease-linear duration-300"
                     x-transition:leave-start="opacity-100"
                     x-transition:leave-end="opacity-0"
-                    x-description="Off-canvas menu backdrop, show/hide based on off-canvas menu state."
                     class="fixed inset-0 bg-gray-600 bg-opacity-75"
                 ></div>
     
                 <div class="fixed inset-0 z-40 flex">
+                    {{-- Off-canvas menu, show/hide based on off-canvas menu state. --}}
                     <div
                         x-show="open"
                         x-transition:enter="transition ease-in-out duration-300 transform"
@@ -36,10 +37,10 @@
                         x-transition:leave="transition ease-in-out duration-300 transform"
                         x-transition:leave-start="translate-x-0"
                         x-transition:leave-end="-translate-x-full"
-                        x-description="Off-canvas menu, show/hide based on off-canvas menu state."
-                        class="relative flex w-full max-w-xs flex-1 flex-col bg-cyan-700 pt-5 pb-4"
+                        class="relative flex w-full max-w-xs flex-1 flex-col bg-brand-darker pt-5 pb-4"
                         x-on:click.away="open = false"
                     >
+                        {{-- Close button, show/hide based on off-canvas menu state. --}}
                         <div
                             x-show="open"
                             x-transition:enter="ease-in-out duration-300"
@@ -48,7 +49,6 @@
                             x-transition:leave="ease-in-out duration-300"
                             x-transition:leave-start="opacity-100"
                             x-transition:leave-end="opacity-0"
-                            x-description="Close button, show/hide based on off-canvas menu state."
                             class="absolute top-0 right-0 -mr-12 pt-2"
                         >
                             <button
@@ -57,9 +57,9 @@
                                 x-on:click="open = false"
                             >
                                 <span class="sr-only">Close sidebar</span>
+                                {{-- Heroicon name: outline/x-mark" --}}
                                 <svg
                                     class="h-6 w-6 text-white"
-                                    x-description="Heroicon name: outline/x-mark"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -77,24 +77,23 @@
                         </div>
     
                         <a href="{{route('home')}}" class="flex flex-shrink-0 items-center px-4">
-                            <x-logo-horizontal class="h-14 text-cyan-50 w-auto hover:text-cyan-200 transition-colors duration-700" text-color="text-cyan-50" />
+                            <x-logo-horizontal class="h-10 w-auto text-brand  hover:text-brand-light transition-colors duration-700" text-color="text-cyan-50" />
                         </a>
                         <nav
-                            class="mt-5 h-full flex-shrink-0 divide-y divide-cyan-800 overflow-y-auto"
+                            class="mt-5 h-full flex-shrink-0 divide-y divide-brand-darker overflow-y-auto"
                             aria-label="Sidebar"
                         >
                             <div class="space-y-1 px-2">
                                 <a
                                     href="{{ route('home') }}"
-                                    class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
+                                    class="bg-brand-dark text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
                                     x-state:on="Current"
                                     x-state:off="Default"
                                     aria-current="page"
-                                    x-state-description='Current: "bg-cyan-800 text-white", Default: "text-cyan-100 hover:text-white hover:bg-cyan-600"'
                                 >
+                                    {{-- Heroicon name: outline/home --}}
                                     <svg
-                                        class="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
-                                        x-description="Heroicon name: outline/home"
+                                        class="mr-4 h-6 w-6 flex-shrink-0 text-brand-light"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
@@ -115,11 +114,11 @@
                                 <div class="space-y-1 px-2">
                                     <a
                                         href="#"
-                                        class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                                        class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-white text-opacity-80 hover:bg-brand-dark hover:bg-opacity-30 hover:text-opacity-100"
                                     >
+                                        {{-- Heroicon name: outline/cog --}}
                                         <svg
-                                            class="mr-4 h-6 w-6 text-cyan-200"
-                                            x-description="Heroicon name: outline/cog"
+                                            class="mr-4 h-6 w-6 text-brand-light"
                                             xmlns="http://www.w3.org/2000/svg"
                                             fill="none"
                                             viewBox="0 0 24 24"
@@ -150,27 +149,26 @@
             <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
                 <!-- Sidebar component, swap this element with another sidebar if you like -->
                 <div
-                    class="flex flex-grow flex-col overflow-y-auto bg-cyan-700 pt-5 pb-4"
+                    class="flex flex-grow flex-col overflow-y-auto bg-brand-darker pt-5 pb-4"
                 >
                     <a href="{{route('home')}}" class="flex flex-shrink-0 items-center px-4">
-                        <x-logo-horizontal class="h-14 text-cyan-50 w-auto hover:text-cyan-200 transition-colors  duration-700" text-color="text-cyan-50" />
+                        <x-logo-horizontal class="h-14 w-auto text-brand hover:text-brand-light transition-colors duration-700" text-color="text-cyan-50" />
                     </a>
                     <nav
-                        class="mt-5 flex flex-1 flex-col divide-y divide-cyan-800 overflow-y-auto"
+                        class="mt-5 flex flex-1 flex-col divide-y divide-brand-darker overflow-y-auto"
                         aria-label="Sidebar"
                     >
                         <div class="space-y-1 px-2">
                             <a
                                 href="{{ route('home') }}"
-                                class="bg-cyan-800 text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
+                                class="bg-brand-dark text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
                                 x-state:on="Current"
                                 x-state:off="Default"
                                 aria-current="page"
-                                x-state-description='Current: "bg-cyan-800 text-white", Default: "text-cyan-100 hover:text-white hover:bg-cyan-600"'
                             >
+                                {{-- Heroicon name: outline/home --}}
                                 <svg
-                                    class="mr-4 h-6 w-6 flex-shrink-0 text-cyan-200"
-                                    x-description="Heroicon name: outline/home"
+                                    class="mr-4 h-6 w-6 flex-shrink-0 text-brand-light"
                                     xmlns="http://www.w3.org/2000/svg"
                                     fill="none"
                                     viewBox="0 0 24 24"
@@ -191,11 +189,11 @@
                             <div class="space-y-1 px-2">
                                 <a
                                     href="#"
-                                    class="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-cyan-100 hover:bg-cyan-600 hover:text-white"
+                                    class="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-white text-opacity-80 hover:bg-brand-dark hover:bg-opacity-30 hover:text-opacity-100"
                                 >
+                                    {{-- Heroicon name: outline/cog --}}
                                     <svg
-                                        class="mr-4 h-6 w-6 text-cyan-200"
-                                        x-description="Heroicon name: outline/cog"
+                                        class="mr-4 h-6 w-6 text-brand-light"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
@@ -223,13 +221,13 @@
                 >
                     <button
                         type="button"
-                        class="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-cyan-500 lg:hidden"
+                        class="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-medium lg:hidden"
                         x-on:click="open = true"
                     >
                         <span class="sr-only">Open sidebar</span>
+                        {{-- Heroicon name: outline/bars-3-center-left --}}
                         <svg
                             class="h-6 w-6"
-                            x-description="Heroicon name: outline/bars-3-center-left"
                             xmlns="http://www.w3.org/2000/svg"
                             fill="none"
                             viewBox="0 0 24 24"
@@ -270,7 +268,7 @@
                                 <div>
                                     <button
                                         type="button"
-                                        class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50"
+                                        class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50"
                                         id="user-menu-button"
                                         x-ref="button"
                                         x-on:click="onButtonClick()"
@@ -293,9 +291,9 @@
                                                 >Open user menu for </span
                                             >{{ $user->name }}</span
                                         >
+                                        {{-- Heroicon name: mini/chevron-down --}}
                                         <svg
                                             class="ml-1 hidden h-5 w-5 flex-shrink-0 text-gray-400 lg:block"
-                                            x-description="Heroicon name: mini/chevron-down"
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
@@ -309,7 +307,8 @@
                                         </svg>
                                     </button>
                                 </div>
-    
+
+                                {{-- Dropdown menu, show/hide based on menu state. --}}
                                 <div
                                     x-cloak
                                     x-show="open"
@@ -321,7 +320,6 @@
                                     x-transition:leave-end="transform opacity-0 scale-95"
                                     class="absolute right-0 z-10 mt-2 w-48 origin-top-right rounded-md bg-white py-1 shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none"
                                     x-ref="menu-items"
-                                    x-description="Dropdown menu, show/hide based on menu state."
                                     x-bind:aria-activedescendant="activeDescendant"
                                     role="menu"
                                     aria-orientation="vertical"

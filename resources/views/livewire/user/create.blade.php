@@ -1,17 +1,17 @@
 <div class="flex min-h-full flex-col justify-center py-10 sm:mt-1 sm:px-6 lg:px-8">
     <div class="flex flex-col sm:max-w-md sm:mx-auto sm:w-full">
-        <x-logo-vertical class="text-cyan-600 h-40 w-auto" text-color="text-gray-700"/>
+        <x-logo-vertical class="text-brand-dark h-40 w-auto" text-color="text-brand-dark" slogan-color="text-brand-medium"/>
         <h2
-            class="mt-6 text-center text-lg font-bold tracking-tight text-gray-500"
+            class="mt-6 text-center text-lg font-bold tracking-tight text-gray-700"
         >
             Create an account
         </h2>
-        <p class="mt-2 text-center text-sm text-gray-600">
+        <p class="mt-2 text-center text-sm text-gray-700">
             Or
             <!-- space -->
             <a
                 href="{{ route('user.login') }}"
-                class="font-medium text-cyan-600 hover:text-cyan-500"
+                class="font-medium text-brand-medium hover:text-brand-light"
                 >sign in!</a
             >
         </p>
@@ -34,7 +34,7 @@
                             type="name"
                             autocomplete="name"
                             required=""
-                            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
+                            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-brand focus:outline-none focus:ring-brand sm:text-sm"
                         />
                     </div>
                 </div>
@@ -52,7 +52,7 @@
                             type="email"
                             autocomplete="email"
                             required=""
-                            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
+                            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-brand focus:outline-none focus:ring-brand sm:text-sm"
                         />
                     </div>
                 </div>
@@ -71,7 +71,7 @@
                             type="password"
                             autocomplete="current-password"
                             required=""
-                            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-cyan-500 focus:outline-none focus:ring-cyan-500 sm:text-sm"
+                            class="block w-full appearance-none rounded-md border border-gray-300 px-3 py-2 placeholder-gray-400 shadow-sm focus:border-brand focus:outline-none focus:ring-brand sm:text-sm"
                         />
                     </div>
                 </div>
@@ -79,7 +79,7 @@
                 <div>
                     <button
                         type="submit"
-                        class="flex w-full justify-center rounded-md border border-transparent bg-cyan-600 py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-cyan-700 focus:outline-none focus:ring-2 focus:ring-cyan-500 focus:ring-offset-2"
+                        class="flex w-full justify-center rounded-md border border-transparent transition-colors bg-brand-medium py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-brand-dark focus:outline-none focus:ring-2 focus:ring-brand focus:ring-offset-2"
                     >
                         Register
                     </button>

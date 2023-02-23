@@ -31,9 +31,9 @@
                                     <span
                                         class="flex flex-1 space-x-2 truncate"
                                     >
+                                        {{-- Heroicon name: mini/banknotes --}}
                                         <svg
                                             class="h-5 w-5 flex-shrink-0 text-gray-400"
-                                            x-description="Heroicon name: mini/banknotes"
                                             xmlns="http://www.w3.org/2000/svg"
                                             viewBox="0 0 20 20"
                                             fill="currentColor"
@@ -76,9 +76,9 @@
                                             >
                                         </span>
                                     </span>
+                                    {{-- Heroicon name: mini/chevron-right --}}
                                     <svg
                                         class="h-5 w-5 flex-shrink-0 text-gray-400"
-                                        x-description="Heroicon name: mini/chevron-right"
                                         xmlns="http://www.w3.org/2000/svg"
                                         viewBox="0 0 20 20"
                                         fill="currentColor"

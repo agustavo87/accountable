@@ -8,22 +8,18 @@ module.exports = {
   ],
   darkMode: false, // or 'media' or 'class'
   theme: {
-    extend: {},
-    colors: {
-      transparent: 'transparent',
-      current: 'currentColor',
-      black: colors.black,
-      white: colors.white,
-      gray: colors.coolGray,
-      red: colors.red,
-      yellow: colors.amber,
-      green: colors.emerald,
-      blue: colors.blue,
-      purple: colors.violet,
-      pink: colors.pink,
-      indigo: colors.indigo,
-      cyan: colors.cyan
-    }
+    extend: {
+      colors: {
+        cyan: colors.cyan,
+        brand: {
+          light: '#41a4f3',
+          DEFAULT: '#118DF0',
+          medium: '#0c71c2',
+          dark: '#154782',
+          darker: '#0E2F56',
+        }
+      }
+    },
   },
   variants: {
     extend: {},
