@@ -37,7 +37,7 @@
                         x-transition:leave="transition ease-in-out duration-300 transform"
                         x-transition:leave-start="translate-x-0"
                         x-transition:leave-end="-translate-x-full"
-                        class="relative flex w-full max-w-xs flex-1 flex-col bg-brand-darker pt-5 pb-4"
+                        class="relative flex w-full max-w-xs flex-1 flex-col bg-deep-dark pt-5 pb-4"
                         x-on:click.away="open = false"
                     >
                         {{-- Close button, show/hide based on off-canvas menu state. --}}
@@ -77,123 +77,28 @@
                         </div>
     
                         <a href="{{route('home')}}" class="flex flex-shrink-0 items-center px-4">
-                            <x-logo-horizontal class="h-10 w-auto text-brand  hover:text-brand-light transition-colors duration-700" text-color="text-cyan-50" />
+                            <x-logo-horizontal class="h-9 w-auto text-turquoise hover:text-turquoise-light transition-colors duration-700" text-color="text-cyan-50" />
                         </a>
                         <nav
-                            class="mt-5 h-full flex-shrink-0 divide-y divide-brand-darker overflow-y-auto"
+                            class="mt-7 h-full flex flex-col flex-shrink-0 gap-3 overflow-y-auto"
                             aria-label="Sidebar"
                         >
-                            <div class="space-y-1 px-2">
-                                <a
-                                    href="{{ route('home') }}"
-                                    class="bg-brand-dark text-white group flex items-center px-2 py-2 text-base font-medium rounded-md"
-                                    x-state:on="Current"
-                                    x-state:off="Default"
-                                    aria-current="page"
-                                >
-                                    {{-- Heroicon name: outline/home --}}
-                                    <svg
-                                        class="mr-4 h-6 w-6 flex-shrink-0 text-brand-light"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                                        ></path>
-                                    </svg>
-                                    Transactions
-                                </a>
-                            </div>
-                            <div class="mt-6 pt-6">
-                                <div class="space-y-1 px-2">
-                                    <a
-                                        href="#"
-                                        class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-white text-opacity-80 hover:bg-brand-dark hover:bg-opacity-30 hover:text-opacity-100"
-                                    >
-                                        {{-- Heroicon name: outline/cog --}}
-                                        <svg
-                                            class="mr-4 h-6 w-6 text-brand-light"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            fill="none"
-                                            viewBox="0 0 24 24"
-                                            stroke-width="1.5"
-                                            stroke="currentColor"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                stroke-linecap="round"
-                                                stroke-linejoin="round"
-                                                d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
-                                            ></path>
-                                        </svg>
-                                        Settings
-                                    </a>
-                                </div>
-                            </div>
-                        </nav>
-                    </div>
-    
-                    <div class="w-14 flex-shrink-0" aria-hidden="true">
-                        <!-- Dummy element to force sidebar to shrink to fit close icon -->
-                    </div>
-                </div>
-            </div>
-    
-            <!-- Static sidebar for desktop -->
-            <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
-                <!-- Sidebar component, swap this element with another sidebar if you like -->
-                <div
-                    class="flex flex-grow flex-col overflow-y-auto bg-brand-darker pt-5 pb-4"
-                >
-                    <a href="{{route('home')}}" class="flex flex-shrink-0 items-center px-4">
-                        <x-logo-horizontal class="h-14 w-auto text-brand hover:text-brand-light transition-colors duration-700" text-color="text-cyan-50" />
-                    </a>
-                    <nav
-                        class="mt-5 flex flex-1 flex-col divide-y divide-brand-darker overflow-y-auto"
-                        aria-label="Sidebar"
-                    >
-                        <div class="space-y-1 px-2">
-                            <a
-                                href="{{ route('home') }}"
-                                class="bg-brand-dark text-white group flex items-center px-2 py-2 text-sm leading-6 font-medium rounded-md"
-                                x-state:on="Current"
-                                x-state:off="Default"
-                                aria-current="page"
-                            >
-                                {{-- Heroicon name: outline/home --}}
-                                <svg
-                                    class="mr-4 h-6 w-6 flex-shrink-0 text-brand-light"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M2.25 12l8.954-8.955c.44-.439 1.152-.439 1.591 0L21.75 12M4.5 9.75v10.125c0 .621.504 1.125 1.125 1.125H9.75v-4.875c0-.621.504-1.125 1.125-1.125h2.25c.621 0 1.125.504 1.125 1.125V21h4.125c.621 0 1.125-.504 1.125-1.125V9.75M8.25 21h8.25"
-                                    ></path>
-                                </svg>
+                            <x-side-bar.button href="{{ route('home') }}">
+                                <x-icons.home-outline class="mr-4 h-6 w-6 flex-shrink-0 text-turquoise" />
                                 Transactions
-                            </a>
-                        </div>
-                        <div class="mt-6 pt-6">
-                            <div class="space-y-1 px-2">
+                            </x-side-bar.button>
+                            <x-side-bar.button href="/settings" class="text-sm">
+                                <x-icons.cog-outline class="mr-4 h-6 w-6 text-turquoise" />
+                                Settings
+                            </x-side-bar.button>
+                            {{-- <div class="px-2">
                                 <a
                                     href="#"
-                                    class="group flex items-center rounded-md px-2 py-2 text-sm font-medium leading-6 text-white text-opacity-80 hover:bg-brand-dark hover:bg-opacity-30 hover:text-opacity-100"
+                                    class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-white text-opacity-80 hover:bg-deep-dark hover:bg-opacity-30 hover:text-opacity-100"
                                 >
-                                    {{-- Heroicon name: outline/cog --}}
+                                    {{-- Heroicon name: outline/cog -- }}
                                     <svg
-                                        class="mr-4 h-6 w-6 text-brand-light"
+                                        class="mr-4 h-6 w-6 text-turquoise"
                                         xmlns="http://www.w3.org/2000/svg"
                                         fill="none"
                                         viewBox="0 0 24 24"
@@ -209,8 +114,34 @@
                                     </svg>
                                     Settings
                                 </a>
-                            </div>
-                        </div>
+                            </div> --}}
+                        </nav>
+                    </div>
+    
+                    <div class="w-14 flex-shrink-0" aria-hidden="true">
+                        <!-- Dummy element to force sidebar to shrink to fit close icon -->
+                    </div>
+                </div>
+            </div>
+    
+            <!-- Static sidebar for desktop -->
+            <div class="hidden lg:fixed lg:inset-y-0 lg:flex lg:w-64 lg:flex-col">
+                <!-- Sidebar component, swap this element with another sidebar if you like -->
+                <div
+                    class="flex flex-grow flex-col overflow-y-auto bg-deep-dark pt-5 pb-4"
+                >
+                    <a  class="flex flex-shrink-0 items-center px-4">
+                        <x-logo-horizontal class="h-14 w-auto text-turquoise hover:text-turquoise-light transition-colors duration-700" text-color="text-cyan-50" />
+                    </a>
+                    <nav class="mt-5 flex flex-1 flex-col gap-3 overflow-y-auto" aria-label="Sidebar" >
+                        <x-side-bar.button href="{{route('home')}}" class="text-sm">
+                            <x-icons.home-outline class="mr-4 h-6 w-6 flex-shrink-0 text-turquoise" />
+                            Transactions
+                        </x-side-bar.button>
+                        <x-side-bar.button href="/settings" class="text-sm">
+                            <x-icons.cog-outline class="mr-4 h-6 w-6 text-turquoise" />
+                            Settings
+                        </x-side-bar.button>
                     </nav>
                 </div>
             </div>
@@ -221,7 +152,7 @@
                 >
                     <button
                         type="button"
-                        class="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-brand-medium lg:hidden"
+                        class="border-r border-gray-200 px-4 text-gray-400 focus:outline-none focus:ring-2 focus:ring-inset focus:ring-deep lg:hidden"
                         x-on:click="open = true"
                     >
                         <span class="sr-only">Open sidebar</span>
@@ -268,7 +199,7 @@
                                 <div>
                                     <button
                                         type="button"
-                                        class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50"
+                                        class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-deep-light focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50"
                                         id="user-menu-button"
                                         x-ref="button"
                                         x-on:click="onButtonClick()"
@@ -335,7 +266,7 @@
                                     <a
                                         href="{{ route('user.logout') }}"
                                         class="block px-4 py-2 text-sm text-gray-700"
-                                        x-bind:class="{ 'bg-gray-100': activeIndex === 2 }"
+                                        x-bind:class="{ 'bg-blue-50 text-deep-dark': activeIndex === 0 }"
                                         role="menuitem"
                                         tabindex="-1"
                                         id="user-menu-item-0"

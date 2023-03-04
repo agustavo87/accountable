@@ -11,18 +11,24 @@ module.exports = {
     extend: {
       colors: {
         cyan: colors.cyan,
-        brand: {
-          light: '#41a4f3',
+        turquoise: {
+          light: '#3ba7ff',
           DEFAULT: '#118DF0',
-          medium: '#0c71c2',
-          dark: '#154782',
-          darker: '#0E2F56',
+          dark: '#0768b8'
+        },
+        deep: {
+          white:'#b1d5ff',
+          light: '#0a58b3',
+          DEFAULT:'#01438e',
+          dark: '#022f62'
         }
       }
     },
   },
   variants: {
-    extend: {},
+    extend: {
+      backgroundColor: ['active'],
+    },
   },
   plugins: [
     require('@tailwindcss/forms'),

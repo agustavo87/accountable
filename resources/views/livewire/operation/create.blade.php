@@ -28,7 +28,7 @@
                                         <input type="text" name="name" id="name"
                                             wire:model.defer="operation.name" 
                                             autocomplete="off"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-medium focus:ring-brand-medium sm:text-sm">
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm">
                                         <x-error for="operation.name" />
                                     </div>
 
@@ -36,7 +36,7 @@
                                         <label for="category"
                                             class="block text-sm font-medium text-gray-700">Category</label>
                                         <select wire:model.defer="category" id="category" name="category" autocomplete="category"
-                                            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-brand-medium focus:outline-none focus:ring-brand-medium sm:text-sm">
+                                            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-deep focus:outline-none focus:ring-deep sm:text-sm">
                                             <option selected hidden>Select a category</option>
                                             @foreach ($categories as $category)
                                                 <option value="{{$category->id}}">{{$category->name}}</option>
@@ -47,7 +47,7 @@
                                             <button
                                                 type="button"
                                                 x-on:click="$dispatch('create-category')"
-                                                class="mt-1 mr-1 self-end text-xs text-brand-medium hover:text-cyan-400 font-medium">Create new</button>
+                                                class="mt-1 mr-1 self-end text-xs text-deep hover:text-cyan-400 font-medium">Create new</button>
                                         </div>
                                     </div>
                                 </div>
@@ -57,7 +57,7 @@
                                     <div class="mt-1">
                                         <textarea id="notes" name="notes" rows="3"
                                             wire:model.defer="operation.notes"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-medium focus:ring-brand-medium sm:text-sm"
+                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm"
                                             placeholder="Operation details..."></textarea>
                                     </div>
                                     <p class="mt-2 text-sm text-gray-500">
@@ -134,7 +134,7 @@
                                                                 <select 
                                                                     wire:model.defer="movement.account_id" id="account" name="account"
                                                                     autocomplete="account"
-                                                                    class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-brand-medium focus:outline-none focus:ring-brand-medium sm:text-sm">
+                                                                    class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-deep focus:outline-none focus:ring-deep sm:text-sm">
                                                                    <option selected hidden>Select an account</option>
                                                                    @foreach ($accounts as $account)
                                                                         <option value="{{$account->id}}">{{$account->name}}</option>
@@ -144,7 +144,7 @@
                                                                     <x-error class="flex-1" for="movement.account_id" />
                                                                     <a  
                                                                         href="{{ route('account.create') }}"
-                                                                        class="mt-1 mr-1 self-end text-xs text-brand-medium hover:text-cyan-400 font-medium"
+                                                                        class="mt-1 mr-1 self-end text-xs text-deep hover:text-cyan-400 font-medium"
                                                                         >Create</a>
                                                                 </div>
                                                             </div>
@@ -158,7 +158,7 @@
                                                                     wire:model.defer="movement.amount"
                                                                     id="amount"
                                                                     autocomplete="off"
-                                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-medium focus:ring-brand-medium sm:text-sm">
+                                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm">
                                                                 <x-error for="movement.amount" />
                                                             </div>
 
@@ -171,7 +171,7 @@
                                                                     wire:model.defer="movement.note"
                                                                     autocomplete="off"
                                                                     id="notes"
-                                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-brand-medium focus:ring-brand-medium sm:text-sm">
+                                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm">
                                                                 <x-error for="movement.note" />
                                                             </div>
 
@@ -184,7 +184,7 @@
                                                                                 name="type"
                                                                                 type="radio"
                                                                                 value="0"
-                                                                                class="h-4 w-4 border-gray-300 text-brand focus:ring-brand-medium">
+                                                                                class="h-4 w-4 border-gray-300 text-deep-light focus:ring-deep">
                                                                             <label for="debit"
                                                                                 class="ml-3 block text-sm font-medium text-gray-700">
                                                                                 Debit</label>
@@ -195,7 +195,7 @@
                                                                                 name="type"
                                                                                 type="radio"
                                                                                 value="1"
-                                                                                class="h-4 w-4 border-gray-300 text-brand focus:ring-brand-medium">
+                                                                                class="h-4 w-4 border-gray-300 text-deep-light focus:ring-deep">
                                                                             <label for="credit"
                                                                                 class="ml-3 block text-sm font-medium text-gray-700">
                                                                                 Credit</label>
@@ -207,7 +207,7 @@
                                                             </div>
 
                                                             <div class="col-span-6 flex items-center justify-end sm:col-span-3">
-                                                                <button wire:click="commitMovement" type="button" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-brand-medium hover:text-white hover:border-brand-medium focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2 transition-colors">
+                                                                <button wire:click="commitMovement" type="button" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-deep hover:text-white hover:border-deep focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2 transition-colors">
                                                                 Add transaction</button>
                                                             </div>
                                                         </div>
@@ -223,7 +223,7 @@
                             </div>
                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                 <button type="submit"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-brand-medium py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-brand focus:outline-none focus:ring-2 focus:ring-brand-medium focus:ring-offset-2">
+                                    class="inline-flex justify-center rounded-md border border-transparent bg-deep py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-deep-light focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2">
                                     Create Operation
                                 </button>
                             </div>

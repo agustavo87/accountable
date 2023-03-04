@@ -27,7 +27,7 @@ class Create extends Component
     {
         return view('livewire.user.create')
             ->layout('components.layouts.master', [
-                'attributes' => ['class' => 'bg-gray-50']
+                'attributes' => ['class' => 'min-h-full bg-gradient-to-t from-gray-100 to-white']
             ]);
     }
 
