@@ -199,7 +199,7 @@
                                 <div>
                                     <button
                                         type="button"
-                                        class="flex max-w-xs items-center rounded-full bg-white text-sm focus:outline-none focus:ring-2 focus:ring-deep-light focus:ring-offset-2 lg:rounded-md lg:p-2 lg:hover:bg-gray-50"
+                                        class="flex max-w-xs items-center rounded-sm bg-white text-sm focus:outline-none focus:ring-1 focus:ring-gray-200 focus:ring-offset-1 lg:p-2 hover:bg-gray-50"
                                         id="user-menu-button"
                                         x-ref="button"
                                         x-on:click="onButtonClick()"
@@ -217,7 +217,7 @@
                                             alt=""
                                         />
                                         <span
-                                            class="ml-3 hidden text-sm font-medium text-gray-700 lg:block"
+                                            class="ml-3 hidden text-sm font-medium text-gray-500 lg:block"
                                             ><span class="sr-only"
                                                 >Open user menu for </span
                                             >{{ $user->name }}</span
@@ -266,7 +266,7 @@
                                     <a
                                         href="{{ route('user.logout') }}"
                                         class="block px-4 py-2 text-sm text-gray-700"
-                                        x-bind:class="{ 'bg-blue-50 text-deep-dark': activeIndex === 0 }"
+                                        x-bind:class="{ 'bg-gray-50': activeIndex === 0 }"
                                         role="menuitem"
                                         tabindex="-1"
                                         id="user-menu-item-0"

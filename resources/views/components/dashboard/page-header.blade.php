@@ -16,28 +16,25 @@
                                 src="{{$user->gravatar}}"
                                 alt="Avatar"
                             />
-                            <h1
-                                class="ml-3 text-2xl font-bold leading-7 text-gray-900 sm:truncate sm:leading-9"
-                            >
-                                Hello {{ $user->name }}
-                            </h1>
+                            <div class="ml-5 flex flex-col">
+                                <h1
+                                    class="text-2xl font-bold leading-none text-gray-400 sm:truncate"
+                                >
+                                    Hello {{ $user->name }}
+                                </h1>
+                                <h4 class="text-xs text-gray-500 font-semibold tracking-wide mt-1">{{ now()->toFormattedDayDateString() }}</h4>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
-            <div class="mt-6 flex space-x-3 md:mt-0 md:ml-4">
-                <a
-                    href="{{route('account.create')}}"
-                    class="inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 shadow-sm hover:bg-gray-50 focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2"
-                >
+            <div class="mt-6 flex gap-2 md:mt-0 md:ml-4">
+                <x-secondary-button href="{{route('account.create')}}">
                     Create Account
-                </a>
-                <a
-                    href="{{route('operation.create')}}"
-                    class="inline-flex items-center rounded-md border border-transparent bg-deep-light px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-deep-dark focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2"
-                >
+                </x-secondary-button>
+                <x-primary-button href="{{route('operation.create')}}">
                     Create Operation
-                </a>
+                </x-primary-button>
             </div>
         </div>
     </div>
