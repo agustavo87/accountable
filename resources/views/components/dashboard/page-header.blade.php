@@ -5,20 +5,20 @@
                 <!-- Profile -->
                 <div class="flex items-center">
                     <img
-                        class="hidden h-16 w-16 rounded-full sm:block"
+                        class="hidden h-16 w-16 rounded-full sm:block border-4 border-gray-300"
                         src="{{ $user->gravatar }}"
                         alt="Avatar"
                     />
                     <div>
                         <div class="flex items-center">
                             <img
-                                class="h-16 w-16 rounded-full sm:hidden"
+                                class="h-16 w-16 rounded-full sm:hidden border-4 border-gray-30"
                                 src="{{$user->gravatar}}"
                                 alt="Avatar"
                             />
                             <div class="ml-5 flex flex-col">
                                 <h1
-                                    class="text-2xl font-bold leading-none text-gray-400 sm:truncate"
+                                    class="text-2xl font-bold leading-none text-deep-light sm:truncate"
                                 >
                                     Hello {{ $user->name }}
                                 </h1>

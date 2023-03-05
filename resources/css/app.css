@@ -132,7 +132,7 @@ body {
     }
 
     .btn-secondary {
-        @apply bg-gray-100 border-gray-100 text-gray-500 shadow-sm hover:bg-gray-200 hover:text-gray-600 hover:border-gray-50 active:bg-gray-50 focus:ring-gray-200;
+        @apply bg-deep-white border-deep-white bg-opacity-30 border-opacity-20 shadow-none text-deep hover:bg-opacity-50 hover:text-deep-dark focus:ring-deep-white focus:ring-opacity-30;
     }
 
     .btn-tertiary {
