@@ -64,10 +64,9 @@
                                 </div>
                             </div>
                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                <button type="submit"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-deep-light py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-deep-dark focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2">
+                                <x-primary-button type="submit">
                                     Create
-                                </button>
+                                </x-primary-button>
                             </div>
                         </div>
                     </form>

@@ -1,5 +1,13 @@
-<a
-    {{ $attributes->merge(['class' => 'inline-flex items-center rounded-none border border-transparent bg-deep-light px-4 py-2 text-sm font-medium text-white shadow-sm hover:bg-deep active:bg-deep-dark transition focus:outline-none focus:ring-2 focus:ring-deep-white']) }}
+@props([
+    'tag' => 'button',
+])
+
+@php
+    $tag = $attributes->has('href') ? 'a' : 'button';
+@endphp
+
+<{{$tag}}
+    {{ $attributes->merge(['class' => 'btn btn-primary']) }}
 >
     {{ $slot }}
-</a>
+</{{$tag}}>

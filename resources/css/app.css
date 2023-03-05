@@ -120,3 +120,22 @@ body {
     }
   }
   
+
+@layer components {
+
+    .btn {
+        @apply inline-flex items-center rounded-none border px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2;
+    }
+
+    .btn-primary {
+        @apply border-transparent bg-deep-light text-white shadow-sm hover:bg-deep active:bg-deep-dark focus:ring-deep-white;
+    }
+
+    .btn-secondary {
+        @apply bg-gray-100 border-gray-100 text-gray-500 shadow-sm hover:bg-gray-200 hover:text-gray-600 hover:border-gray-50 active:bg-gray-50 focus:ring-gray-200;
+    }
+
+    .btn-tertiary {
+        @apply border-gray-300 bg-white leading-4 text-gray-700 shadow-sm hover:bg-gray-400 hover:text-white hover:border-gray-400 focus:ring-gray-100;
+    }
+}

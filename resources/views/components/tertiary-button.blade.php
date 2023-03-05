@@ -8,7 +8,7 @@
 
 <{{$tag}}
     {{ $attributes->merge([
-        'class' => 'btn btn-secondary'
+        'class' => 'btn btn-tertiary'
     ])}}
 >
     {{ $slot }}

@@ -106,7 +106,7 @@
                         :disabled="!pagination.prev_page_url"
                         type="button"
                         :class="pagination.prev_page_url ? 'hover:text-gray-500' : 'opacity-70 cursor-default'"
-                        class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                        class="relative inline-flex items-center rounded-bl-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
                         >Previous</button
                     >
                     <button
@@ -114,7 +114,7 @@
                         wire:click="nextPage" 
                         :disabled="!pagination.next_page_url"
                         :class="pagination.next_page_url ? 'hover:text-gray-500' : 'opacity-70 cursor-default'"
-                        class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500"
+                        class="relative ml-3 inline-flex items-center rounded-br-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700 hover:text-gray-500"
                         >Next</button
                     >
                 </div>
@@ -253,7 +253,7 @@
                         </table>
                         <!-- Pagination -->
                         <nav
-                            class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-6"
+                            class="flex items-center justify-between border-t border-gray-200 bg-white px-4 py-3 sm:px-5"
                             aria-label="Pagination"
                         >
                             <div class="hidden sm:block">
@@ -279,7 +279,7 @@
                                 <button
                                     wire:click="previousPage"
                                     type="button"
-                                    class="relative inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                                    class="relative inline-flex items-center rounded-none border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
                                     x-bind:class="{
                                         'hover:bg-gray-50': pagination.prev_page_url,
                                         'opacity-60 cursor-default': !pagination.prev_page_url
@@ -290,7 +290,7 @@
                                 <button
                                     wire:click="nextPage" 
                                     type="button"
-                                    class="relative ml-3 inline-flex items-center rounded-md border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                                    class="relative ml-3 inline-flex items-center rounded-br-lg border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
                                     x-bind:class="{
                                         'hover:bg-gray-50': pagination.next_page_url,
                                         'opacity-60 cursor-default': !pagination.next_page_url

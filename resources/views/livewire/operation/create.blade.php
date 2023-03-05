@@ -207,8 +207,9 @@
                                                             </div>
 
                                                             <div class="col-span-6 flex items-center justify-end sm:col-span-3">
-                                                                <button wire:click="commitMovement" type="button" class="inline-flex items-center rounded-md border border-gray-300 bg-white px-3 py-2 text-sm font-medium leading-4 text-gray-700 shadow-sm hover:bg-deep hover:text-white hover:border-deep focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2 transition-colors">
-                                                                Add transaction</button>
+                                                                <x-tertiary-button wire:click="commitMovement" type="button" class="px-3" >
+                                                                    Add transaction
+                                                                </x-tertiary-button>
                                                             </div>
                                                         </div>
                                                     </div>
@@ -222,10 +223,9 @@
                                 </div>
                             </div>
                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
-                                <button type="submit"
-                                    class="inline-flex justify-center rounded-md border border-transparent bg-deep py-2 px-4 text-sm font-medium text-white shadow-sm hover:bg-deep-light focus:outline-none focus:ring-2 focus:ring-deep focus:ring-offset-2">
+                                <x-primary-button type="submit">
                                     Create Operation
-                                </button>
+                                </x-primary-button>
                             </div>
                         </div>
                     </form>
