@@ -17,51 +17,43 @@
                         <div class="shadow sm:overflow-hidden sm:rounded-md">
                             <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
                                 <div class="grid grid-cols-6 gap-6">
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="name" class="block text-sm font-medium text-gray-700">Account
-                                            name</label>
-                                        <input wire:model.debounce="account.name" type="text" name="name"
-                                            autocomplete="account.name"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm" />
-                                            <x-error for="account.name" />
-                                    </div>
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="description"
-                                            class="block text-sm font-medium text-gray-700">Balance</label>
-                                        <div class="relative mt-1 rounded-md shadow-sm">
-                                            <div class="pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3">
-                                                <span class="text-gray-500 sm:text-sm">$</span>
-                                            </div>
-                                            <input type="text" name="description" id="description"
-                                                wire:model.debounce="account.balance"
-                                                class="block w-full rounded-md border-gray-300 pl-7 pr-12 focus:border-deep focus:ring-deep sm:text-sm"
-                                                placeholder="0.00">
-                                            <div class="absolute inset-y-0 right-0 flex items-center">
-                                                <label for="currency" class="sr-only">Currency</label>
-                                                <select wire:model="account.currency"  id="currency" name="currency"
-                                                    class="h-full rounded-md border-transparent bg-transparent py-0 pl-2 pr-7 text-gray-500 focus:border-deep focus:ring-deep sm:text-sm">
-                                                    @foreach ($currencies as $currency)
-                                                        <option value="{{$currency}}">{{ $currency }}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                        </div>
-                                        <x-error for="account.balance" />
-                                    </div>
+                                    <x-form.complex-text-input 
+                                        class="col-span-6 sm:col-span-3"
+                                        id='name'
+                                    >
+                                        <x-slot:label>
+                                            Account Name
+                                        </x-slot>
+                                        <x-slot:input 
+                                            wire:model.debounce="account.name" 
+                                            autocomplete="off"
+                                            placeholder="Bank XXX CC..."
+                                        >
+                                        </x-slot>
+                                    </x-form.complex-text-input>
+                                    <x-form.money-input 
+                                        class="col-span-6 sm:col-span-3"
+                                        id="balance"
+                                    >
+                                        <x-slot:input
+                                            wire:model.debounce="account.balance"
+                                        ></x-slot>
+                                        <x-slot:currencies>
+                                            @foreach ($currencies as $currency)
+                                                <option value="{{$currency}}">{{ $currency }}</option>
+                                            @endforeach
+                                        </x-slot>
+                                    </x-form.money-input>
                                 </div>
 
-                                <div>
-                                    <label for="description"
-                                        class="block text-sm font-medium text-gray-700">Description</label>
-                                    <div class="mt-1">
-                                        <textarea id="description" name="description" rows="3"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm"
-                                            placeholder="This is account is for..."></textarea>
-                                    </div>
-                                    <p class="mt-2 text-sm text-gray-500">
-                                        Brief description for your the account.
-                                    </p>
-                                </div>
+                                <x-form.text-area 
+                                    id="description"
+                                    rows="3"
+                                    placeholder="This is account is for..."
+                                >
+                                    <x-slot:label>Description</x-slot>
+                                    <x-slot:hint>Brief description of the account.</x-slot>
+                                </x-form.text-area>
                             </div>
                             <div class="bg-gray-50 px-4 py-3 text-right sm:px-6">
                                 <x-primary-button type="submit">

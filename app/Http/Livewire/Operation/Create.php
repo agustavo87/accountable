@@ -32,7 +32,7 @@ class Create extends Component
     protected $operationRules = [
         'category' => ['required', 'exists:operation_categories,id'],
         'operation.name' => ['required', 'max:100', 'min:3'],
-        'operation.notes' => ['sometimes', 'max:5000'],
+        'operation.notes' => ['sometimes', 'max:3000'],
     ];
 
     protected $movementRules = [

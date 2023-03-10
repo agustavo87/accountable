@@ -23,7 +23,7 @@ class Create extends Component
         $this->currencies = config('accountable.currencies');
         $this->account = new Account([
             'currency' => 'USD', 
-            'balance' => 0.0
+            'balance' => null
         ]);
     }
 

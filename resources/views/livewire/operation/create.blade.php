@@ -18,54 +18,62 @@
                         x-on:input="dirty = true"
                         wire:submit.prevent="submit">
                         <div class="shadow sm:overflow-hidden sm:rounded-md">
-                            <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
+                            <div class="bg-white flex flex-col gap-3 px-4 py-5 sm:p-6">
 
                                 <div class="grid grid-cols-6 gap-6">
-                                    <div class="col-span-6 sm:col-span-3">
-                                        <label for="name" class="block text-sm font-medium text-gray-700">
+                                    <x-form.complex-text-input 
+                                        class="col-span-6 sm:col-span-3"
+                                        id='name'
+                                    >
+                                        <x-slot:label>
                                             Name
-                                        </label>
-                                        <input type="text" name="name" id="name"
+                                        </x-slot>
+                                        <x-slot:input 
                                             wire:model.defer="operation.name" 
                                             autocomplete="off"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm">
-                                        <x-error for="operation.name" />
-                                    </div>
+                                            placeholder="Buy x units of y..."
+                                        >
+                                        </x-slot>
+                                    </x-form.complex-text-input> 
 
-                                    <div class="col-span-6 flex flex-col sm:col-span-3">
-                                        <label for="category"
-                                            class="block text-sm font-medium text-gray-700">Category</label>
-                                        <select wire:model.defer="category" id="category" name="category" autocomplete="category"
-                                            class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-deep focus:outline-none focus:ring-deep sm:text-sm">
+                                    <x-form.complex-select 
+                                        wire:model.defer="category"
+                                        class="col-span-6 sm:col-span-3"
+                                        id="category"
+                                    >
+                                        <x-slot:label>
+                                            Category
+                                        </x-slot>
+                                        <x-slot:options
+                                            autocomplete="category"
+                                        >
                                             <option selected hidden>Select a category</option>
                                             @foreach ($categories as $category)
-                                                <option value="{{$category->id}}">{{$category->name}}</option>
+                                                <option value="{{$category->id}}" class="text-deep-dark">{{$category->name}}</option>
                                             @endforeach
-                                        </select>
+                                        </x-slot>
                                         <div class="flex justify-end">
                                             <x-error class="flex-1" for="category" />
                                             <button
                                                 type="button"
                                                 x-on:click="$dispatch('create-category')"
-                                                class="mt-1 mr-1 self-end text-xs text-deep hover:text-cyan-400 font-medium">Create new</button>
+                                                class="link text-xs font-medium mt-1 mr-1 self-end ">
+                                                Create new
+                                            </button>
                                         </div>
-                                    </div>
+                                    </x-form.complex-select>
                                 </div>
 
-                                <div>
-                                    <label for="notes" class="block text-sm font-medium text-gray-700">Notes</label>
-                                    <div class="mt-1">
-                                        <textarea id="notes" name="notes" rows="3"
-                                            wire:model.defer="operation.notes"
-                                            class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm"
-                                            placeholder="Operation details..."></textarea>
-                                    </div>
-                                    <p class="mt-2 text-sm text-gray-500">
-                                        Notes about the operation.
-                                    </p>
-                                    <x-error for="operation.notes" />
-                                </div>
-
+                                <x-form.text-area 
+                                    id="notes"
+                                    rows="3"
+                                    wire:model.defer="operation.notes"
+                                    placeholder="Operation details..."
+                                    rows="3"
+                                >
+                                    <x-slot:label>Notes</x-slot>
+                                    <x-slot:hint>Notes about the operation.</x-slot>
+                                </x-form.text-area>
 
                             </div>
                             <div class="bg-gray-100 py-6">
@@ -127,53 +135,52 @@
                                                     <div class="px-4 py-4 sm:px-6">
 
                                                         <div class="grid grid-cols-6 gap-6">
-
-                                                            <div class="col-span-6 sm:col-span-3 flex flex-col">
-                                                                <label for="account"
-                                                                    class="block text-sm font-medium text-gray-700">Account</label>
-                                                                <select 
-                                                                    wire:model.defer="movement.account_id" id="account" name="account"
-                                                                    autocomplete="account"
-                                                                    class="mt-1 block w-full rounded-md border border-gray-300 bg-white py-2 px-3 shadow-sm focus:border-deep focus:outline-none focus:ring-deep sm:text-sm">
-                                                                   <option selected hidden>Select an account</option>
-                                                                   @foreach ($accounts as $account)
+                                                            <x-form.complex-select 
+                                                                wire:model.defer="movement.account_id"
+                                                                id="category" 
+                                                                class="col-span-6 sm:col-span-3 "
+                                                            >
+                                                                <x-slot:label>
+                                                                    Account
+                                                                </x-slot>
+                                                                <x-slot:options
+                                                                    class="bg-white focus:bg-white"
+                                                                    autocomplete="category"
+                                                                >
+                                                                    <option selected hidden>Select an account</option>
+                                                                    @foreach ($accounts as $account)
                                                                         <option value="{{$account->id}}">{{$account->name}}</option>
-                                                                   @endforeach
-                                                                </select>
+                                                                    @endforeach
+                                                                </x-slot>
                                                                 <div class="flex justify-end">
                                                                     <x-error class="flex-1" for="movement.account_id" />
                                                                     <a  
                                                                         href="{{ route('account.create') }}"
-                                                                        class="mt-1 mr-1 self-end text-xs text-deep hover:text-cyan-400 font-medium"
+                                                                        class="link mt-1 mr-1 self-end text-xs font-medium"
                                                                         >Create</a>
                                                                 </div>
-                                                            </div>
+                                                            </x-form.complex-select>
 
-                                                            <div class="col-span-6 sm:col-span-3">
-                                                                <label for="amount"
-                                                                    class="block text-sm font-medium text-gray-700">
-                                                                    Amount
-                                                                </label>
-                                                                <input type="number" name="amount"
+                                                            <x-form.complex-text-input id="amount" class="col-span-6 sm:col-span-3">
+                                                                <x-slot:label>Amount</x-slot>
+                                                                <x-slot:input
+                                                                    class="bg-white focus:bg-white sin-apariencia"
+                                                                    type="number"
                                                                     wire:model.defer="movement.amount"
-                                                                    id="amount"
                                                                     autocomplete="off"
-                                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm">
-                                                                <x-error for="movement.amount" />
-                                                            </div>
+                                                                >
+                                                                </x-slot>
+                                                            </x-form.complex-text-input>
 
-                                                            <div class="col-span-6">
-                                                                <label for="notes"
-                                                                    class="block text-sm font-medium text-gray-700">
-                                                                    Notes
-                                                                </label>
-                                                                <input type="text" name="notes"
+                                                            <x-form.complex-text-input id="notes" class="col-span-6">
+                                                                <x-slot:label>Notes</x-slot>
+                                                                <x-slot:input
+                                                                    class="bg-white focus:bg-white"
                                                                     wire:model.defer="movement.note"
                                                                     autocomplete="off"
-                                                                    id="notes"
-                                                                    class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-deep focus:ring-deep sm:text-sm">
-                                                                <x-error for="movement.note" />
-                                                            </div>
+                                                                >
+                                                                </x-slot>
+                                                            </x-form.complex-text-input>
 
                                                             <div class="col-span-6 sm:col-span-3">
                                                                 <fieldset>

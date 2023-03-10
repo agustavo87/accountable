@@ -1,5 +1,5 @@
 <div class="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-    <div class="flex flex-col gap-2 items-center justify-between mb-7 sm:flex-row sm:mb-0 w-fulls">
+    <div class="flex flex-col gap-2 items-end justify-between mb-7 sm:flex-row sm:mb-0 w-fulls">
         <div class="sm:w-auto w-full">
             <label for="account" class="sr-only">Account</label>
             <x-form.white-select 

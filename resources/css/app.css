@@ -120,11 +120,20 @@ body {
     }
   }
   
+input.sin-apariencia::-webkit-outer-spin-button,
+input.sin-apariencia::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
 
+/* Firefox */
+input.sin-apariencia {
+  -moz-appearance: textfield;
+}
 @layer components {
 
     .btn {
-        @apply inline-flex items-center rounded-none border px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2;
+        @apply inline-flex items-center rounded-sm border px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2;
     }
 
     .btn-primary {
@@ -132,10 +141,29 @@ body {
     }
 
     .btn-secondary {
-        @apply bg-deep-white border-deep-white bg-opacity-30 border-opacity-20 shadow-none text-deep hover:bg-opacity-50 hover:text-deep-dark focus:ring-deep-white focus:ring-opacity-30;
+        @apply bg-deep-white-2 border-deep-white-2  text-deep hover:bg-deep-white hover:text-deep-dark focus:ring-deep-white-2;
     }
 
     .btn-tertiary {
-        @apply border-gray-300 bg-white leading-4 text-gray-700 shadow-sm hover:bg-gray-400 hover:text-white hover:border-gray-400 focus:ring-gray-100;
+        @apply border-deep-white-3 bg-deep-white leading-4 text-deep shadow-sm hover:bg-deep-white-2 focus:ring-deep-white-2 focus:ring-2;
+    }
+
+    .link {
+        @apply text-deep hover:text-deep-light-2 transition;
+    }
+
+    .select {
+        @apply mt-1 block w-full border-0 border-b border-gray-300 rounded-sm bg-gray-50 py-2 px-3 focus:text-deep-dark shadow-sm focus:bg-deep-white focus:ring-0 transition focus:border-turquoise focus:outline-none sm:text-sm
+    }
+
+    .text-input {
+        @apply mt-1 block w-full border-0 border-b rounded-sm bg-gray-50 border-gray-300 shadow-sm focus:bg-deep-white focus:text-deep-dark focus:placeholder-deep-white-3 transition focus:border-turquoise placeholder-gray-400  focus:ring-0 sm:text-sm;
+    }
+
+    .money-container input:focus ~ .money-sign {
+        @apply text-deep-white-3
+    }
+    .money-container input:focus ~ div select {
+        @apply text-deep
     }
 }
