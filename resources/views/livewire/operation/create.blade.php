@@ -21,7 +21,7 @@
                             <div class="bg-white flex flex-col gap-3 px-4 py-5 sm:p-6">
 
                                 <div class="grid grid-cols-6 gap-6">
-                                    <x-form.complex-text-input 
+                                    <x-form.input 
                                         class="col-span-6 sm:col-span-3"
                                         id='name'
                                     >
@@ -34,7 +34,7 @@
                                             placeholder="Buy x units of y..."
                                         >
                                         </x-slot>
-                                    </x-form.complex-text-input> 
+                                    </x-form.input> 
 
                                     <x-form.complex-select 
                                         wire:model.defer="category"
@@ -161,7 +161,7 @@
                                                                 </div>
                                                             </x-form.complex-select>
 
-                                                            <x-form.complex-text-input id="amount" class="col-span-6 sm:col-span-3">
+                                                            <x-form.input id="amount" class="col-span-6 sm:col-span-3">
                                                                 <x-slot:label>Amount</x-slot>
                                                                 <x-slot:input
                                                                     class="bg-white focus:bg-white sin-apariencia"
@@ -170,9 +170,9 @@
                                                                     autocomplete="off"
                                                                 >
                                                                 </x-slot>
-                                                            </x-form.complex-text-input>
+                                                            </x-form.input>
 
-                                                            <x-form.complex-text-input id="notes" class="col-span-6">
+                                                            <x-form.input id="notes" class="col-span-6">
                                                                 <x-slot:label>Notes</x-slot>
                                                                 <x-slot:input
                                                                     class="bg-white focus:bg-white"
@@ -180,7 +180,7 @@
                                                                     autocomplete="off"
                                                                 >
                                                                 </x-slot>
-                                                            </x-form.complex-text-input>
+                                                            </x-form.input>
 
                                                             <div class="col-span-6 sm:col-span-3">
                                                                 <fieldset>

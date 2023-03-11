@@ -20,34 +20,32 @@
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-lg sm:px-10">
             <form  wire:submit.prevent="submit" class="space-y-6">
-                <x-form.input 
-                    type="text"
-                    wire:model.defer="user.name"
-                    label="Name" 
-                    name="name"
-                    id="name"
-                    required=""
-                    autocomplete="name"
-                />
-                <x-form.input 
-                    type="email"
-                    wire:model.defer="user.email"
-                    label="Email address" 
-                    name="email"
-                    id="email"
-                    required=""
-                    autocomplete="email"
-                />
-
-                <x-form.input 
-                    type="password"
-                    wire:model.defer="password"
-                    label="Password" 
-                    name="password"
-                    id="password"
-                    required=""
-                    autocomplete="password"
-                />
+                <x-form.input id="name">
+                    <x-slot:label>Name</x-slot>
+                    <x-slot:input
+                        autocomplete="name"
+                        required=""
+                        wire:model.defer="user.name"
+                    ></x-slot>
+                </x-form.input>
+                <x-form.input id="email">
+                    <x-slot:label>Email address</x-slot>
+                    <x-slot:input
+                        type="email"
+                        autocomplete="email"
+                        required=""
+                        wire:model.defer="user.email"
+                    ></x-slot>
+                </x-form.input>
+                <x-form.input id="password">
+                    <x-slot:label>Password</x-slot>
+                    <x-slot:input
+                        type="password"
+                        autocomplete="password"
+                        required=""
+                        wire:model.defer="password"
+                    ></x-slot>
+                </x-form.input>
 
                 <div>
                     <x-form.primary-button type="submit" class="w-full">

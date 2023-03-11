@@ -17,7 +17,7 @@
                         <div class="shadow sm:overflow-hidden sm:rounded-md">
                             <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
                                 <div class="grid grid-cols-6 gap-6">
-                                    <x-form.complex-text-input 
+                                    <x-form.input 
                                         class="col-span-6 sm:col-span-3"
                                         id='name'
                                     >
@@ -30,7 +30,7 @@
                                             placeholder="Bank XXX CC..."
                                         >
                                         </x-slot>
-                                    </x-form.complex-text-input>
+                                    </x-form.input>
                                     <x-form.money-input 
                                         class="col-span-6 sm:col-span-3"
                                         id="balance"

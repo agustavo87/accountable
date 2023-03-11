@@ -20,25 +20,25 @@
     <div class="mt-8 sm:mx-auto sm:w-full sm:max-w-md">
         <div class="bg-white py-8 px-4 shadow sm:rounded-sm sm:px-10">
             <form  wire:submit.prevent="submit" class="space-y-6">
-                <x-form.input 
-                    type="email"
-                    wire:model.defer="email"
-                    label="Email address" 
-                    name="email"
-                    id="email"
-                    required=""
-                    autocomplete="email"
-                />
+                <x-form.input id="email">
+                    <x-slot:label>Email address</x-slot>
+                    <x-slot:input
+                        type="email"
+                        autocomplete="email"
+                        required=""
+                        wire:model.defer="email"
+                    ></x-slot>
+                </x-form.input>
 
-                <x-form.input 
-                    type="password"
-                    wire:model.defer="password"
-                    label="Password" 
-                    name="password"
-                    id="password"
-                    required=""
-                    autocomplete="current-password"
-                />
+                <x-form.input id="pasword">
+                    <x-slot:label>Password</x-slot>
+                    <x-slot:input
+                        type="password"
+                        autocomplete="current-password"
+                        required=""
+                        wire:model.defer="password"
+                    ></x-slot>
+                </x-form.input>
 
                 <x-form.checkbox 
                     wire:model.defer="remember"

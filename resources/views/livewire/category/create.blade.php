@@ -47,7 +47,7 @@
                     </h3>
                     <form wire:submit.prevent="create"> 
                         <div class="bg-white px-4 pt-5 pb-4 sm:p-6 sm:pb-4">
-                            <x-form.complex-text-input id="name" class="col-span-6 sm:col-span-3">
+                            <x-form.input id="name" class="col-span-6 sm:col-span-3">
                                 <x-slot:label>Name</x-slot>
                                 <x-slot:input
                                     wire:model.defer="name"
@@ -55,7 +55,7 @@
                                     x-ref="categoryName"
                                 >
                                 </x-slot>
-                            </x-form.complex-text-input>
+                            </x-form.input>
                         </div>
                         <div
                             class="bg-gray-50 px-4 py-3 gap-2 sm:flex sm:flex-row-reverse sm:px-6"

@@ -1,21 +1,21 @@
 @props([
-    'label' => 'Email',
-    'name' => 'email',
-    'id' => 'email'
+    'label',
+    'input',
+    'id',
 ])
-<div>
-    <label
-        for="{{ $id }}"
-        class="block text-sm font-medium text-gray-500 "
-        >{{ $label }}</label
-    >
-    <div class="mt-1">
-        <input
-            {{ $attributes->merge([
-                'class' => 'block rounded-sm w-full bg-gray-50 px-3 py-2 focus:border-turquoise placeholder-gray-400 shadow-sm sm:text-sm border-0 border-b border-gray-300  focus:bg-blue-50 focus:ring-0 transition'
-            ]) }}
-            id="{{ $id }}"
-            name="{{ $name }}"
-        />
-    </div>
+<div {{ $attributes }}>
+    <label for="{{$id}}" class="block text-sm font-medium text-gray-700">
+        {{ $label }}
+    </label>
+    <input id="{{$id}}"
+        {{ $input->attributes->merge([
+            'class' => "text-input",
+            'name' => $id,
+            'type' => 'text'
+        ]) }}
+        >
+    @if($bind = $input->attributes->wire('model'))
+        <x-error for="{{ $bind->value }}" />
+    @endif
+    {{$slot}}
 </div>
