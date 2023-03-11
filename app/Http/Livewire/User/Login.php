@@ -29,7 +29,9 @@ class Login extends Component
     public function submit()
     {
         $credentials = $this->validate();
-        Auth::attempt($credentials, $this->remember);
+        if(!Auth::attempt($credentials, $this->remember)) {
+            return $this->addError('email', 'The provided credentials don\'t match our records.');
+        }
         
         return redirect()->intended();
     }
