@@ -11,6 +11,7 @@ use App\Http\Livewire\Operation\{
 };
 use App\Http\Livewire\Category\Create as CategoryCreate;
 use App\Http\Livewire\Dashboard;
+use App\Http\Livewire\Settings;
 use App\Http\Livewire\User\{
     Create as UserCreate,
     Login
@@ -43,4 +44,5 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/account/index', AccountIndex::class)->name('account.index');
     Route::get('/operation/create', OperationCreate::class)->name('operation.create');
     Route::get('/category/create', CategoryCreate::class)->name('category.create');
+    Route::get('/settings', Settings::class)->name('settings');
 });

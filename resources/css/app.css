@@ -137,7 +137,7 @@ input.sin-apariencia {
     }
 
     .btn-primary {
-        @apply border-transparent bg-deep-light text-white shadow-sm hover:bg-deep active:bg-deep-dark focus:ring-deep-white;
+        @apply shadow-sm border-transparent bg-deep-light text-white hover:bg-deep active:bg-deep-dark focus:ring-deep-white;
     }
 
     .btn-secondary {
@@ -145,7 +145,7 @@ input.sin-apariencia {
     }
 
     .btn-tertiary {
-        @apply border-deep-white-3 bg-deep-white leading-4 text-deep shadow-sm hover:bg-deep-white-2 focus:ring-deep-white-2 focus:ring-2;
+        @apply shadow-sm border-gray-300 bg-gray-50 text-deep hover:bg-deep-white hover:border-deep-light hover:text-deep-light focus:ring-deep-white-3 focus:ring-2;
     }
 
     .link {
@@ -166,4 +166,17 @@ input.sin-apariencia {
     .money-container input:focus ~ div select {
         @apply text-deep
     }
+
+    .modifyable-content-input input:disabled {
+        @apply bg-transparent shadow-none border-transparent font-semibold text-gray-600
+    }
+
+    .label {
+        @apply block text-sm font-medium text-gray-700
+    }
+
+    neutral {
+        display: contents;
+    }
+    
 }

@@ -29,9 +29,9 @@
                 </div>
             </div>
             <div class="mt-6 flex gap-2 md:mt-0 md:ml-4">
-                <x-secondary-button href="{{route('account.create')}}">
+                <x-tertiary-button href="{{route('account.create')}}" class="bg-white">
                     Create Account
-                </x-secondary-button>
+                </x-tertiary-button>
                 <x-primary-button href="{{route('operation.create')}}">
                     Create Operation
                 </x-primary-button>

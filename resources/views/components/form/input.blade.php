@@ -4,7 +4,10 @@
     'id',
 ])
 <div {{ $attributes }}>
-    <label for="{{$id}}" class="block text-sm font-medium text-gray-700">
+    <label {{ $label->attributes->merge([
+        'for' => $id,
+        'class' => "label"
+    ]) }} >
         {{ $label }}
     </label>
     <input id="{{$id}}"

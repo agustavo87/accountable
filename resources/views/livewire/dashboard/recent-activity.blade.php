@@ -146,108 +146,124 @@
                 >
                     <div x-show="operations.length > 0">
 
-                        <table
-                            class="min-w-full"
-                        >
+                        <table class="min-w-full">
                             <thead class=" border-b border-gray-200 ">
                                 <tr>
                                     <th
-                                        class="hidden md:block bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-900 border-0"
+                                        class="hidden md:block bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Date
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3  text-sm font-semibold text-gray-900 border-0"
+                                        class="bg-gray-50 px-6 py-3  text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Category
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-900 border-0"
+                                        class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Operation
                                     </th>
                                                                     <th
-                                        class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-900 border-0"
+                                        class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Transaction
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3 text-right text-sm font-semibold text-gray-900 border-0"
+                                        class="bg-gray-50 px-6 py-3 text-right text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Amount
                                     </th>
                                 </tr>
                             </thead>
-                            <tbody
-                                class=" bg-white"
-                                
-                            >
+                            <tbody class=" bg-white">
                                 <template x-for="(operation, opIndex) in operations">
-                                    <template x-for="(movement, moveIndex) in operation.movements">
-                                        <tr class="bg-white" >
-                                            <td
-                                                x-bind:class="border(moveIndex, opIndex, operation) ? 'border-b': ''"
-                                                class="hidden md:table-cell whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500 opacity-80"
-                                            >
-                                                <time 
-                                                    x-text="moveIndex <= 0 ? operation.date : '' "
-                                                    x-bind:datetime="operation.date_string"
-                                                    ></time
+                                    <neutral>
+                                        <template x-for="(movement, moveIndex) in operation.movements">
+                                            <tr class="bg-white font-mono" >
+                                                <td
+                                                    x-bind:class="{
+                                                        'border-b': border(moveIndex, opIndex, operation),
+                                                        'pb-0': !lastMove(moveIndex, operation),
+                                                    }"
+                                                    class="hidden md:table-cell whitespace-nowrap px-6 py-4 text-sm text-gray-500 opacity-80"
                                                 >
-                                            </td>
-                                            <td
-                                                x-text="moveIndex <= 0 ? operation.category.name : ''"
-                                                x-bind:class="border(moveIndex, opIndex, operation) ? 'border-b': ''"
-                                                class="  whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500"
-                                            >
-                                            </td>
-                                            <td
-                                                x-bind:class="border(moveIndex, opIndex, operation) ? 'border-b': ''"
-                                                class="  w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900"
-                                            >
-                                                    <div
-                                                        class="text-gray-600 font-semibold"
-                                                        x-text="moveIndex <= 0 ? operation.name : '' "
+                                                    <time 
+                                                        x-text="moveIndex <= 0 ? operation.date : '' "
+                                                        x-bind:datetime="operation.date_string"
                                                         >
+                                                    </time>
+                                                </td>
+                                                <td
+                                                    x-bind:class="{
+                                                        'border-b': border(moveIndex, opIndex, operation),
+                                                        'pb-0': !lastMove(moveIndex, operation),
+                                                    }"
+                                                    class="  whitespace-nowrap px-6 py-4 text-sm text-gray-500"
+                                                >
+                                                    <span 
+                                                        x-show="moveIndex <= 0"  
+                                                        x-text="moveIndex <= 0 ? operation.category.name : ''" 
+                                                        class="bg-gray-200 bg-opacity-50 border border-gray-200 px-2 py-0.5 rounded-full text-xs"
+                                                    >
+                                                    </span>
+                                                </td>
+                                                <td
+                                                    x-bind:class="{
+                                                        'border-b': border(moveIndex, opIndex, operation),
+                                                        'pb-0': !lastMove(moveIndex, operation),
+                                                    }"
+                                                    class="  w-full max-w-0 whitespace-nowrap px-6 py-4 text-sm text-gray-900"
+                                                >
+                                                        <div
+                                                            class="text-gray-700 overflow-ellipsis overflow-hidden"
+                                                            x-text="moveIndex <= 0 ? operation.name : '' "
+                                                            >
+                                                        </div>
+                                                </td>
+                
+                                                <td
+                                                    x-bind:class="{
+                                                        'border-b': border(moveIndex, opIndex, operation),
+                                                        'pb-0': !lastMove(moveIndex, operation),
+                                                    }"
+                                                    class=" whitespace-nowrap px-6 py-4 text-left text-sm text-gray-500"
+                                                >
+                                                    <div 
+                                                        class="text-gray-500"
+                                                        x-text="movement.account.name"
+                                                    >
                                                     </div>
-                                            </td>
-            
-                                            <td
-                                                x-bind:class="border(moveIndex, opIndex, operation) ? 'border-b': ''"
-                                                class=" whitespace-nowrap px-6 py-4 text-left text-sm text-gray-500"
-                                            >
-                                                <div 
-                                                    class="text-gray-700"
-                                                    x-text="movement.account.name"
-                                                ></div>
-                                                <div 
-                                                    class="italic text-gray-500 text-xs"
-                                                    x-text="movement.note"
-                                                ></div>
-                                                
-                                            </td>
-                                            <td
-                                                x-bind:class="{
-                                                    'border-b': border(moveIndex, opIndex, operation),
-                                                    'text-green-800': movement.type == 1,
-                                                    'text-red-800': !(movement.type == 1)
-                                                }"
-                                                class=" opacity-90  whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500"
-                                            >
-                                                <span
-                                                    class="font-medium"
-                                                    x-text="(movement.type == 0 ? '-' : '') + formatNumber(movement.account.currency, movement.amount)"
-                                                    ></span
-                                                > 
-                                                <span x-text="movement.account.currency"></span>
-                                            </td>
-                                        </tr>
-                                    </template>
+                                                    <div 
+                                                        class="italic text-gray-400 text-xs"
+                                                        x-text="movement.note"
+                                                    >
+                                                    </div>
+                                                </td>
+                                                <td
+                                                    x-bind:class="{
+                                                        'border-b': border(moveIndex, opIndex, operation),
+                                                        'pb-0': !lastMove(moveIndex, operation),
+                                                        'text-green-800': movement.type == 1,
+                                                        'text-red-800': !(movement.type == 1)
+                                                    }"
+                                                    class=" opacity-90  whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500"
+                                                >
+                                                    <span
+                                                        class="font-medium"
+                                                        x-text="(movement.type == 0 ? '-' : '') + formatNumber(movement.account.currency, movement.amount)"
+                                                        >
+                                                    </span> 
+                                                    <span x-text="movement.account.currency"></span>
+                                                </td>
+                                            </tr>
+                                        </template>
+                                    </neutral>
                                 </template>
                             </tbody>
                         </table>
@@ -279,7 +295,7 @@
                                 <button
                                     wire:click="previousPage"
                                     type="button"
-                                    class="relative inline-flex items-center rounded-none border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
+                                    class="relative inline-flex items-center rounded-bl-lg  border border-gray-300 bg-white px-4 py-2 text-sm font-medium text-gray-700"
                                     x-bind:class="{
                                         'hover:bg-gray-50': pagination.prev_page_url,
                                         'opacity-60 cursor-default': !pagination.prev_page_url

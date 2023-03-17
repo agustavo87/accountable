@@ -81,15 +81,19 @@ class RecentActivity extends Component
                            ->withCount('movements');
 
         $query->when($this->category, function(Builder $query, $category) {
+
                 $query->where('category_id', $category);
-            })
-            ->when($this->search, function(Builder $query, $search) {
+
+            })->when($this->search, function(Builder $query, $search) {
+
                 $query->join('movements', 'operations.id', '=',  'movements.operation_id')
                       ->select('operations.*');
+
                 $query->where(function(Builder $query) use ($search) {
                     $query->where('name', 'LIKE', "%{$search}%")
                           ->orWhere('movements.note', 'LIKE', "%{$search}%");
                 });
+
             });
 
         $query->when($this->account, function(Builder $query, $account) {
@@ -99,7 +103,9 @@ class RecentActivity extends Component
         });
         
         $results = $query->orderBy('created_at', 'desc')
-            ->simplePaginate(5)->toArray();
+            ->simplePaginate(5)
+            ->toArray();
+
         $this->operations = $results['data'];
         unset($results['data']);
         $this->pagination = $results;

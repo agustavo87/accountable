@@ -17,13 +17,13 @@ module.exports = {
           dark: '#0768b8'
         },
         deep: {
-          white:'#f1f7fd',
+          white:'#f2f7fc',
           'white-2': '#ddecfd',
           'white-3': '#89b5e6',
           'light-2': '#0d6cd9',
           light: '#0a58b3',
           DEFAULT:'#01438e',
-          dark: '#022f62'
+          dark: '#001f42'
         }
       }
     },

@@ -6,7 +6,9 @@
                 wire:model="account"
                 class="text-lg"
                 id="account" 
-                name="account">
+                class="pl-2 pr-10 py-1.5 text-sm"
+                name="account"
+            >
                 <option class="text-base" value="0">General</option>
                 @foreach ($accounts as $account)
                     <option class="text-base" value="{{$account->id}}">{{$account->name}}</option>
@@ -41,7 +43,7 @@
 
         <div 
             x-show="kpi.account.balance"
-            class="overflow-hidden rounded-lg bg-white shadow"
+            class="overflow-hidden rounded-lg bg-white shadow mb-5"
         >
             <div class="p-5">
                 <div class="flex items-center">
@@ -95,7 +97,7 @@
 
 
         <div
-            class="overflow-hidden rounded-lg bg-white shadow"
+            class="overflow-hidden rounded-lg bg-white shadow mb-5"
             x-show='kpi.account.period_balance'
         >
             <div class="p-5">
@@ -149,7 +151,7 @@
         </div>
 
         <div
-            class="overflow-hidden rounded-lg bg-white shadow"
+            class="overflow-hidden rounded-lg bg-white shadow mb-5"
             x-show="kpi.account.movements"
         >
             <div class="p-5">
