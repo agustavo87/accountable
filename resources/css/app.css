@@ -137,7 +137,7 @@ input.sin-apariencia {
     }
 
     .btn-primary {
-        @apply shadow-sm border-transparent bg-deep-light text-white hover:bg-deep active:bg-deep-dark focus:ring-deep-white;
+        @apply shadow-sm border-transparent bg-deep-light text-white hover:bg-deep active:bg-deep-dark focus:ring-deep-white-3 focus:ring-2;
     }
 
     .btn-secondary {

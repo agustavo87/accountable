@@ -64,7 +64,7 @@
                                                 Change Avatar
                                             </button>
                                         </div>
-                                        <x-tertiary-button type="button" class="bg-white mt-2">
+                                        <x-tertiary-button x-on:click="$dispatch('change-password')" type="button" class="bg-white mt-2">
                                             Change Password
                                         </x-tertiary-button>
                                     </div>
@@ -104,3 +104,6 @@
         </div>
     </div>
 </div>
+@push('modals')
+    <livewire:user.change-password />
+@endpush
