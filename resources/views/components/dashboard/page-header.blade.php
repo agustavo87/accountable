@@ -6,14 +6,14 @@
                 <div class="flex items-center">
                     <img
                         class="hidden h-16 w-16 rounded-full sm:block border-4 border-gray-300"
-                        src="{{ $user->gravatar }}"
+                        src="{{ $user->avatar_url }}"
                         alt="Avatar"
                     />
                     <div>
                         <div class="flex items-center">
                             <img
                                 class="h-16 w-16 rounded-full sm:hidden border-4 border-gray-30"
-                                src="{{$user->gravatar}}"
+                                src="{{$user->avatar_url}}"
                                 alt="Avatar"
                             />
                             <div class="ml-5 flex flex-col">

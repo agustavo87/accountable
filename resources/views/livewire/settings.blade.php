@@ -14,7 +14,6 @@
                 </div>
                 <div class="mt-5 md:col-span-2 md:mt-0">
                     <form wire:submit.prevent="save">
-                    {{-- <form wire:submit.prevent="create"> --}}
                         <div class="shadow sm:overflow-hidden sm:rounded-md">
                             <div class="space-y-6 bg-white px-4 py-5 sm:p-6">
                                 <div class="flex flex-col items-stretch sm:flex-row gap-10 sm:gap-5 mb-3">
@@ -57,12 +56,23 @@
                                         <div class="flex flex-col gap-2 justify-start items-center">
                                             <img
                                                 class="h-16 w-16 rounded-full border-4 border-gray-30"
-                                                src="{{$user->gravatar}}"
+                                                src="{{$avatarUpload ? $avatarUpload->temporaryUrl() : $user->avatar_url }}"
                                                 alt="Avatar"
                                             />
-                                            <button type="button" class="link font-semibold text-xs">
-                                                Change Avatar
-                                            </button>
+                                            <div class="flex gap-2 items-center justify-center">
+                                                <label for="avatar" class="link font-semibold text-xs cursor-pointer">Change Avatar</label>
+                                                @if($avatarUpload)
+                                                    <button 
+                                                        wire:click="saveAvatar" 
+                                                        type="button" 
+                                                        class="btn-rounded"
+                                                    >
+                                                        <x-icons.check class="h-5 w-5" />
+                                                    </button>
+                                                @endif
+                                            </div>
+                                            <input class="sr-only" wire:model="avatarUpload" type="file" name="avatar" id="avatar">
+                                            
                                         </div>
                                         <x-tertiary-button x-on:click="$dispatch('change-password')" type="button" class="bg-white mt-2">
                                             Change Password

@@ -6,6 +6,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
+use Illuminate\Support\Facades\Storage;
 use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
@@ -57,9 +58,11 @@ class User extends Authenticatable
         return $this->hasMany(Operation::class);
     }
 
-    public function getGravatarAttribute()
+    public function getAvatarUrlAttribute()
     {
-        return $this->getGravatar($this->email, d:'identicon');
+        return $this->avatar 
+            ? Storage::disk('avatars')->url($this->avatar) 
+            : $this->getGravatar($this->email, d:'identicon');
     }
 
     /**

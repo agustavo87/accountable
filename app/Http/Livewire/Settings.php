@@ -6,12 +6,17 @@ use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Validation\Rule;
 use Livewire\Component;
+use Livewire\WithFileUploads;
 
 class Settings extends Component
 {
+    use WithFileUploads;
+
     public User $user;
 
     public $modifying = false;
+
+    public $avatarUpload = null;
 
     protected function rules()
     {
@@ -22,6 +27,7 @@ class Settings extends Component
                 'email',
                 Rule::unique('users', 'email')->ignore($this->user->id)
             ],
+            'avatarUpload' => 'nullable|sometimes|image|max:1000',
         ];
     }
 
@@ -52,6 +58,20 @@ class Settings extends Component
     public function getUser()
     {
         $this->user = Auth::user();
+    }
+
+    public function updatedAvatarUpload()
+    {
+        $this->validateOnly('upload');
+    }
+
+    public function saveAvatar()
+    {
+        $filename = $this->avatarUpload->store('/', 'avatars');
+        $this->user->avatar = $filename;
+        $this->user->save();
+        $this->emit('profile-updated');
+        $this->avatarUpload = null;
     }
 
     public function save()

@@ -22,7 +22,7 @@
         >
             <img
                 class="h-8 w-8 rounded-full"
-                src="{{$user->gravatar}}"
+                src="{{$user->avatar_url}}"
                 alt=""
             />
             <span class="ml-3 hidden text-sm font-medium text-gray-500 lg:block">

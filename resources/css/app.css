@@ -137,15 +137,19 @@ input.sin-apariencia {
     }
 
     .btn-primary {
-        @apply shadow-sm border-transparent bg-deep-light text-white hover:bg-deep active:bg-deep-dark focus:ring-deep-white-3 focus:ring-2;
+        @apply shadow-sm border-transparent bg-deep-light text-white hover:bg-deep active:bg-deep-dark focus:ring-deep-white-2 focus:ring-offset-1 focus:ring-2;
     }
 
     .btn-secondary {
-        @apply bg-deep-white-2 border-deep-white-2  text-deep hover:bg-deep-white hover:text-deep-dark focus:ring-deep-white-2;
+        @apply bg-deep-white-2 border-deep-white-2  text-deep hover:bg-deep-white hover:text-deep-dark focus:ring-deep-white-2 focus:ring-offset-1;
     }
 
     .btn-tertiary {
-        @apply shadow-sm border-gray-300 bg-gray-50 text-deep hover:bg-deep-white hover:border-deep-light hover:text-deep-light focus:ring-deep-white-3 focus:ring-2;
+        @apply shadow-sm border-gray-300 bg-gray-50 text-deep hover:bg-deep-white hover:border-deep-light hover:text-deep-light focus:ring-deep-white-2 focus:ring-offset-1 focus:ring-2;
+    }
+
+    .btn-rounded {
+        @apply border border-gray-300 focus:ring-2 focus:ring-deep-white-2 focus:ring-offset-1 hover:bg-deep-light hover:border-deep-light hover:text-white mb-0.5 p-0.5 rounded-full shadow text-deep-light transition;
     }
 
     .link {
