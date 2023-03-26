@@ -43,7 +43,6 @@ class Create extends Component
         }
     }
 
-
     public function create()
     {
         $account = new Account($this->validate()['account']);
