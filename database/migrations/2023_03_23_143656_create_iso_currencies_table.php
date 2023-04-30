@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('iso_currencies', function (Blueprint $table) {
 
             /*
-             * We need an id here becouse there are an entry for each
+             * We need an id here becouse there is an entry for each
              * Country - Currency relationships. As, for example
              * URUGUAY have several currencies, and EUR (Euro) have
              * several countries.

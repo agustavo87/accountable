@@ -57,22 +57,7 @@
                                 x-on:click="open = false"
                             >
                                 <span class="sr-only">Close sidebar</span>
-                                {{-- Heroicon name: outline/x-mark" --}}
-                                <svg
-                                    class="h-6 w-6 text-white"
-                                    xmlns="http://www.w3.org/2000/svg"
-                                    fill="none"
-                                    viewBox="0 0 24 24"
-                                    stroke-width="1.5"
-                                    stroke="currentColor"
-                                    aria-hidden="true"
-                                >
-                                    <path
-                                        stroke-linecap="round"
-                                        stroke-linejoin="round"
-                                        d="M6 18L18 6M6 6l12 12"
-                                    ></path>
-                                </svg>
+                                <x-icons.x-mark class="h-6 w-6 text-white" />
                             </button>
                         </div>
     
@@ -91,30 +76,6 @@
                                 <x-icons.cog-outline class="mr-4 h-6 w-6 text-turquoise" />
                                 Settings
                             </x-side-bar.button>
-                            {{-- <div class="px-2">
-                                <a
-                                    href="#"
-                                    class="group flex items-center rounded-md px-2 py-2 text-base font-medium text-white text-opacity-80 hover:bg-deep-dark hover:bg-opacity-30 hover:text-opacity-100"
-                                >
-                                    {{-- Heroicon name: outline/cog -- }}
-                                    <svg
-                                        class="mr-4 h-6 w-6 text-turquoise"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        fill="none"
-                                        viewBox="0 0 24 24"
-                                        stroke-width="1.5"
-                                        stroke="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            stroke-linecap="round"
-                                            stroke-linejoin="round"
-                                            d="M4.5 12a7.5 7.5 0 0015 0m-15 0a7.5 7.5 0 1115 0m-15 0H3m16.5 0H21m-1.5 0H12m-8.457 3.077l1.41-.513m14.095-5.13l1.41-.513M5.106 17.785l1.15-.964m11.49-9.642l1.149-.964M7.501 19.795l.75-1.3m7.5-12.99l.75-1.3m-6.063 16.658l.26-1.477m2.605-14.772l.26-1.477m0 17.726l-.26-1.477M10.698 4.614l-.26-1.477M16.5 19.794l-.75-1.299M7.5 4.205L12 12m6.894 5.785l-1.149-.964M6.256 7.178l-1.15-.964m15.352 8.864l-1.41-.513M4.954 9.435l-1.41-.514M12.002 12l-3.75 6.495"
-                                        ></path>
-                                    </svg>
-                                    Settings
-                                </a>
-                            </div> --}}
                         </nav>
                     </div>
     
@@ -157,21 +118,7 @@
                     >
                         <span class="sr-only">Open sidebar</span>
                         {{-- Heroicon name: outline/bars-3-center-left --}}
-                        <svg
-                            class="h-6 w-6"
-                            xmlns="http://www.w3.org/2000/svg"
-                            fill="none"
-                            viewBox="0 0 24 24"
-                            stroke-width="1.5"
-                            stroke="currentColor"
-                            aria-hidden="true"
-                        >
-                            <path
-                                stroke-linecap="round"
-                                stroke-linejoin="round"
-                                d="M3.75 6.75h16.5M3.75 12H12m-8.25 5.25h16.5"
-                            ></path>
-                        </svg>
+                        <x-icons.bars-3 class="h-6 w-6" />
                     </button>
                     <!-- Search bar -->
                     <div
@@ -187,7 +134,6 @@
                         @endif
                         
                         <div class="ml-4 flex items-center md:ml-6">
-                                
                             <livewire:user.dropdown :user="$user" />
                         </div>
                     </div>

@@ -87,6 +87,13 @@ services:
             - '/dev/shm:/dev/shm'
         networks:
             - sail
+    documentation:
+        image: 'lipanski/docker-static-website:latest'
+        ports:
+            - '${DOCS_PORT:-3000}:3000'
+        volumes:
+            - './docs/build:/home/static'
+        command: ["/busybox", "httpd", "-f", "-v", "-p", "3000"]
 networks:
     sail:
         driver: bridge

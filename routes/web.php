@@ -17,6 +17,7 @@ use App\Http\Livewire\User\{
     Login
 };
 use Illuminate\Support\Facades\Route;
+use Tests\Feature\IsoTest;
 
 /*
 |--------------------------------------------------------------------------
@@ -45,4 +46,8 @@ Route::middleware(['auth'])->group(function () {
     Route::get('/operation/create', OperationCreate::class)->name('operation.create');
     Route::get('/category/create', CategoryCreate::class)->name('category.create');
     Route::get('/settings', Settings::class)->name('settings');
+});
+
+Route::get('/codes', function() {
+    (new IsoTest())->test_countries_hydration();
 });
