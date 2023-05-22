@@ -2,7 +2,7 @@
 
 @error($for)
 <p 
-    {{ $attributes->merge(['class' => 'text-xs text-red-500'])}}
+    {{ $attributes->merge(['class' => 'input-error'])}}
     @if($nonSpecific) 
         :class="dirty && 'hidden'"
     @else

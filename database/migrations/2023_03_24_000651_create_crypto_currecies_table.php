@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('crypto_currecies', function (Blueprint $table) {
+        Schema::create('crypto_currencies', function (Blueprint $table) {
             $table->string('code');
             $table->string('name');
             

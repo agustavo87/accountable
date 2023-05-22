@@ -2,7 +2,7 @@
 
 namespace Database\Seeders;
 
-use App\Models\CryptoCurrecy;
+use App\Models\CryptoCurrency;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -16,7 +16,7 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             ISOCurrencySeeder::class,
-            CryptoCurrecySeeder::class,
+            CryptoCurrencySeeder::class,
             CountrySeeder::class,
             CountryCurrencySeeder::class,
         ]);

@@ -1,0 +1,47 @@
+@layer components {
+    .money-container {
+        min-width: 15rem;
+        position: relative;
+    }
+
+    .money-container .money-currency-input-group {
+        @apply flex relative rounded-md shadow-sm;
+    }
+    .money-container .currency-input::placeholder {
+        @apply opacity-25
+    }
+
+    .money-container .amount-input {
+        @apply pl-7 pr-12 font-mono;
+    }
+
+    .money-container .amount-input:focus ~ .money-sign {
+        @apply text-deep-white-3
+    }
+    .money-container .amount-input:focus ~ div .currency-input {
+        @apply text-deep
+    }
+
+    .money-container .money-currency-input-group .currency-input-container {
+        @apply absolute inset-y-0 right-0 flex items-center;
+    }
+
+    .money-container .money-currency-input-group .money-sign {
+        @apply pointer-events-none absolute inset-y-0 left-0 flex  items-center pl-3;
+    }
+    .money-container .money-currency-input-group .money-sign span {
+        @apply mt-0.5;
+    }
+
+    .money-container .money-currency-input-group .currency-input-container .currency-input {
+        @apply  mt-0 mr-3 w-20 font-semibold text-gray-700 text-right focus:outline-none shadow-none bg-transparent py-0;
+    }
+
+    .money-container .money-currency-input-group .currency-input-container .currency-input.errored::placeholder {
+        @apply  text-red-500;
+    }
+
+    .money-container .amount-input:focus ~ div .currency-input::placeholder {
+        @apply text-deep opacity-25
+    }
+}

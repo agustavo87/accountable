@@ -2,12 +2,12 @@
 
 namespace Database\Seeders;
 
-use App\Models\CryptoCurrecy;
+use App\Models\CryptoCurrency;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\File;
 
-class CryptoCurrecySeeder extends Seeder
+class CryptoCurrencySeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -18,7 +18,7 @@ class CryptoCurrecySeeder extends Seeder
     {
         $data = json_decode(File::get(resource_path('data/cryptocurrencies.json')), JSON_OBJECT_AS_ARRAY);
         foreach ($data as $code => $name) {
-            CryptoCurrecy::create([
+            CryptoCurrency::create([
                 'code' => $code,
                 'name' => $name
             ]);

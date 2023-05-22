@@ -1,0 +1,65 @@
+
+@import './money_currency_group_input.css';
+
+@layer components {
+
+    .btn {
+        @apply inline-flex items-center rounded-sm border px-4 py-2 text-sm font-medium transition focus:outline-none focus:ring-2;
+    }
+
+    .btn-primary {
+        @apply shadow-sm border-transparent bg-deep-light text-white hover:bg-deep active:bg-deep-dark focus:ring-deep-white-2 focus:ring-offset-1 focus:ring-2;
+    }
+
+    .btn-secondary {
+        @apply bg-deep-white-2 border-deep-white-2  text-deep hover:bg-deep-white hover:text-deep-dark focus:ring-deep-white-2 focus:ring-offset-1;
+    }
+
+    .btn-tertiary {
+        @apply shadow-sm border-gray-300 bg-gray-50 text-deep hover:bg-deep-white hover:border-deep-light hover:text-deep-light focus:ring-deep-white-2 focus:ring-offset-1 focus:ring-2;
+    }
+
+    .btn-rounded {
+        @apply border border-gray-300 focus:ring-2 focus:ring-deep-white-2 focus:ring-offset-1 hover:bg-deep-light hover:border-deep-light hover:text-white mb-0.5 p-0.5 rounded-full shadow text-deep-light transition;
+    }
+
+    .link {
+        @apply text-deep hover:text-deep-light-2 transition;
+    }
+
+    .select {
+        @apply mt-1 block w-full border-0 border-b border-gray-300 rounded-sm bg-gray-50 py-2 px-3 focus:text-deep-dark shadow-sm focus:bg-deep-white focus:ring-0 transition focus:border-turquoise focus:outline-none sm:text-sm
+    }
+
+    .input-error {
+        @apply text-xs text-red-500;
+    }
+    .text-input {
+        @apply mt-1 block w-full border-0 border-b rounded-sm bg-gray-50 border-gray-300 shadow-sm focus:bg-deep-white focus:text-deep-dark focus:placeholder-deep-white-3 transition focus:border-turquoise placeholder-gray-400  focus:ring-0 sm:text-sm;
+    }
+
+    .money-container {
+        min-width: 15rem;
+    }
+
+    .money-container .money-input:focus ~ .money-sign {
+        @apply text-deep-white-3
+    }
+    .money-container .money-input:focus ~ div .currency-input {
+        @apply text-deep
+    }
+
+
+    .modifyable-content-input input:disabled {
+        @apply bg-transparent shadow-none border-transparent font-semibold text-gray-600
+    }
+
+    .label {
+        @apply block text-sm font-medium text-gray-700
+    }
+
+    neutral {
+        display: contents;
+    }
+    
+}

@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Logout;
+use App\Http\Controllers\TestViewController;
 use App\Http\Livewire\Account\{
     Create as AccountCreate,
     Index as AccountIndex
@@ -16,6 +17,9 @@ use App\Http\Livewire\User\{
     Create as UserCreate,
     Login
 };
+use App\Models\CryptoCurrency;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Route;
 use Tests\Feature\IsoTest;
 
@@ -50,4 +54,12 @@ Route::middleware(['auth'])->group(function () {
 
 Route::get('/codes', function() {
     (new IsoTest())->test_countries_hydration();
+});
+
+Route::middleware('env:local')->group(function () {
+    Route::get('test/view/{view}', TestViewController::class);
+});
+
+Route::get('currencies', function () {
+    return response()->json(CryptoCurrency::all());
 });
