@@ -49,7 +49,7 @@ export default (opts) => ({
             || code.includes('Arrow')
         ) {
             this.$nextTick(() => {
-                input.value = nf.format(this.removeThousands(input.value))
+                input.value = input.value.length ? nf.format(this.removeThousands(input.value)) : ''
             })
             return
         }
