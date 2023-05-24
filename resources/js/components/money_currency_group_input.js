@@ -47,18 +47,19 @@ export default (opts) => ({
         return this.$refs.amount
     },
     inputAmount(event) {
+        
         if (this.isFunctionalKey(event)) {
             this.$nextTick(() => {
                 this.amountInput.value = this.amountInput.value.length ? this.nf.format(this.removeThousands(this.amountInput.value)) : ''
             })
             return
         }
+        
         event.preventDefault()
-        if(
-               /\d/.test(event.key)
-            || event.key == this.decimal
-        ) {
-            const onAmount = this.onAmount(event)
+
+        const onAmount = this.onAmount(event)
+        
+        if(this.isNumberOrDecimal(onAmount)) {
             // Only one decimal separator
             if(onAmount.key == this.decimal && onAmount.value.includes(this.decimal)) return
 
@@ -68,6 +69,9 @@ export default (opts) => ({
                 onAmount.input.value = onAmount.compound
             }
         }
+    },
+    isNumberOrDecimal(onAmount) {
+        return /\d/.test(onAmount.key) || onAmount.key == this.decimal
     },
     proceedToFormat(onAmount) {
         if (!onAmount.firstSegment.includes(this.decimal)) return true
@@ -87,11 +91,12 @@ export default (opts) => ({
     },
     reformatInput(onAmount) {
         this.amount =  this.nf.format(this.removeThousands(onAmount.compound)) + 
-        // Chequea si el ultimo caracter es un punto, para agregarlo luego que es removido por el formato.
-        (this.finalDecimal(onAmount.compound) ? this.decimal : '') 
-        this.amountInput.value = this.amount
+            // Chequea si el ultimo caracter es un punto, para agregarlo luego que es removido por el formato.
+            (this.finalDecimal(onAmount.compound) ? this.decimal : '') 
 
-        this.amountInput.selectionStart = this.amountInput.selectionEnd = this.calculateCurosrPosition(onAmount)
+        onAmount.input.value = this.amount
+
+        onAmount.input.selectionStart = onAmount.input.selectionEnd = this.calculateCurosrPosition(onAmount)
     },
     formatInput() {
         this.amountInput.value = this.nf.format(this.removeThousands(this.amountInput.value))
