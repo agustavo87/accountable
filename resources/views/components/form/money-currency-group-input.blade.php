@@ -36,6 +36,7 @@
                     'autocomplete' => "off",
                 ])}}
                 x-on:keydown="inputAmount($event)"
+                x-on:blur="formatInput"
                 x-ref="amount"
             >
             <div class="currency-input-container">

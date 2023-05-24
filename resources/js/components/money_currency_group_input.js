@@ -36,47 +36,69 @@ export default (opts) => ({
             }
         })
     },
-    inputAmount(event) {
-        // Allow only digits and comma input
-        // and other auxiliary keys.
-        const {key,code} = event
-        const input = this.$refs.amount;
-        const cursorPos = input.selectionStart
-        const nf = new Intl.NumberFormat();
-        
-        if (   code.includes('Enter')
+    nf: new Intl.NumberFormat(),
+    isFunctionalKey(event) {
+        const code = event.code
+        return code.includes('Enter')
             || code.includes('Backspace')
             || code.includes('Arrow')
-        ) {
+    },
+    get amountInput() {
+        return this.$refs.amount
+    },
+    inputAmount(event) {
+        if (this.isFunctionalKey(event)) {
             this.$nextTick(() => {
-                input.value = input.value.length ? nf.format(this.removeThousands(input.value)) : ''
+                this.amountInput.value = this.amountInput.value.length ? this.nf.format(this.removeThousands(this.amountInput.value)) : ''
             })
             return
         }
         event.preventDefault()
         if(
-               /\d/.test(key)
-            || key == this.decimal
+               /\d/.test(event.key)
+            || event.key == this.decimal
         ) {
-            let value = input.value
-            let lastSegment = value.slice(cursorPos)
-            let firstSegment = value.slice(0,cursorPos)
+            const onAmount = this.onAmount(event)
             // Only one decimal separator
-            if(key == this.decimal && value.includes(this.decimal)) return
+            if(onAmount.key == this.decimal && onAmount.value.includes(this.decimal)) return
 
-            let composite = firstSegment + key + lastSegment
-
-            this.amount =  nf.format(this.removeThousands(composite)) + 
-                // Chequea si el ultimo caracter es un punto, para agregarlo luego que es removido por el formato.
-                (this.finalDecimal(composite) ? this.decimal : '') 
-            input.value = this.amount
-
-            input.selectionStart = input.selectionEnd = this.calculateCurosrPosition(firstSegment, composite)
+            if(this.proceedToFormat(onAmount)) {
+                this.reformatInput(onAmount)
+            } else {
+                onAmount.input.value = onAmount.compound
+            }
         }
     },
-    calculateCurosrPosition(firstSegment, composite) {
-        let intialPosition = this.positionWithoutThousands(firstSegment.length, firstSegment) + 1
-        let newFirstSegment = this.removeThousands(composite).slice(0, intialPosition + 1)
+    proceedToFormat(onAmount) {
+        if (!onAmount.firstSegment.includes(this.decimal)) return true
+        return false
+    },
+    onAmount(event) {
+        const result =  {
+            value: this.amountInput.value,
+            cursor: this.amountInput.selectionStart,
+            input:this.amountInput,
+            key: event.key
+        }
+        result.lastSegment = result.value.slice(result.cursor)
+        result.firstSegment = result.value.slice(0,result.cursor)
+        result.compound = result.firstSegment + result.key + result.lastSegment
+        return result
+    },
+    reformatInput(onAmount) {
+        this.amount =  this.nf.format(this.removeThousands(onAmount.compound)) + 
+        // Chequea si el ultimo caracter es un punto, para agregarlo luego que es removido por el formato.
+        (this.finalDecimal(onAmount.compound) ? this.decimal : '') 
+        this.amountInput.value = this.amount
+
+        this.amountInput.selectionStart = this.amountInput.selectionEnd = this.calculateCurosrPosition(onAmount)
+    },
+    formatInput() {
+        this.amountInput.value = this.nf.format(this.removeThousands(this.amountInput.value))
+    },
+    calculateCurosrPosition(onAmount) {
+        let intialPosition = this.positionWithoutThousands(onAmount.firstSegment.length, onAmount.firstSegment) + 1
+        let newFirstSegment = this.removeThousands(onAmount.compound).slice(0, intialPosition + 1)
         return intialPosition + Math.floor((newFirstSegment.split(this.decimal)[0].length - 1) / 3)
     },
     removeThousands(segment) {
