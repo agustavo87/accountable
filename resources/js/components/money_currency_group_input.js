@@ -43,14 +43,13 @@ export default (opts) => ({
         const input = this.$refs.amount;
         const cursorPos = input.selectionStart
         const nf = new Intl.NumberFormat();
-
         
         if (   code.includes('Enter')
             || code.includes('Backspace')
             || code.includes('Arrow')
-            ) {
+        ) {
             this.$nextTick(() => {
-                input.value = nf.format(input.value.replaceAll(this.thousands, ''))
+                input.value = nf.format(this.removeThousands(input.value))
             })
             return
         }
@@ -59,7 +58,6 @@ export default (opts) => ({
                /\d/.test(key)
             || key == this.decimal
         ) {
-            
             let value = input.value
             let lastSegment = value.slice(cursorPos)
             let firstSegment = value.slice(0,cursorPos)
