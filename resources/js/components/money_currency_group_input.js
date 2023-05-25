@@ -37,8 +37,8 @@ export default (opts) => ({
         })
     },
     nf: new Intl.NumberFormat(),
-    isFunctionalKey(event) {
-        const code = event.code
+    isFunctionalKey(onAmount) {
+        const code = onAmount.code
         return code.includes('Enter')
             || code.includes('Backspace')
             || code.includes('Arrow')
@@ -46,47 +46,68 @@ export default (opts) => ({
     get amountInput() {
         return this.$refs.amount
     },
+    suspendBackspace(onAmount) {
+        return onAmount.code.includes('Backspace') && onAmount.firstSegment.at(-1) == this.thousands
+    },
     inputAmount(event) {
-        
-        if (this.isFunctionalKey(event)) {
-            this.$nextTick(() => {
-                this.amountInput.value = this.amountInput.value.length ? this.nf.format(this.removeThousands(this.amountInput.value)) : ''
-            })
+
+        const onAmount = this.onAmount(event)
+
+        if (this.isFunctionalKey(onAmount)) {
+            if(this.suspendBackspace(onAmount)) {
+                event.preventDefault()
+                onAmount.setCursor(onAmount.cursor - 1)
+            } else {
+                this.$nextTick(() => {
+                    const _onAmount = this.onAmount(event)
+                    _onAmount.input.value = _onAmount.value.length ? this.nf.format(this.removeThousands(_onAmount.value)) : ''
+                    if(_onAmount.code.includes('Backspace')) {
+                        _onAmount.setCursor(this.calculateCursorPositionAfterBackspace(_onAmount))
+                    }
+                })
+            }
             return
         }
         
         event.preventDefault()
 
-        const onAmount = this.onAmount(event)
-        
         if(this.isNumberOrDecimal(onAmount)) {
-            // Only one decimal separator
-            if(onAmount.key == this.decimal && onAmount.value.includes(this.decimal)) return
+            
+            if(this.decimalAgain(onAmount)) return
 
-            if(this.proceedToFormat(onAmount)) {
-                this.reformatInput(onAmount)
-            } else {
+            if(this.afterDecimal(onAmount)) {
                 onAmount.input.value = onAmount.compound
+                onAmount.setCursor(onAmount.cursor + 1)
+                return
             }
+            this.reformatInput(onAmount)
         }
+    },
+    decimalAgain(onAmount) {
+        return onAmount.key == this.decimal && onAmount.value.includes(this.decimal)
     },
     isNumberOrDecimal(onAmount) {
         return /\d/.test(onAmount.key) || onAmount.key == this.decimal
     },
-    proceedToFormat(onAmount) {
-        if (!onAmount.firstSegment.includes(this.decimal)) return true
-        return false
+    afterDecimal(onAmount) {
+        return onAmount.firstSegment.includes(this.decimal)
     },
     onAmount(event) {
         const result =  {
+            input:this.amountInput,
             value: this.amountInput.value,
             cursor: this.amountInput.selectionStart,
-            input:this.amountInput,
-            key: event.key
+            setCursor(position) {
+                this.input.selectionStart = this.input.selectionEnd = position
+            }
         }
         result.lastSegment = result.value.slice(result.cursor)
         result.firstSegment = result.value.slice(0,result.cursor)
-        result.compound = result.firstSegment + result.key + result.lastSegment
+        if(event) {
+            result.key = event.key
+            result.code = event.code
+            result.compound = result.firstSegment + result.key + result.lastSegment
+        }
         return result
     },
     reformatInput(onAmount) {
@@ -106,6 +127,9 @@ export default (opts) => ({
         let newFirstSegment = this.removeThousands(onAmount.compound).slice(0, intialPosition + 1)
         return intialPosition + Math.floor((newFirstSegment.split(this.decimal)[0].length - 1) / 3)
     },
+    calculateCursorPositionAfterBackspace(onAmount) {
+        return Math.max(0, onAmount.cursor + (this.thousandsSignsIn(onAmount.input.value) - this.thousandsSignsIn(onAmount.value)))
+    },
     removeThousands(segment) {
         return segment.replaceAll(this.thousands, '')
     },
@@ -117,6 +141,6 @@ export default (opts) => ({
          return segmentThousands ? segmentThousands.length : 0
     },
     finalDecimal(segment) {
-        return segment.charAt(segment.length - 1) == this.decimal
+        return segment.at(- 1) == this.decimal
     },
 })
