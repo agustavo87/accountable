@@ -51,7 +51,7 @@ export default (opts) => ({
     },
     inputAmount(event) {
 
-        const onAmount = this.onAmount(event)
+        const onAmount = this.improveInput(this.amountInput, event)
 
         if (this.isFunctionalKey(onAmount)) {
             if(this.suspendBackspace(onAmount)) {
@@ -59,7 +59,7 @@ export default (opts) => ({
                 onAmount.setCursor(onAmount.cursor - 1)
             } else {
                 this.$nextTick(() => {
-                    const _onAmount = this.onAmount(event)
+                    const _onAmount = this.improveInput(this.amountInput, event)
                     _onAmount.input.value = _onAmount.value.length ? this.nf.format(this.removeThousands(_onAmount.value)) : ''
                     if(_onAmount.code.includes('Backspace')) {
                         _onAmount.setCursor(this.calculateCursorPositionAfterBackspace(_onAmount))
@@ -92,11 +92,11 @@ export default (opts) => ({
     afterDecimal(onAmount) {
         return onAmount.firstSegment.includes(this.decimal)
     },
-    onAmount(event) {
+    improveInput(input, event) {
         const result =  {
-            input:this.amountInput,
-            value: this.amountInput.value,
-            cursor: this.amountInput.selectionStart,
+            input:input,
+            value: input.value,
+            cursor: input.selectionStart,
             setCursor(position) {
                 this.input.selectionStart = this.input.selectionEnd = position
             }
