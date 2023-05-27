@@ -7,6 +7,16 @@ export default (opts) => ({
     errors: opts.errors,
     amount: opts.amount,
     lang: opts.lang,
+    nf: new Intl.NumberFormat(opts.lang),
+    get amountInput() {
+        return this.$refs.amount
+    },
+    get hasCurrencyError() {
+        return this.errors.hasOwnProperty('currency')
+    },
+    get showCurrencies() {
+        return !this._hideCurrencies && (this.onCurrencyInput || this.onCurrenciesList);
+    },    
     onCurrencyInput:false,
     onCurrenciesList:false,
     _hideCurrencies: false,
@@ -19,12 +29,6 @@ export default (opts) => ({
     setCurrency: function(code) {
         this._currency = code
         this.hideCurrencies()
-    },
-    get hasCurrencyError() {
-        return this.errors.hasOwnProperty('currency')
-    },
-    get showCurrencies() {
-        return !this._hideCurrencies && (this.onCurrencyInput || this.onCurrenciesList);
     },
     init: function () {
         this.setupLocale()
@@ -48,19 +52,6 @@ export default (opts) => ({
         this.thousands = ','
         this.decimalRegExp = /\./g
         this.thousandsRegExp = /,/g
-    },
-    nf: new Intl.NumberFormat(opts.lang),
-    aFunctionalKeyIsPressed(onAmount) {
-        const code = onAmount.code
-        return code.includes('Enter')
-            || code.includes('Backspace')
-            || code.includes('Arrow')
-    },
-    get amountInput() {
-        return this.$refs.amount
-    },
-    isErasingAThousand(onAmount) {
-        return onAmount.code.includes('Backspace') && onAmount.firstSegment.at(-1) == this.thousands
     },
     inputAmount(event) {
 
@@ -100,11 +91,20 @@ export default (opts) => ({
             this.reformatInput(onAmount)
         }
     },
+    aFunctionalKeyIsPressed(onAmount) {
+        const code = onAmount.code
+        return code.includes('Enter')
+            || code.includes('Backspace')
+            || code.includes('Arrow')
+    },
+    isErasingAThousand(onAmount) {
+        return onAmount.code.includes('Backspace') && onAmount.firstSegment.at(-1) == this.thousands
+    },
     aDecimalIsPressedAgain(onAmount) {
         return onAmount.key == this.decimal && onAmount.value.includes(this.decimal)
     },
     aNumberOrDecimalIsPressed(onAmount) {
-        return /\d/.test(onAmount.key) || onAmount.key == this.decimal
+        return /^\d$/.test(onAmount.key) || onAmount.key == this.decimal
     },
     cursorIsOnFractionSide(onAmount) {
         return onAmount.firstSegment.includes(this.decimal)
