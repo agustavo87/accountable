@@ -1,12 +1,6 @@
 @props([
-    'decimal' => '.',
-    'thousands' => ','
+    'lang' => 'en',
 ])
-@php
-    if ($decimal == $thousands) {
-        throw new Exception("Decimal '$decimal' and thousands '$thousands' can not be the same.", 1);
-    }
-@endphp
 <div
     x-data="MoneyCurrencyGroupInput({
         amount: @entangle($amount->attributes->wire('model')),
@@ -14,8 +8,7 @@
         currencyOptions: @entangle($currency->attributes->wire('options')),
         currencyHint: @entangle($currency->attributes->wire('hint')),
         errors: @entangle($attributes->wire('errors')),
-        decimal: '{{ $decimal }}',
-        thousands: '{{ $thousands }}',
+        lang: '{{$lang}}',
     })"
     {{ $attributes }}
 >

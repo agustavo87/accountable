@@ -8,8 +8,7 @@
         </li>
     </ul>
     <x-form.money-currency-group-input 
-        decimal="."
-        thousands=","
+        lang="en"
         wire:errors="errors" 
     >
         <x-slot:amount
