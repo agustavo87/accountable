@@ -50,7 +50,7 @@ export default (opts) => ({
         this.thousandsRegExp = /,/g
     },
     nf: new Intl.NumberFormat(opts.lang),
-    isFunctionalKey(onAmount) {
+    aFunctionalKeyIsPressed(onAmount) {
         const code = onAmount.code
         return code.includes('Enter')
             || code.includes('Backspace')
@@ -59,15 +59,15 @@ export default (opts) => ({
     get amountInput() {
         return this.$refs.amount
     },
-    erasingAThousand(onAmount) {
+    isErasingAThousand(onAmount) {
         return onAmount.code.includes('Backspace') && onAmount.firstSegment.at(-1) == this.thousands
     },
     inputAmount(event) {
 
         const onAmount = this.improveInput(this.amountInput, event)
 
-        if (this.isFunctionalKey(onAmount)) {
-            if(this.erasingAThousand(onAmount)) {
+        if (this.aFunctionalKeyIsPressed(onAmount)) {
+            if(this.isErasingAThousand(onAmount)) {
                 event.preventDefault()
                 onAmount.cursor--
             } else {
@@ -84,15 +84,15 @@ export default (opts) => ({
         
         event.preventDefault()
 
-        if(this.isNumberOrDecimal(onAmount)) {
+        if(this.aNumberOrDecimalIsPressed(onAmount)) {
             
-            if(this.decimalAgain(onAmount)) return
+            if(this.aDecimalIsPressedAgain(onAmount)) return
             if(onAmount.key == this.decimal) {
                 onAmount.input.value = this.format(onAmount.firstSegment) + onAmount.key + this.removeThousands(onAmount.lastSegment)
                 onAmount.cursor++
                 return
             }
-            if(this.afterDecimal(onAmount)) {
+            if(this.cursorIsOnFractionSide(onAmount)) {
                 onAmount.input.value = onAmount.compound
                 onAmount.cursor++
                 return
@@ -100,13 +100,13 @@ export default (opts) => ({
             this.reformatInput(onAmount)
         }
     },
-    decimalAgain(onAmount) {
+    aDecimalIsPressedAgain(onAmount) {
         return onAmount.key == this.decimal && onAmount.value.includes(this.decimal)
     },
-    isNumberOrDecimal(onAmount) {
+    aNumberOrDecimalIsPressed(onAmount) {
         return /\d/.test(onAmount.key) || onAmount.key == this.decimal
     },
-    afterDecimal(onAmount) {
+    cursorIsOnFractionSide(onAmount) {
         return onAmount.firstSegment.includes(this.decimal)
     },
     improveInput(input, event) {
