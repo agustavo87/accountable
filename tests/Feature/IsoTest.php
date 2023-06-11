@@ -11,8 +11,8 @@ use Tests\TestCase;
 class IsoTest extends TestCase
 {
 
-    /** @test */
-    public function test_countries_hydration()
+    /** test */
+    public function countries_hydration()
     {
         $data = json_decode(File::get(resource_path('data/countries.json')), JSON_OBJECT_AS_ARRAY);
         dd($data[5]);
