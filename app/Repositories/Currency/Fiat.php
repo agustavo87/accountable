@@ -2,14 +2,23 @@
 
 namespace App\Repositories\Currency;
 
-use App\Values\BrickWrapperCurrency;
-use App\Values\CurrencyContract as Currency;
+use App\Values\{Currency, CurrencyType, WrappedBrickCurrency};
 use Brick\Money\Currency as BrickCurrency;
 
-class Fiat implements Contract
+class Fiat implements CurrencyRepository
 {
-    public function getByNumber(int $code): Currency|BrickWrapperCurrency
+    public function getByNumber(int $code): Currency|WrappedBrickCurrency
     {
-        return new BrickWrapperCurrency(BrickCurrency::of($code));
+        return new WrappedBrickCurrency(BrickCurrency::of($code));
+    }
+
+    public function get(string $code): Currency|WrappedBrickCurrency
+    {
+        return new WrappedBrickCurrency(BrickCurrency::of($code));
+    }
+
+    public function getType(): CurrencyType
+    {
+        return CurrencyType::Fiat;
     }
 }

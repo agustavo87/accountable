@@ -2,85 +2,37 @@
 
 namespace App\Values;
 
-use Brick\Money\Money as BrickMoney;
-use App\Values\CurrencyContract as Currency;
-use Brick\Money\AbstractMoney;
-use Brick\Money\RationalMoney;
-use Stringable;
+use App\Values\Currency;
 
-class Money implements Stringable
+interface Money
 {
-    protected BrickMoney|RationalMoney $money;
-    protected BrickWrapperCurrency $currency;
+    public function setFromMinor(string $amount, Currency $currency);
 
-    public function __construct(BrickMoney|RationalMoney|null $money = null, ?BrickWrapperCurrency $currency = null)
-    {
-        if($money) {
-            $this->currency = $currency ?? new BrickWrapperCurrency($money->getCurrency());
-            $this->money = $money;
-        }
-    }
+    public function getMinorAmount(): string;
 
-    public function setFromMinor(string $amount, Currency|BrickWrapperCurrency $currency)
-    {
-        if( is_a($currency, BrickWrapperCurrency::class) ) {
-            $brickCurrency = $currency->getWrapped();
-        } else {
-            $brickCurrency = BrickWrapperCurrency::getBrickCurrency($currency);
-        }
-        $this->money = BrickMoney::ofMinor($amount, $brickCurrency);
-        $this->currency = $currency;
-    }
+    public function getDecimalAmount(): string;
 
-    public function getMinorAmount(): string
-    {
-        return $this->money->getMinorAmount()->toBigInteger()->__toString();
-    }
+    public function getCurrencyNumber(): int;
 
-    public function getCurrencyNumber(): int
-    {
-        return $this->currency->getNumericCode();
-    }
+    public function getCurrencyType(): CurrencyType;
 
-    public function getCurrencyType(): CurrencyType
-    {
-        return $this->currency->getType();
-    }
+    public function equals(Money $money): bool;
 
-    public function equals(Money $money): bool
-    {
-        if($money->getCurrencyType() != $this->getCurrencyType()) {
-            return false;
-        }
-        return $this->money->isEqualTo($money->getWrapped());
-    }
+    public function getCurrency(): Currency;
 
-    public function getWrapped(): BrickMoney
-    {
-        return $this->money;
-    }
+    /**
+     * @throws \App\Exceptions\MathException
+     * @throws \App\Exceptions\MoneyException
+     */
+    public function plus(Money|string|int|float $amount, RoundingMode $rounding = RoundingMode::UNNECESSARY): Money;
 
-    public function getCurrency(): Currency|BrickWrapperCurrency
-    {
-        return $this->currency;
-    }
+    /**
+     * @throws \App\Exceptions\MathException
+     * @throws \App\Exceptions\MoneyException
+     */
+    public function minus(Money|string|int|float $amount, RoundingMode $rounding = RoundingMode::UNNECESSARY): Money;
 
-    public function __call($name, $arguments)
-    {
-        $arguments = array_map(
-            fn($arg) => $arg instanceof Money ? $arg->getWrapped() : $arg,
-            $arguments
-        );
-        // info($name, $arguments);
-        $result = $this->money->$name(...$arguments);
-        if($result instanceof AbstractMoney) {
-            return new static($result, $this->currency);
-        }
-        return $result;
-    }
+    public function split(int $parts): array;
 
-    public function __toString(): string
-    {
-        return $this->money->__toString();
-    }
+    public function allocate(...$proportions): array;
 }

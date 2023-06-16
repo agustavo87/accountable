@@ -3,9 +3,9 @@
 namespace App\Values;
 
 use Brick\Money\Currency as BrickCurrency;
-use App\Values\CurrencyContract as Currency;
+use App\Values\Currency;
 
-class BrickWrapperCurrency implements CurrencyContract
+class WrappedBrickCurrency implements Currency
 {
     protected BrickCurrency $brick;
 
@@ -57,5 +57,11 @@ class BrickWrapperCurrency implements CurrencyContract
     public function getType(): CurrencyType
     {
         return $this->type;
+    }
+
+    public function is(Currency $currency): bool
+    {
+        return $this->type == $currency->getType() && 
+               $this->getNumericCode() == $currency->getNumericCode();
     }
 }

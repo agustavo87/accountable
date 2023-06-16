@@ -2,7 +2,7 @@
 
 namespace App\Values;
 
-interface CurrencyContract
+interface Currency
 {
     public function getCurrencyCode(): string;
 
@@ -13,4 +13,6 @@ interface CurrencyContract
     public function getDefaultFractionDigits(): int;
 
     public function getType(): CurrencyType;
+
+    public function is(Currency $currency): bool;
 }
