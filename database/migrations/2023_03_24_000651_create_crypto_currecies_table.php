@@ -15,9 +15,12 @@ return new class extends Migration
     {
         Schema::create('crypto_currencies', function (Blueprint $table) {
             $table->string('code');
+            $table->bigInteger('numeric_code');
             $table->string('name');
-            
+            $table->tinyInteger('minor_units');
+
             $table->unique('code');
+            $table->unique('numeric_code');
         });
     }
 

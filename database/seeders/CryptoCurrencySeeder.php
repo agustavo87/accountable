@@ -16,11 +16,13 @@ class CryptoCurrencySeeder extends Seeder
      */
     public function run()
     {
-        $data = json_decode(File::get(resource_path('data/cryptocurrencies.json')), JSON_OBJECT_AS_ARRAY);
-        foreach ($data as $code => $name) {
+        $data = require resource_path('data/cryptos.php');
+        foreach ($data as $code => $crypto) {
             CryptoCurrency::create([
                 'code' => $code,
-                'name' => $name
+                'name' => $crypto['name'],
+                'numeric_code'=> $crypto['numericCode'],
+                'minor_units'=> $crypto['minorUnits'],
             ]);
         }
     }
