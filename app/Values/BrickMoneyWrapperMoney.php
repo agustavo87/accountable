@@ -20,6 +20,17 @@ class BrickMoneyWrapperMoney extends BrickMoneyWrapper implements Money
         $this->currency = $currency;
     }
 
+    public function setFromDecimal(string|int $amount, Currency|WrappedBrickCurrency $currency)
+    {
+        if($currency instanceof WrappedBrickCurrency) {
+            $brickCurrency = $currency->getWrapped();
+        } else {
+            $brickCurrency = WrappedBrickCurrency::getBrickCurrency($currency);
+        }
+        $this->money = BrickMoney::of($amount, $brickCurrency);
+        $this->currency = $currency;
+    }
+
     public function getMinorAmount(): string
     {
         return $this->money->getMinorAmount()->toBigInteger()->__toString();

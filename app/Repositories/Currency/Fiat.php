@@ -5,8 +5,10 @@ namespace App\Repositories\Currency;
 use App\Values\{Currency, CurrencyType, WrappedBrickCurrency};
 use Brick\Money\Currency as BrickCurrency;
 
-class Fiat implements CurrencyRepository
+class Fiat extends AbstractCurrencyRepository
 {
+    public const TYPE = CurrencyType::Crypto;
+
     public function getByNumber(int $code): Currency|WrappedBrickCurrency
     {
         return new WrappedBrickCurrency(BrickCurrency::of($code));
@@ -15,10 +17,5 @@ class Fiat implements CurrencyRepository
     public function get(string $code): Currency|WrappedBrickCurrency
     {
         return new WrappedBrickCurrency(BrickCurrency::of($code));
-    }
-
-    public function getType(): CurrencyType
-    {
-        return CurrencyType::Fiat;
     }
 }

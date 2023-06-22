@@ -7,12 +7,16 @@ use App\Models\User;
 use App\Models\AccountV2 as Account;
 use App\Support\Facades\Money;
 use App\Exceptions\{MathException, MoneyException};
-use App\Values\{BrickMoneyWrapper, BrickMoneyWrapperMoney, RoundingMode};
+use App\Models\CryptoCurrency;
+use App\Repositories\Currency\Crypto;
+use App\Values\{BrickMoneyWrapper, BrickMoneyWrapperMoney, CurrencyType, RoundingMode};
 use Brick\Math\RoundingMode as  BrickRoundingMode;
 use Brick\Math\Exception\RoundingNecessaryException;
 use Brick\Money\Exception\MoneyMismatchException;
 use Brick\Money\Context\{CashContext, CustomContext, AutoContext};
+use Database\Seeders\CryptoCurrencySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
+use Illuminate\Support\Facades\File;
 
 class MoneyTest extends TestCase
 {
@@ -289,4 +293,204 @@ class MoneyTest extends TestCase
         );
     }
 
+    protected function seedCryptos()
+    {
+        Crypto::put('BTC', 22, 'Bitcoin', 8);
+        Crypto::put('ETH', 23, 'Ethereum', 18);
+    }
+
+    /** @test */
+    public function crypto_currency_is_correctly_created_by_decimals()
+    {
+        $this->seedCryptos();
+
+        $Crypto = Money::from(CurrencyType::Crypto);
+
+        $someBTC = $Crypto->of('0.052', 'BTC');
+
+        $this->assertEquals("BTC 0.05200000", "{$someBTC}");
+    }
+
+    /**
+     * @test
+     * @todo Introduce DI on repos
+     */
+    public function big_crypto_with_satoshi_scale_can_be_created_and_saved_correctly()
+    {
+        $this->seedCryptos();
+
+        $user = User::factory()->create();
+
+        $Crypto = Money::from(CurrencyType::Crypto);
+
+        /*
+         * This will be a big bitcoin value of BTC 70,0000,000.00000001
+         */
+        $someBTC = $Crypto->ofMinor('70000000000000001', 'BTC');
+
+        $account = new Account([
+            'user_id' => $user->id,
+            'name' => 'my account'
+        ]);
+        
+        $account->balance = $someBTC;
+
+        $account->save();
+
+        $id = $account->id;
+
+        $accountB = Account::find($id);
+
+        $this->assertEquals("BTC 700000000.00000001", "{$someBTC}");
+        $this->assertTrue($accountB->balance->equals($someBTC));
+    }
+
+    /**
+     * @test
+     * @todo Introduce DI on repos
+     */
+    public function big_crypto_with_wei_scale_can_be_created_and_saved_correctly()
+    {
+        $this->seedCryptos();
+
+        $user = User::factory()->create();
+
+        $Crypto = Money::from(CurrencyType::Crypto);
+
+        /*
+         * This will be a big Etherum value of ETH 70,0000,000.000000000000000001
+         */
+        $someETH = $Crypto->ofMinor('700000000000000000000000001', 'ETH');
+
+        $account = new Account([
+            'user_id' => $user->id,
+            'name' => 'my account'
+        ]);
+        
+        $account->balance = $someETH;
+
+        $account->save();
+
+        $id = $account->id;
+
+        $accountB = Account::find($id);
+
+        $this->assertEquals("ETH 700000000.000000000000000001", "{$someETH}");
+        $this->assertTrue($accountB->balance->equals($someETH));
+    }
+
+       /** @test */
+    public function it_is_possible_to_make_basic_operations_with_criptos_and_is_inmutable()
+    {
+        $this->seedCryptos();
+
+        $money = Money::from(CurrencyType::Crypto)->of('0.05', 'BTC');
+
+        $this->assertEquals('BTC 0.05499000', "{$money->plus('0.00499')}");
+        $this->assertEquals('BTC 0.04900000', "{$money->minus('0.001')}");
+        $this->assertEquals('BTC 0.09995000', "{$money->multipliedBy('1.999')}");
+        $this->assertEquals('BTC 0.01250000', "{$money->dividedBy(4)}");
+        $this->assertEquals('BTC 0.05000001', "{$money->plus('0.00000001')}");
+    }
+
+    /** @test */
+    public function it_is_possible_to_make_basic_operation_with_money_model_in_cryptos()
+    {
+        $this->seedCryptos();
+        $Crypto = Money::from(CurrencyType::Crypto);
+        $money = $Crypto->of('0.05', 'BTC');
+
+        $this->assertEquals('BTC 0.05499000', "{$money->plus($Crypto->of('0.00499', 'BTC'))}");
+        $this->assertEquals('BTC 0.04900000', "{$money->minus($Crypto->of('0.001', 'BTC'))}");
+    }
+
+    /** @test */
+    public function it_is_possible_operate_and_save_money_models_in_cryptos()
+    {
+        $this->seedCryptos();
+
+        $user = User::factory()->create();
+        $someMoney = Money::from(CurrencyType::Crypto)->of('0.05', 'BTC');
+
+        $account = new Account([
+            'user_id' => $user->id,
+            'name' => 'my account'
+        ]);
+        
+        $account->balance = $someMoney;
+
+        $account->save();
+
+        $id = $account->id;
+
+        $accountB = Account::find($id);
+
+        $accountB->balance = $accountB->balance->dividedBy(4);
+
+        $accountB->save();
+
+        $accountC = Account::find($id);
+
+        $this->assertEquals('BTC 0.01250000', "{$accountC->balance}");
+    }
+
+    /** @test */
+    public function exception_is_thrown_if_crypto_monies_are_not_the_same()
+    {
+        $this->seedCryptos();
+        $this->expectException(MoneyException::class);
+        $Crypto = Money::from(CurrencyType::Crypto);
+        $a = $Crypto->of('0.01', 'BTC');
+        $b = $Crypto->of('0.01', 'ETH');
+
+        $a->plus($b); // MoneyException
+    }
+
+    /** @test */
+    public function if_rounding_needed_with_cryptos_exception_is_thrown()
+    {
+        $this->seedCryptos();
+        $this->expectException(MathException::class);
+        $money = Money::from(CurrencyType::Crypto)->of('0.05', 'BTC');
+
+        $money->plus('0.0099999999'); // MathException
+    }
+
+    /** @test */
+    public function if_a_rounding_mode_is_passed_no_exception_is_thrown_when_rounding_is_neccesary_with_cryptos()
+    {
+        $this->seedCryptos();
+
+        $money = Money::from(CurrencyType::Crypto)->of('0.0005', 'BTC');
+
+        $this->assertEquals('BTC 0.00050999', "{$money->plus('0.000009999', RoundingMode::DOWN)}");
+
+        $this->assertEquals('BTC 0.00049001', "{$money->minus('0.000009999', RoundingMode::UP)}");
+
+        $this->assertEquals('BTC 0.00061728', "{$money->multipliedBy('1.234567', RoundingMode::DOWN)}");
+
+        $this->assertEquals('BTC 0.00016667', "{$money->dividedBy(3, RoundingMode::UP)}");
+    }
+
+    /** @test */
+    public function split_allocation_works_with_crypto_money()
+    {
+        $this->seedCryptos();
+        $money = Money::from(CurrencyType::Crypto)->of('0.1', 'BTC');
+        $this->assertEquals(
+            ['BTC 0.03333334', 'BTC 0.03333333', 'BTC 0.03333333'],
+            $money->split(3)
+        );
+    }
+
+    /** @test */
+    public function distribution_allocation_works_with_crypto_money()
+    {
+        $this->seedCryptos();
+        $profit = Money::from(CurrencyType::Crypto)->of('0.0098765', 'BTC');
+        $this->assertEquals(
+            ['BTC 0.00474073', 'BTC 0.00404936', 'BTC 0.00108641'],
+            $profit->allocate(48, 41, 11)
+        );
+    }
 }

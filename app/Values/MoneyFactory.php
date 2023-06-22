@@ -24,25 +24,35 @@ class MoneyFactory
         return new static($type);
     }
 
-    public function ofMinor(string $amount, int|string $currencyNumber): Money
+    public function ofMinor(string $amount, int|string $code): Money
     {
         $money = new BrickMoneyWrapperMoney();
+
         $money->setFromMinor(
             $amount, 
-            $this->currencies->getByNumber($currencyNumber)
+            $this->getCurrency($code)
         );
         return $money;
     }
 
-    public function of(string|int $decimal, $fiatCode, RoundingMode $rounding = RoundingMode::UNNECESSARY): Money
+    public function of(string|int $decimal, string|int $code, RoundingMode $rounding = RoundingMode::UNNECESSARY): Money
     {
-        return new BrickMoneyWrapperMoney(
-            BrickMoney::of(
-                amount:$decimal,
-                currency:$fiatCode,
-                roundingMode:$rounding->value
-            )
+        $money = new BrickMoneyWrapperMoney();
+
+        $money->setFromDecimal(
+            $decimal, 
+            $this->getCurrency($code)
         );
+        return $money;
+    }
+    
+    protected function getCurrency(string|int $code): Currency
+    {
+        if(is_int($code)) {
+            return $this->currencies->getByNumber($code);
+        } else {
+            return $this->currencies->get($code);
+        }
     }
 
     public function brickOf(string $decimal, $fiatCode, ?Context $context = null, int $rounding = BrickRoundingMode::UNNECESSARY): BrickMoneyWrapper
