@@ -1,0 +1,70 @@
+<?php
+
+namespace App\Repositories\Currency;
+
+use App\Exceptions\CurrencyNotFoundException;
+use App\Exceptions\MoneyException;
+use App\Models\CryptoCurrency;
+use App\Models\CustomCurrency;
+use App\Models\User;
+use App\Values\{Currency, CurrencyType, WrappedBrickCurrency};
+use Brick\Money\Currency as BrickCurrency;
+use Exception;
+use Illuminate\Support\Collection;
+
+class Custom extends AbstractCurrencyRepository
+{
+    public const TYPE = CurrencyType::Custom;
+
+    protected ?User $user;
+
+    public function __construct(User $user = null)
+    {
+        $this->user = $user;
+    }
+
+    public function put(string $code, string $name, int $minorUnits)
+    {
+        CustomCurrency::create([
+            'user_id'       => $this->user->id, 
+            'code'          => $code, 
+            'name'          => $name,
+            'minor_units'   => $minorUnits
+        ]);
+    }
+
+    public function getByNumber(int $number): Currency|WrappedBrickCurrency
+    {
+        return $this->getCurrencyFromModel(CustomCurrency::find($number)->first());
+    }
+
+    protected function getCurrencyFromModel(CustomCurrency $currencyModel): WrappedBrickCurrency
+    {
+        return new WrappedBrickCurrency(new BrickCurrency(
+            currencyCode:$currencyModel->code,
+            numericCode:$currencyModel->id,
+            name:$currencyModel->name,
+            defaultFractionDigits:$currencyModel->minor_units
+        ), self::TYPE);
+    }
+
+    public function get(string $code): Currency|WrappedBrickCurrency
+    {
+        $currency = CustomCurrency::where([
+            ['user_id', $this->user->id],
+            ['code', $code]
+        ])->first();
+        if (!$currency) {
+            throw new CurrencyNotFoundException("Can't find custom currency for the code '$code' for the current user.");
+        }
+        return $this->getCurrencyFromModel($currency);
+    }
+
+    public function all(): Collection
+    {
+        return CustomCurrency::whereUserId($this->user->id)->get()
+            ->map(function (CustomCurrency $currency) {
+                return $this->getCurrencyFromModel($currency);
+            });
+    }
+}

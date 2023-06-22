@@ -6,14 +6,14 @@ use Tests\TestCase;
 use App\Models\User;
 use App\Models\AccountV2 as Account;
 use App\Support\Facades\Money;
-use App\Exceptions\{MathException, MoneyException};
+use App\Exceptions\{CurrencyNotFoundException, MathException, MoneyException, MoneyMismatchException, RoundingNecessaryException};
 use App\Models\CryptoCurrency;
-use App\Repositories\Currency\Crypto;
-use App\Values\{BrickMoneyWrapper, BrickMoneyWrapperMoney, CurrencyType, RoundingMode};
+use App\Repositories\Currency\{Crypto, Custom as CustomCurrency, Factory as CurrencyRepositoryFactory};
+use App\Values\{BrickMoneyWrapper, BrickMoneyWrapperMoney, Currency, CurrencyType, RoundingMode};
 use Brick\Math\RoundingMode as  BrickRoundingMode;
-use Brick\Math\Exception\RoundingNecessaryException;
-use Brick\Money\Exception\MoneyMismatchException;
+use Brick\Math\Exception\RoundingNecessaryException as BrickRoundingNecessaryException;
 use Brick\Money\Context\{CashContext, CustomContext, AutoContext};
+use Brick\Money\Exception\MoneyMismatchException as BrickMoneyMismatchException;
 use Database\Seeders\CryptoCurrencySeeder;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\File;
@@ -97,7 +97,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function exception_is_thrown_if_brick_monies_are_not_the_same()
     {
-        $this->expectException(MoneyMismatchException::class);
+        $this->expectException(BrickMoneyMismatchException::class);
         $a = Money::brickOf(1, 'USD');
         $b = Money::brickOf(1, 'EUR');
 
@@ -107,7 +107,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function exception_is_thrown_if_monies_are_not_the_same()
     {
-        $this->expectException(MoneyException::class);
+        $this->expectException(MoneyMismatchException::class);
         $a = Money::of(1, 'USD');
         $b = Money::of(1, 'EUR');
 
@@ -118,7 +118,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function if_rounding_needed_in_brick_money_exception_is_thrown()
     {
-        $this->expectException(RoundingNecessaryException::class);
+        $this->expectException(BrickRoundingNecessaryException::class);
         $money = Money::brickOf(50, 'USD');
 
         $money->plus('0.999'); // RoundingNecessaryException
@@ -127,7 +127,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function if_rounding_needed_exception_is_thrown()
     {
-        $this->expectException(MathException::class);
+        $this->expectException(RoundingNecessaryException::class);
         $money = Money::of(50, 'USD');
 
         $money->plus('0.999'); // MathException
@@ -438,7 +438,7 @@ class MoneyTest extends TestCase
     public function exception_is_thrown_if_crypto_monies_are_not_the_same()
     {
         $this->seedCryptos();
-        $this->expectException(MoneyException::class);
+        $this->expectException(MoneyMismatchException::class);
         $Crypto = Money::from(CurrencyType::Crypto);
         $a = $Crypto->of('0.01', 'BTC');
         $b = $Crypto->of('0.01', 'ETH');
@@ -450,7 +450,7 @@ class MoneyTest extends TestCase
     public function if_rounding_needed_with_cryptos_exception_is_thrown()
     {
         $this->seedCryptos();
-        $this->expectException(MathException::class);
+        $this->expectException(RoundingNecessaryException::class);
         $money = Money::from(CurrencyType::Crypto)->of('0.05', 'BTC');
 
         $money->plus('0.0099999999'); // MathException
@@ -493,4 +493,131 @@ class MoneyTest extends TestCase
             $profit->allocate(48, 41, 11)
         );
     }
+
+    protected function seedCustomMoneyFor(User $user)
+    {
+        $customCurrencies = new CustomCurrency($user);
+        $customCurrencies->put('ARA', 'Argentinian Austral', 3);
+        $customCurrencies->put('ARP', 'Argentinan Patacon', 4);
+    }
+
+    /** @test */
+    public function custom_monies_can_be_created()
+    {
+        $user = User::factory()->create();
+        $this->seedCustomMoneyFor($user);
+
+        $custom = Money::from(CurrencyType::Custom, [$user]);
+
+        $someARA = $custom->of('4', 'ARA');
+
+        $this->assertEquals("ARA 4.000", "{$someARA}");
+    }
+
+    /** @test */
+    public function the_monies_of_a_user_can_be_retrieved()
+    {
+        $user = User::factory()->create();
+
+        $this->seedCustomMoneyFor($user);
+        
+        $userB = User::factory()->create();
+        (new CustomCurrency($userB))->put('ESP', 'Spanish Peseta', 4);
+
+        $currencies = (new CurrencyRepositoryFactory())->Custom($user);
+
+        $userCurrencies = $currencies->all();
+
+        $this->assertNotNull($userCurrencies->first(fn (Currency $currency) => $currency->getCurrencyCode() == 'ARA'));
+        $this->assertNotNull($userCurrencies->first(fn (Currency $currency) => $currency->getCurrencyCode() == 'ARP'));
+        $this->assertNull($userCurrencies->first(fn (Currency $currency) => $currency->getCurrencyCode() == 'ESP'));
+    }
+
+    /** @test **/
+    public function custom_money_can_be_created_persisted_and_retrieved()
+    {
+        $user = User::factory()->create();
+
+        $this->seedCustomMoneyFor($user);
+        
+        $someMoney = Money::from(CurrencyType::Custom, [$user])->of('15.25', 'ARA');
+
+        $account = new Account([
+            'user_id' => $user->id,
+            'name' => 'my account'
+        ]);
+        
+        $account->balance = $someMoney;
+
+        $account->save();
+
+        $id = $account->id;
+
+        $accountB = Account::find($id);
+
+        $this->assertTrue($accountB->balance->equals($someMoney));
+    }
+
+    /** @test */
+    public function it_is_possible_operate_and_save_custom_money_models()
+    {
+        $user = User::factory()->create();
+
+        $this->seedCustomMoneyFor($user);
+        
+        $someMoney = Money::from(CurrencyType::Custom, [$user])->of('50', 'ARA');
+
+        $account = new Account([
+            'user_id' => $user->id,
+            'name' => 'my account'
+        ]);
+        
+        $account->balance = $someMoney;
+
+        $account->save();
+
+        $id = $account->id;
+
+        $accountB = Account::find($id);
+
+        $accountB->balance = $accountB->balance->dividedBy(4);
+
+        $accountB->save();
+
+        $accountC = Account::find($id);
+
+        $this->assertEquals('ARA 12.500', "{$accountC->balance}");
+    }
+
+     /** @test */
+     public function exception_is_thrown_if_custom_monies_are_not_the_same()
+     {
+        $this->expectException(MoneyMismatchException::class);
+
+        $user = User::factory()->create();
+        $this->seedCustomMoneyFor($user);
+        $customMoney = Money::from(CurrencyType::Custom, [$user]);
+
+        $a = $customMoney->of(1, 'ARA');
+        $b = $customMoney->of(1, 'ARP');
+ 
+        $a->plus($b); // MoneyException
+        $this->assertTrue(true);
+     }
+
+     /** @test */
+     public function custom_currencies_of_a_diferent_user_can_not_be_retrieved_by_other_user()
+     {
+        $this->expectException(CurrencyNotFoundException::class);
+        $user = User::factory()->create();
+
+        $this->seedCustomMoneyFor($user);
+        
+        $userB = User::factory()->create();
+        (new CustomCurrency($userB))->put('ESP', 'Spanish Peseta', 4);
+
+        $userBCustomMoney = Money::from(CurrencyType::Custom, [$userB]);
+        $someMoney = $userBCustomMoney->of('1', 'ARA');
+     }
+
 }

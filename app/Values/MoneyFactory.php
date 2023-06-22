@@ -13,15 +13,15 @@ class MoneyFactory
     protected CurrencyType $type;
     protected CurrencyRepository $currencies;
 
-    public function __construct(CurrencyType $type = CurrencyType::Fiat)
+    public function __construct(CurrencyType $type = CurrencyType::Fiat, array $params = [])
     {
         $this->type = $type;
-        $this->currencies = (new CurrencyRepositoryFactory())->for($this->type);
+        $this->currencies = (new CurrencyRepositoryFactory())->for($this->type, $params);
     }
 
-    public static function from(CurrencyType $type): static
+    public static function from(CurrencyType $type, array $params = []): static
     {
-        return new static($type);
+        return new static($type, $params);
     }
 
     public function ofMinor(string $amount, int|string $code): Money

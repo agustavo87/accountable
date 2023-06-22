@@ -4,6 +4,8 @@ namespace App\Values;
 
 use App\Exceptions\MathException;
 use App\Exceptions\MoneyException;
+use App\Exceptions\MoneyMismatchException;
+use App\Exceptions\RoundingNecessaryException;
 use Brick\Money\Money as BrickMoney;
 use App\Values\Currency;
 
@@ -83,7 +85,7 @@ class BrickMoneyWrapperMoney extends BrickMoneyWrapper implements Money
     {
         if($amount instanceof Money) {
             if(!$this->currency->is($amount->getCurrency())) {
-                throw new MoneyException(sprintf(
+                throw new MoneyMismatchException(sprintf(
                     'The monies do not share the same currency: expected %s, got %s.',
                     $this->getCurrency()->getCurrencyCode(),
                     $amount->getCurrency()->getCurrencyCode()
@@ -96,6 +98,8 @@ class BrickMoneyWrapperMoney extends BrickMoneyWrapper implements Money
                 that:$amount,
                 roundingMode:$rounding->value
             ));
+        } catch (\Brick\Math\Exception\RoundingNecessaryException $th) {
+            throw new RoundingNecessaryException($th->getMessage(), 0, $th );
         } catch (\Brick\Math\Exception\MathException $th) {
             throw new MathException($th->getMessage(), 0, $th );
         }
