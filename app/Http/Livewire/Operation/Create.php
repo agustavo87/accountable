@@ -7,6 +7,7 @@ use App\Models\{
     Movement,
     Operation,
 };
+use App\Support\Facades\Money;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -39,7 +40,10 @@ class Create extends Component
         'movement.account_id' => ['required', 'exists:accounts,id'],
         'movement.type' => ['required', 'boolean'],
         'movement.note' => ['sometimes', 'max:200'],
-        'movement.amount' => ['required', 'numeric', 'min:0']
+        'movement.amount' => ['required', 'numeric', 'min:0'],
+        'movement.amountb' => ['required'],
+        'movement.currency_number' => ['required'],
+        'movement.currency_type' => ['required']
     ];
  
     protected $validationAttributes = [
@@ -66,6 +70,22 @@ class Create extends Component
     protected function hidrateCategories()
     {
         $this->categories = Auth::user()->operationCategories ?? new EloquentCollection();
+    }
+
+    public function updatedMovement($value, $property)
+    {
+        switch ($property) {
+            case 'account_id':
+                $account = Account::find($value);
+                $currency = Money::getCurrency($account->balance_currency_number);
+                $this->movement->currency_number = $currency->getNumericCode();
+                $this->movement->currency_type = $currency->getType()->value;
+                break;
+
+            case 'amount':
+                $this->movement->amountb = Money::of("$value", $this->movement->currency_number)->getMinorAmount();
+                break;
+        }
     }
 
     public function commitMovement()
@@ -133,13 +153,18 @@ class Create extends Component
     protected function commitMovements()
     {
         foreach ($this->movements as $movement) {
+            // dd('comiting movement', $movement);
             if($movement['type'] == 1) {
                 Account::whereId($movement['account_id'])
-                       ->increment('balance', $movement['amount']);
+                    ->first()
+                    ->incrementBalance($movement['amount'])
+                    ->save();
                 continue;
             }
             Account::whereId($movement['account_id'])
-                       ->decrement('balance', $movement['amount']);
+                ->first()
+                ->decrementBalance($movement['amount'])
+                ->save();
         }
     }
 

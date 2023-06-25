@@ -2,6 +2,8 @@
 
 namespace App\Values;
 
+use App\Exceptions\CurrencyNotFoundException;
+use App\Exceptions\MoneyException;
 use App\Repositories\Currency\CurrencyRepository;
 use App\Repositories\Currency\Factory as CurrencyRepositoryFactory;
 use Brick\Money\Context;
@@ -38,15 +40,22 @@ class MoneyFactory
     public function of(string|int $decimal, string|int $code, RoundingMode $rounding = RoundingMode::UNNECESSARY): Money
     {
         $money = new BrickMoneyWrapperMoney();
+        try {
+            $money->setFromDecimal(
+                $decimal, 
+                $this->getCurrency($code),
+                $rounding
+            );
+        } catch (CurrencyNotFoundException $th) {
+            throw new CurrencyNotFoundException("Problem creating money from '$decimal' '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
+        } catch (\Throwable $th) {
+            throw new MoneyException("Problem creating money from '$decimal' '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
+        }
 
-        $money->setFromDecimal(
-            $decimal, 
-            $this->getCurrency($code)
-        );
         return $money;
     }
     
-    protected function getCurrency(string|int $code): Currency
+    public function getCurrency(string|int $code): Currency
     {
         if(is_int($code)) {
             return $this->currencies->getByNumber($code);

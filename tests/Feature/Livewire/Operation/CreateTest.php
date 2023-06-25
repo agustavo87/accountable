@@ -4,6 +4,7 @@ namespace Tests\Feature\Livewire\Operation;
 
 use App\Http\Livewire\Operation\Create as CreateOperation;
 use App\Models\Account;
+use App\Models\Movement;
 use App\Models\OperationCategory;
 use App\Models\User;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -13,6 +14,7 @@ use Tests\TestCase;
 class CreateTest extends TestCase
 {
     use RefreshDatabase;
+
     /** @test */
     public function the_component_can_render()
     {
@@ -29,7 +31,10 @@ class CreateTest extends TestCase
 
         $account = Account::factory()
                           ->for($user)
-                          ->create(['balance' => 100.25]);
+                          ->withBalance('100.25','USD')
+                          ->create();
+
+        $this->assertEquals('USD 100.25', "$account->balanceb");
 
         $category = OperationCategory::factory()
                                     ->for($user)
@@ -44,10 +49,10 @@ class CreateTest extends TestCase
                 ->set('movement.account_id', $account->id)
                 ->set('movement.type', 0) // debit
                 ->set('movement.note', 'Pay to Julio')
-                ->set('movement.amount', 25.5)
+                ->set('movement.amount', '25.5')
                 ->call('commitMovement')
                 ->call('submit');
-        
+
         $operation = $user->operations()->where('name', 'Buy bread')->first();
 
         $this->assertNotNull($operation);
@@ -58,9 +63,11 @@ class CreateTest extends TestCase
         $this->assertEquals($movement->type, 0);
         $this->assertEquals('Pay to Julio', $movement->note);
         $this->assertEquals(25.5, $movement->amount);
+        $this->assertEquals('USD 25.50', "$movement->amountc");
         
         $resultAccount = $movement->account;
         $this->assertEquals($account->id, $resultAccount->id);
         $this->assertEquals(74.75, $resultAccount->balance);
+        $this->assertEquals('USD 74.75', "$resultAccount->balanceb");
     }
 }

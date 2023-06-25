@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Support\Facades\Money;
+use App\Values\CurrencyType;
+use App\Values\Money as MoneyI;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -11,6 +15,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $id
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
+ * @property \App\Values\BrickMoneyWrapperMoney $balanceb
  * @property int $user_id
  * @property string $name
  * @property string $currency
@@ -45,5 +50,36 @@ class Account extends Model
     public function movements()
     {
         return $this->hasMany(Movement::class);
+    }
+
+    public function balanceb(): Attribute
+    {
+        return Attribute::make(
+            set: fn (MoneyI $money) => [
+                'balance_amount' => $money->getMinorAmount(),
+                'balance_currency_number' => $money->getCurrencyNumber(),
+                'balance_currency_type' => $money->getCurrencyType()->value
+            ],
+            get: fn($value, $attributes) => Money::from(
+                    CurrencyType::from($attributes['balance_currency_type'])
+                )->ofMinor(
+                    $attributes['balance_amount'],
+                    $attributes['balance_currency_number']
+                )
+        )->withoutObjectCaching();
+    }
+
+    public function incrementBalance($amount): static
+    {
+        $this->balanceb = $this->balanceb->plus($amount);
+        $this->balance += $amount;
+        return $this;
+    }
+
+    public function decrementBalance($amount): static
+    {
+        $this->balanceb = $this->balanceb->minus($amount);
+        $this->balance -= $amount;
+        return $this;
     }
 }

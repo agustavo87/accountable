@@ -22,14 +22,18 @@ class BrickMoneyWrapperMoney extends BrickMoneyWrapper implements Money
         $this->currency = $currency;
     }
 
-    public function setFromDecimal(string|int $amount, Currency|WrappedBrickCurrency $currency)
+    public function setFromDecimal(string|int $amount, Currency|WrappedBrickCurrency $currency, RoundingMode $rounding = RoundingMode::UNNECESSARY )
     {
         if($currency instanceof WrappedBrickCurrency) {
             $brickCurrency = $currency->getWrapped();
         } else {
             $brickCurrency = WrappedBrickCurrency::getBrickCurrency($currency);
         }
-        $this->money = BrickMoney::of($amount, $brickCurrency);
+        $this->money = BrickMoney::of(
+            amount:$amount, 
+            currency:$brickCurrency, 
+            roundingMode:$rounding->value
+        );
         $this->currency = $currency;
     }
 

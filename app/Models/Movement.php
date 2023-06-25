@@ -2,6 +2,10 @@
 
 namespace App\Models;
 
+use App\Support\Facades\Money;
+use App\Values\CurrencyType;
+use App\Values\Money as MoneyI;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
@@ -13,6 +17,7 @@ use Illuminate\Database\Eloquent\Model;
  * @property int $account_id
  * @property int $type
  * @property float $amount
+ * @property \App\Values\BrickMoneyWrapperMoney $amountc
  * @property string|null $note
  * @property \Illuminate\Support\Carbon|null $created_at
  * @property \Illuminate\Support\Carbon|null $updated_at
@@ -39,7 +44,10 @@ class Movement extends Model
     protected $fillable = [
         'type',
         'note',
-        'amount'
+        'amount',
+        'amountb', 
+        'currency_number',
+        'currency_type',
     ];
 
     public function operation()
@@ -50,5 +58,22 @@ class Movement extends Model
     public function account()
     {
         return $this->belongsTo(Account::class);
+    }
+
+    public function amountc(): Attribute
+    {
+        return Attribute::make(
+            set: fn (MoneyI $money) => [
+                'amountb' => $money->getMinorAmount(),
+                'currency_number' => $money->getCurrencyNumber(),
+                'currency_type' => $money->getCurrencyType()->value
+            ],
+            get: fn($value, $attributes) => Money::from(
+                    CurrencyType::from($attributes['currency_type'])
+                )->ofMinor(
+                    $attributes['amountb'],
+                    $attributes['currency_number']
+                )
+        )->withoutObjectCaching();
     }
 }

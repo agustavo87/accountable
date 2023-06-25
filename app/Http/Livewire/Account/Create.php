@@ -3,6 +3,7 @@
 namespace App\Http\Livewire\Account;
 
 use App\Models\Account;
+use App\Support\Facades\Money;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -46,6 +47,7 @@ class Create extends Component
     public function create()
     {
         $account = new Account($this->validate()['account']);
+        $account->balanceb = Money::of("$account->balance", $account->currency);
         $account->user()->associate(Auth::user());
         $account->save();
         return redirect()->route('home');

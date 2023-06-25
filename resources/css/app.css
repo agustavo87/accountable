@@ -126,5 +126,9 @@ body {
     opacity: 100%;
 }
 
+.md\:hidden-child {
+    @apply md:opacity-10;
+}
+
 
   
