@@ -25,7 +25,7 @@
                                             Account Name
                                         </x-slot>
                                         <x-slot:input 
-                                            wire:model.debounce="account.name" 
+                                            wire:model.debounce="accountName" 
                                             autocomplete="off"
                                             placeholder="Bank XXX CC..."
                                         >
@@ -36,9 +36,9 @@
                                         id="balance"
                                     >
                                         <x-slot:input
-                                            wire:model.debounce="account.balance"
+                                            wire:model.debounce="accountBalance"
                                         ></x-slot>
-                                        <x-slot:currencies>
+                                        <x-slot:currencies wire:model="currency">
                                             @foreach ($currencies as $currency)
                                                 <option value="{{$currency}}">{{ $currency }}</option>
                                             @endforeach

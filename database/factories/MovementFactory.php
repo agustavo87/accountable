@@ -30,8 +30,7 @@ class MovementFactory extends Factory
                 'balance_currency_type' => $money->getCurrencyType()->value
             ]),
             'type' => $this->faker->boolean(),
-            'amount' => $this->faker->randomFloat(2,1,1000),
-            'amountb' => $money->getMinorAmount(),
+            'minor_amount' => $money->getMinorAmount(),
             'currency_number' => $money->getCurrencyNumber(),
             'currency_type' => $money->getCurrencyType()->value,
             'note' => $this->faker->sentence()
@@ -44,8 +43,7 @@ class MovementFactory extends Factory
         
         return $this->state(function ($attributes) use( $money) {
             return [
-                'amount' => $money->getDecimalAmount(),
-                'amountb' => $money->getMinorAmount(),
+                'minor_amount' => $money->getMinorAmount(),
                 'currency_number' => $money->getCurrencyNumber(),
                 'currency_type' => $money->getCurrencyType()->value
             ];
@@ -59,8 +57,7 @@ class MovementFactory extends Factory
                 'operation_id' => null,
                 'account_id' => null,
                 'type' => 0,
-                'amount' => 0,
-                'amountb' => 0,
+                'minor_amount' => 0,
                 'currency_number' => 32,
                 'currency_type' => CurrencyType::Fiat->value,
                 'note' => ''

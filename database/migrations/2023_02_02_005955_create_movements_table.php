@@ -28,8 +28,7 @@ return new class extends Migration
                   ->onDelete('cascade');
 
             $table->smallInteger('type');
-            $table->float('amount');
-            $table->decimal('amountb',36,0)->default(0);
+            $table->decimal('minor_amount',36,0)->default(0);
             $table->bigInteger('currency_number')->default(32);
             $table->tinyInteger('currency_type')->default(CurrencyType::Fiat->value);
 

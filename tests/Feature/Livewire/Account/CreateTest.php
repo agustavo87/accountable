@@ -29,12 +29,15 @@ class CreateTest extends TestCase
         $this->actingAs(User::factory()->create());
     
         Livewire::test(CreateAccount::class)
-            ->set('account.name', 'my city bank')
-            ->set('account.currency', 'USD')
-            ->set('account.balance', 0)
+            ->set('accountName', 'my city bank')
+            ->set('accountBalance', 0)
+            ->set('currency', 'USD')
             ->call('create');
     
-        $this->assertTrue(Account::whereName('my city bank')->exists());
+        $account = Account::whereName('my city bank')->first();
+        $this->assertNotNull($account);
+        $this->assertEquals('USD 0.00', "{$account->balance}");
+        $this->assertEquals('USD', "{$account->currency->getCurrencyCode()}");
     }
 
     /** @test */
@@ -43,13 +46,13 @@ class CreateTest extends TestCase
         $this->actingAs(User::factory()->create());
 
         Livewire::test(CreateAccount::class)
-            ->set('account.name', 'my city bank')
-            ->set('account.currency', 'ARS' )
-            ->set('account.balance', '2.25')
+            ->set('accountName', 'my city bank')
+            ->set('accountBalance', '2.25')
+            ->set('currency', 'ARS' )
             ->call('create');
     
         $account = Account::whereName('my city bank')->first();
         $this->assertNotNull($account);
-        $this->assertTrue($account->balanceb->equals(Money::of('2.25', 'ARS')));
+        $this->assertTrue($account->balance->equals(Money::of('2.25', 'ARS')));
     }
 }

@@ -4,8 +4,9 @@ namespace App\Values;
 
 use Brick\Money\Currency as BrickCurrency;
 use App\Values\Currency;
+use Illuminate\Contracts\Support\Arrayable;
 
-class WrappedBrickCurrency implements Currency
+class WrappedBrickCurrency implements Currency, Arrayable
 {
     protected BrickCurrency $brick;
 
@@ -63,5 +64,16 @@ class WrappedBrickCurrency implements Currency
     {
         return $this->type == $currency->getType() && 
                $this->getNumericCode() == $currency->getNumericCode();
+    }
+
+    public function toArray()
+    {
+        return [
+            'code' => $this->getCurrencyCode(),
+            'numeric_code' => $this->getNumericCode(),
+            'name'  => $this->getName(),
+            'scale' => $this->getDefaultFractionDigits(),
+            'type_code'  => $this->getType()->value, 
+        ];
     }
 }

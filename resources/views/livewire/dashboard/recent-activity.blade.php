@@ -31,20 +31,7 @@
                                     <span
                                         class="flex flex-1 space-x-2 truncate"
                                     >
-                                        {{-- Heroicon name: mini/banknotes --}}
-                                        <svg
-                                            class="h-5 w-5 flex-shrink-0 text-gray-400"
-                                            xmlns="http://www.w3.org/2000/svg"
-                                            viewBox="0 0 20 20"
-                                            fill="currentColor"
-                                            aria-hidden="true"
-                                        >
-                                            <path
-                                                fill-rule="evenodd"
-                                                d="M1 4a1 1 0 011-1h16a1 1 0 011 1v8a1 1 0 01-1 1H2a1 1 0 01-1-1V4zm12 4a3 3 0 11-6 0 3 3 0 016 0zM4 9a1 1 0 100-2 1 1 0 000 2zm13-1a1 1 0 11-2 0 1 1 0 012 0zM1.75 14.5a.75.75 0 000 1.5c4.417 0 8.693.603 12.749 1.73 1.111.309 2.251-.512 2.251-1.696v-.784a.75.75 0 00-1.5 0v.784a.272.272 0 01-.35.25A49.043 49.043 0 001.75 14.5z"
-                                                clip-rule="evenodd"
-                                            ></path>
-                                        </svg>
+                                        <x-icons.mini-banknotes class="h-5 w-5 flex-shrink-0 text-gray-400" />
                                         <span
                                             class="flex flex-col truncate text-sm w-full text-gray-500"
                                         >
@@ -57,15 +44,14 @@
                                                 <div class="flex justify-between">
                                                     <span x-text="movement.account.name"></span>
                                                     <span class="opacity-80" :class="movement.type == 0 ? 'text-red-800' : 'text-green-800'">
-                                                        <span
+                                                        <p 
+                                                            x-data="Money"
+                                                            x-bind:data-amount="movement.decimal_amount"
+                                                            x-bind:data-currency-code="movement.account.currency.code"
+                                                            x-bind:data-scale="movement.account.currency.scale"
+                                                            x-text="formated"
                                                             class="font-medium"
-                                                            x-text="(movement.type == 0 ? '-' : '' ) + formatNumber(movement.amount, movement.account.currency)"
-                                                            >$20,000</span>
-                                                        <span
-                                                            x-text="movement.account.currency"
-                                                        >
-                                                            USD
-                                                        </span>
+                                                        ></p>
                                                     </span>
                                                 </div>
                                             </template>
@@ -76,20 +62,7 @@
                                             >
                                         </span>
                                     </span>
-                                    {{-- Heroicon name: mini/chevron-right --}}
-                                    <svg
-                                        class="h-5 w-5 flex-shrink-0 text-gray-400"
-                                        xmlns="http://www.w3.org/2000/svg"
-                                        viewBox="0 0 20 20"
-                                        fill="currentColor"
-                                        aria-hidden="true"
-                                    >
-                                        <path
-                                            fill-rule="evenodd"
-                                            d="M7.21 14.77a.75.75 0 01.02-1.06L11.168 10 7.23 6.29a.75.75 0 111.04-1.08l4.5 4.25a.75.75 0 010 1.08l-4.5 4.25a.75.75 0 01-1.06-.02z"
-                                            clip-rule="evenodd"
-                                        ></path>
-                                    </svg>
+                                    <x-icons.mini-chevron-right class="h-5 w-5 flex-shrink-0 text-gray-400" />
                                 </span>
                             </a>
                         </li>
@@ -167,7 +140,7 @@
                                     >
                                         Operation
                                     </th>
-                                                                    <th
+                                    <th
                                         class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
@@ -254,12 +227,13 @@
                                                     }"
                                                     class=" opacity-90  whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500"
                                                 >
-                                                    <span
-                                                        class="font-medium"
-                                                        x-text="(movement.type == 0 ? '-' : '') + formatNumber(movement.account.currency, movement.amount)"
-                                                        >
-                                                    </span> 
-                                                    <span x-text="movement.account.currency"></span>
+                                                        <p 
+                                                            x-data="Money"
+                                                            x-bind:data-amount="movement.decimal_amount"
+                                                            x-bind:data-currency-code="movement.account.currency.code"
+                                                            x-bind:data-scale="movement.account.currency.scale"
+                                                            x-text="formated"
+                                                        ></p>
                                                 </td>
                                             </tr>
                                         </template>

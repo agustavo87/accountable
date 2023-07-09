@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Account;
 
 use App\Models\Account;
 use App\Support\Facades\Money;
+use App\Values\CurrencyType;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
 
@@ -13,19 +14,22 @@ class Create extends Component
 
     public $currencies; 
 
+    public $accountName;
+
+    public $accountBalance;
+
     protected $rules = [
-        'account.name' => 'required',
-        'account.currency' => 'required',
-        'account.balance' => 'required|numeric'
+        'accountName' => 'required',
+        'accountBalance' => 'required|numeric',
+        'currency'      => 'required|string'
     ];
+
+    public $currency = 'USD';
 
     public function mount()
     {
         $this->currencies = config('accountable.currencies');
-        $this->account = new Account([
-            'currency' => 'USD', 
-            'balance' => null
-        ]);
+        $this->account = new Account();
     }
 
     public function render()
@@ -46,8 +50,10 @@ class Create extends Component
 
     public function create()
     {
-        $account = new Account($this->validate()['account']);
-        $account->balanceb = Money::of("$account->balance", $account->currency);
+        $data = $this->validate();
+        $account = new Account();
+        $account->name = $data['accountName'];
+        $account->balance = Money::from(CurrencyType::Fiat)->of("{$data['accountBalance']}", $this->currency);
         $account->user()->associate(Auth::user());
         $account->save();
         return redirect()->route('home');

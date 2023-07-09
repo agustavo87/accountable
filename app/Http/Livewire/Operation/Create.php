@@ -8,6 +8,7 @@ use App\Models\{
     Operation,
 };
 use App\Support\Facades\Money;
+use App\Values\CurrencyType;
 use Illuminate\Database\Eloquent\Collection as EloquentCollection;
 use Illuminate\Support\Facades\Auth;
 use Livewire\Component;
@@ -28,10 +29,13 @@ class Create extends Component
 
     public Movement $movement;
 
+    public $amount;
+
     public array $movements = [];
 
     protected $operationRules = [
         'category' => ['required', 'exists:operation_categories,id'],
+        'amount' => ['required', 'numeric', 'min:0'],
         'operation.name' => ['required', 'max:100', 'min:3'],
         'operation.notes' => ['sometimes', 'max:3000'],
     ];
@@ -40,10 +44,6 @@ class Create extends Component
         'movement.account_id' => ['required', 'exists:accounts,id'],
         'movement.type' => ['required', 'boolean'],
         'movement.note' => ['sometimes', 'max:200'],
-        'movement.amount' => ['required', 'numeric', 'min:0'],
-        'movement.amountb' => ['required'],
-        'movement.currency_number' => ['required'],
-        'movement.currency_type' => ['required']
     ];
  
     protected $validationAttributes = [
@@ -72,25 +72,21 @@ class Create extends Component
         $this->categories = Auth::user()->operationCategories ?? new EloquentCollection();
     }
 
-    public function updatedMovement($value, $property)
+    protected function newMovement()
     {
-        switch ($property) {
-            case 'account_id':
-                $account = Account::find($value);
-                $currency = Money::getCurrency($account->balance_currency_number);
-                $this->movement->currency_number = $currency->getNumericCode();
-                $this->movement->currency_type = $currency->getType()->value;
-                break;
-
-            case 'amount':
-                $this->movement->amountb = Money::of("$value", $this->movement->currency_number)->getMinorAmount();
-                break;
-        }
+        $this->movement = Movement::factory()->empty()->make();
+        $this->movementId = $this->movement->id;
     }
 
     public function commitMovement()
     {
         $this->validate($this->movementRules);
+
+        $account = Account::find($this->movement->account_id);
+      
+        $this->movement->amount = Money::from(CurrencyType::from($account->balance_currency_type))
+                                        ->of("$this->amount", $account->balance_currency_number);
+
         $this->movements[$this->movementId ?? $this->getId()] = $this->movement->load('account')->toArray();
         $this->newMovement();
     }
@@ -116,12 +112,6 @@ class Create extends Component
         return ++$max;
     }
 
-    protected function newMovement()
-    {
-        $this->movement = Movement::factory()->empty()->make();
-        $this->movementId = $this->movement->id;
-    }
-
     public function submit()
     {
         $this->validate($this->operationRules);
@@ -135,6 +125,7 @@ class Create extends Component
         $this->commitMovements();
         $this->operation->movements()
                         ->saveMany($this->castMovementsToModels());
+
         return redirect()->route('home');
     }
 
@@ -153,17 +144,16 @@ class Create extends Component
     protected function commitMovements()
     {
         foreach ($this->movements as $movement) {
-            // dd('comiting movement', $movement);
             if($movement['type'] == 1) {
                 Account::whereId($movement['account_id'])
                     ->first()
-                    ->incrementBalance($movement['amount'])
+                    ->incrementBalance($movement['decimal_amount'])
                     ->save();
                 continue;
             }
             Account::whereId($movement['account_id'])
                 ->first()
-                ->decrementBalance($movement['amount'])
+                ->decrementBalance($movement['decimal_amount'])
                 ->save();
         }
     }

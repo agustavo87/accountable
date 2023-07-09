@@ -6,7 +6,7 @@ import OperationsTable from './components/operations_table'
 import OperationsOverview from './components/operations_overview'
 import CreateCategoryModal from './components/create_category_modal';
 import MoneyCurrencyGroupInput from './components/money_currency_group_input';
-
+import Money from './components/money';
 import menu from './tailwindui/components/menu'
 
 import Alpine from 'alpinejs'
@@ -21,6 +21,7 @@ Alpine.data('OperationsTable', OperationsTable)
 Alpine.data('OperationsOverview', OperationsOverview)
 Alpine.data('CreateCategoryModal', CreateCategoryModal)
 Alpine.data('MoneyCurrencyGroupInput', MoneyCurrencyGroupInput)
+Alpine.data('Money', Money)
 
 window.setCurrencyCodes(setSuportedCodes);
 

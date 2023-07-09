@@ -47,9 +47,9 @@ class MoneyFactory
                 $rounding
             );
         } catch (CurrencyNotFoundException $th) {
-            throw new CurrencyNotFoundException("Problem creating money from '$decimal' '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
+            throw new CurrencyNotFoundException("Problem creating money from '$decimal' and currency '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
         } catch (\Throwable $th) {
-            throw new MoneyException("Problem creating money from '$decimal' '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
+            throw new MoneyException("Problem creating money from '$decimal' and currency '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
         }
 
         return $money;

@@ -14,7 +14,7 @@
         ])}} >
         <div class="absolute inset-y-0 right-0 flex items-center">
             <label for="currency" class="sr-only">Currency</label>
-            <select wire:model="account.currency"  id="currency" name="currency"
+            <select {{ $currencies->attributes->wire('model') }}  id="currency" name="currency"
                 class="select mt-0 shadow-none bg-transparent border-transparent py-0 pl-2 pr-7 hover:bg-transparent hover:border-transparent focus:border-transparent focus:bg-transparent">
                 {{ $currencies }}
             </select>

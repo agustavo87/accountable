@@ -24,8 +24,6 @@ return new class extends Migration
                   ->onDelete('cascade');
 
             $table->string('name');
-            $table->string('currency');
-            $table->float('balance');
             $table->decimal('balance_amount',36,0)->default(0);
             $table->bigInteger('balance_currency_number')->default(32);
             $table->tinyInteger('balance_currency_type')->default(CurrencyType::Fiat->value);

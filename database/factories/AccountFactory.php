@@ -25,8 +25,6 @@ class AccountFactory extends Factory
         return [
             'user_id' => User::factory(),
             'name' => $this->faker->word(),
-            'currency' => $code,
-            'balance' => $balance,
             'balance_amount' => $money->getMinorAmount(),
             'balance_currency_number' => $money->getCurrencyNumber(),
             'balance_currency_type' => $money->getCurrencyType()->value
@@ -39,7 +37,6 @@ class AccountFactory extends Factory
         
         return $this->state(function ($attributes) use( $money) {
             return [
-                'balance' => $money->getDecimalAmount(),
                 'balance_amount' => $money->getMinorAmount(),
                 'balance_currency_number' => $money->getCurrencyNumber(),
                 'balance_currency_type' => $money->getCurrencyType()->value

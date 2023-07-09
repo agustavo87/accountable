@@ -5,42 +5,19 @@ namespace App\Models;
 use App\Support\Facades\Money;
 use App\Values\CurrencyType;
 use App\Values\Money as MoneyI;
+use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-/**
- * App\Models\Account
- *
- * @property int $id
- * @property \Illuminate\Support\Carbon|null $created_at
- * @property \Illuminate\Support\Carbon|null $updated_at
- * @property \App\Values\BrickMoneyWrapperMoney $balanceb
- * @property int $user_id
- * @property string $name
- * @property string $currency
- * @property float $balance
- * @property-read \Illuminate\Database\Eloquent\Collection<int, \App\Models\Movement> $movements
- * @property-read int|null $movements_count
- * @property-read \App\Models\User $user
- * @method static \Database\Factories\AccountFactory factory($count = null, $state = [])
- * @method static \Illuminate\Database\Eloquent\Builder|Account newModelQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Account newQuery()
- * @method static \Illuminate\Database\Eloquent\Builder|Account query()
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereBalance($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereCreatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereCurrency($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereId($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereName($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereUpdatedAt($value)
- * @method static \Illuminate\Database\Eloquent\Builder|Account whereUserId($value)
- * @mixin \Eloquent
- */
+
 class Account extends Model
 {
     use HasFactory;
 
     protected $guarded = [];
+
+    protected $appends = ['currency'];
 
     public function user()
     {
@@ -52,7 +29,17 @@ class Account extends Model
         return $this->hasMany(Movement::class);
     }
 
-    public function balanceb(): Attribute
+    public function credit()
+    {
+        return $this->movements()->where('type', 1);
+    }
+
+    public function debit()
+    {
+        return $this->movements()->where('type', 0);
+    }
+
+    public function balance(): Attribute
     {
         return Attribute::make(
             set: fn (MoneyI $money) => [
@@ -69,17 +56,30 @@ class Account extends Model
         )->withoutObjectCaching();
     }
 
+    public function currency(): Attribute
+    {
+        return Attribute::make(
+            get: function ($value, $attributes) {
+                try {
+                    $type = isset($attributes['balance_currency_type']) ? $attributes['balance_currency_type'] : CurrencyType::Fiat->value;
+                    $number = isset($attributes['balance_currency_number']) ? $attributes['balance_currency_number'] : 840;
+                    return Money::from(CurrencyType::from($type))->getCurrency($number);
+                } catch (\Throwable $th) {
+                    throw new Exception("Problem creating Currency Model".json_encode($this->attributes)."\n {$th->getMessage()}", 0, $th);
+                }
+            }
+        );
+    }
+
     public function incrementBalance($amount): static
     {
-        $this->balanceb = $this->balanceb->plus($amount);
-        $this->balance += $amount;
+        $this->balance = $this->balance->plus($amount);
         return $this;
     }
 
     public function decrementBalance($amount): static
     {
-        $this->balanceb = $this->balanceb->minus($amount);
-        $this->balance -= $amount;
+        $this->balance = $this->balance->minus($amount);
         return $this;
     }
 }
