@@ -9,7 +9,7 @@ use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Database\Seeder;
 
-class GeneralSeeder extends Seeder
+class JohnDoeSeeder extends Seeder
 {
     /**
      * Run the database seeds.

@@ -19,7 +19,7 @@ class DatabaseSeeder extends Seeder
             // CryptoCurrencySeeder::class,
             // CountrySeeder::class,
             // CountryCurrencySeeder::class,
-            GeneralSeeder::class
+            JohnDoeSeeder::class
         ]);
     }
 }
