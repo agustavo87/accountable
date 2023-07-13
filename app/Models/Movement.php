@@ -24,6 +24,21 @@ class Movement extends Model
 
     protected $appends = ['decimal_amount'];
 
+    /**
+     * The model's default values for attributes.
+     *
+     * @var array
+     */
+    protected $attributes = [
+        'operation_id' => null,
+        'account_id' => null,
+        'type'      => 0,
+        'minor_amount'  => 0,
+        'currency_number'   => 32,
+        'currency_type' => CurrencyType::Fiat->value,
+        'note'  => ''
+    ];
+
     public function decimalAmount(): Attribute
     {
         return Attribute::make(

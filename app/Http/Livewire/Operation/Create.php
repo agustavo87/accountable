@@ -74,7 +74,7 @@ class Create extends Component
 
     protected function newMovement()
     {
-        $this->movement = Movement::factory()->empty()->make();
+        $this->movement = new Movement();
         $this->movementId = $this->movement->id;
     }
 
