@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Support\Facades\Money;
 use App\Values\CurrencyType;
-use App\Values\Money as MoneyI;
+use App\Values\Money as MoneyInterface;
 use Exception;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
@@ -42,7 +42,7 @@ class Account extends Model
     public function balance(): Attribute
     {
         return Attribute::make(
-            set: fn (MoneyI $money) => [
+            set: fn (MoneyInterface $money) => [
                 'balance_amount' => $money->getMinorAmount(),
                 'balance_currency_number' => $money->getCurrencyNumber(),
                 'balance_currency_type' => $money->getCurrencyType()->value

@@ -3,13 +3,9 @@
 namespace App\Repositories\Currency;
 
 use App\Exceptions\CurrencyNotFoundException;
-use App\Exceptions\MoneyException;
-use App\Models\CryptoCurrency;
-use App\Models\CustomCurrency;
-use App\Models\User;
+use App\Models\{CustomCurrency, User};
 use App\Values\{Currency, CurrencyType, WrappedBrickCurrency};
 use Brick\Money\Currency as BrickCurrency;
-use Exception;
 use Illuminate\Support\Collection;
 
 class Custom extends AbstractCurrencyRepository

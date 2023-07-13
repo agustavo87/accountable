@@ -4,19 +4,16 @@ namespace Tests\Feature;
 
 use Tests\TestCase;
 use App\Models\User;
-use App\Models\AccountV2 as Account;
+use App\Models\Account;
 use App\Support\Facades\Money;
-use App\Exceptions\{CurrencyNotFoundException, MathException, MoneyException, MoneyMismatchException, RoundingNecessaryException};
-use App\Models\CryptoCurrency;
-use App\Repositories\Currency\{Crypto, Custom as CustomCurrency, Factory as CurrencyRepositoryFactory};
+use App\Repositories\Currency\Crypto;
 use App\Values\{BrickMoneyWrapper, BrickMoneyWrapperMoney, Currency, CurrencyType, RoundingMode};
-use Brick\Math\RoundingMode as  BrickRoundingMode;
-use Brick\Math\Exception\RoundingNecessaryException as BrickRoundingNecessaryException;
+use App\Exceptions\{CurrencyNotFoundException,MoneyMismatchException, RoundingNecessaryException};
+use Brick\Math\RoundingMode as BrickRoundingMode;
 use Brick\Money\Context\{CashContext, CustomContext, AutoContext};
 use Brick\Money\Exception\MoneyMismatchException as BrickMoneyMismatchException;
-use Database\Seeders\CryptoCurrencySeeder;
+use Brick\Math\Exception\RoundingNecessaryException as BrickRoundingNecessaryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\File;
 
 class MoneyTest extends TestCase
 {
@@ -170,7 +167,7 @@ class MoneyTest extends TestCase
     }
 
     /** @test */
-    public function money_cash_context_work()
+    public function brick_money_cash_context_work()
     {
         $money = Money::brickOf(10, 'CHF', new CashContext(5)); // CHF 10.00
         
@@ -180,7 +177,7 @@ class MoneyTest extends TestCase
     }
 
     /** @test */
-    public function custom_scales_works()
+    public function brick_money_custom_scales_works()
     {
         $money = Money::brickOf(10, 'USD', new CustomContext(4));
         $this->assertEquals('USD 10.0000', "{$money}");
@@ -188,7 +185,7 @@ class MoneyTest extends TestCase
     }
 
     /** @test */
-    public function auto_scale_works()
+    public function brick_money_auto_scale_works()
     {
         $money = Money::brickOf('1.10', 'USD', new AutoContext()); // USD 1.1
         $this->assertEquals('USD 1.1', "{$money}");
@@ -197,7 +194,7 @@ class MoneyTest extends TestCase
     }
 
     /** @test */
-    public function works_with_rational_numbers()
+    public function btrick_money_works_with_rational_numbers()
     {
         $money = Money::brickOf('9.5', 'EUR');
         $this->assertEquals('EUR 9.50', "$money"); 
@@ -284,7 +281,7 @@ class MoneyTest extends TestCase
     }
 
     /** @test */
-    public function allocation_works_well_with_roundings()
+    public function brick_allocation_works_well_with_roundings()
     {
         $profit = Money::brickOf('987.65', 'CHF', new CashContext(5));
         $this->assertEquals(
@@ -453,7 +450,7 @@ class MoneyTest extends TestCase
         $this->expectException(RoundingNecessaryException::class);
         $money = Money::from(CurrencyType::Crypto)->of('0.05', 'BTC');
 
-        $money->plus('0.0099999999'); // MathException
+        $money->plus('0.0099999999'); // RoundingNecessaryException
     }
 
     /** @test */
@@ -496,7 +493,7 @@ class MoneyTest extends TestCase
 
     protected function seedCustomMoneyFor(User $user)
     {
-        $customCurrencies = new CustomCurrency($user);
+        $customCurrencies = Money::customCurrenciesOf($user);
         $customCurrencies->put('ARA', 'Argentinian Austral', 3);
         $customCurrencies->put('ARP', 'Argentinan Patacon', 4);
     }
@@ -522,9 +519,10 @@ class MoneyTest extends TestCase
         $this->seedCustomMoneyFor($user);
         
         $userB = User::factory()->create();
-        (new CustomCurrency($userB))->put('ESP', 'Spanish Peseta', 4);
 
-        $currencies = (new CurrencyRepositoryFactory())->Custom($user);
+        Money::customCurrenciesOf($userB)->put('ESP', 'Spanish Peseta', 4);
+
+        $currencies = Money::customCurrenciesOf($user);
 
         $userCurrencies = $currencies->all();
 
@@ -601,7 +599,7 @@ class MoneyTest extends TestCase
         $a = $customMoney->of(1, 'ARA');
         $b = $customMoney->of(1, 'ARP');
  
-        $a->plus($b); // MoneyException
+        $a->plus($b); // MoneyMismatchException
         $this->assertTrue(true);
      }
 
@@ -614,7 +612,7 @@ class MoneyTest extends TestCase
         $this->seedCustomMoneyFor($user);
         
         $userB = User::factory()->create();
-        (new CustomCurrency($userB))->put('ESP', 'Spanish Peseta', 4);
+        Money::customCurrenciesOf($userB)->put('ESP', 'Spanish Peseta', 4);
 
         $userBCustomMoney = Money::from(CurrencyType::Custom, [$userB]);
         $someMoney = $userBCustomMoney->of('1', 'ARA');

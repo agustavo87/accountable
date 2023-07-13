@@ -4,7 +4,7 @@ namespace App\Models;
 
 use App\Support\Facades\Money;
 use App\Values\CurrencyType;
-use App\Values\Money as MoneyI;
+use App\Values\Money as MoneyInterface;
 use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
@@ -50,7 +50,7 @@ class Movement extends Model
     public function amount(): Attribute
     {
         return Attribute::make(
-            set: fn (MoneyI $money) => [
+            set: fn (MoneyInterface $money) => [
                 'minor_amount' => $money->getMinorAmount(),
                 'currency_number' => $money->getCurrencyNumber(),
                 'currency_type' => $money->getCurrencyType()->value

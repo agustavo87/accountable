@@ -5,6 +5,7 @@ namespace App\Values;
 use App\Exceptions\CurrencyNotFoundException;
 use App\Exceptions\MoneyException;
 use App\Repositories\Currency\CurrencyRepository;
+use App\Repositories\Currency\Custom as CustomCurrencyRepository;
 use App\Repositories\Currency\Factory as CurrencyRepositoryFactory;
 use Brick\Money\Context;
 use Brick\Money\Money as BrickMoney;
@@ -18,7 +19,17 @@ class MoneyFactory
     public function __construct(CurrencyType $type = CurrencyType::Fiat, array $params = [])
     {
         $this->type = $type;
-        $this->currencies = (new CurrencyRepositoryFactory())->for($this->type, $params);
+        $this->currencies = static::currencies($type, $params);
+    }
+
+    public static function currencies(CurrencyType $type, $params): CurrencyRepository
+    {
+        return (new CurrencyRepositoryFactory())->for($type, $params);
+    }
+
+    public static function customCurrenciesOf($user): CustomCurrencyRepository
+    {
+        return static::currencies(CurrencyType::Custom, [$user]);
     }
 
     public static function from(CurrencyType $type, array $params = []): static
