@@ -15,11 +15,11 @@ class DatabaseSeeder extends Seeder
     public function run()
     {
         $this->call([
+            CryptoCurrencySeeder::class,
+            JohnDoeSeeder::class,
             // ISOCurrencySeeder::class,
-            // CryptoCurrencySeeder::class,
             // CountrySeeder::class,
             // CountryCurrencySeeder::class,
-            JohnDoeSeeder::class
         ]);
     }
 }
