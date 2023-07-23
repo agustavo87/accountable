@@ -1,6 +1,6 @@
 
-import KeyPressedOnImprovedInput from "./KeyPressedOnImprovedImput";
-import ImprovedInput from "./improvedInput";
+import KeyPressedOnMoneyInput from "./KeyPressedOnMoneyInput";
+import MoneyInput from "./moneyInput";
 
 export default (opts) => ({
     currencyOptions: opts.currencyOptions,
@@ -62,7 +62,7 @@ export default (opts) => ({
     },
     inputAmount(event) {
 
-        const onAmount = new KeyPressedOnImprovedInput(this.amountInput, this.locale, event)
+        const onAmount = new KeyPressedOnMoneyInput(this.amountInput, this.locale, event)
 
         if (onAmount.aFunctionalKeyIsPressed) {
             if(onAmount.isErasingAThousand) {
@@ -73,7 +73,7 @@ export default (opts) => ({
             } 
             // After the default event handler has made effect.
             this.$nextTick(() => {
-                const _onAmount = new KeyPressedOnImprovedInput(this.amountInput, this.locale, event)
+                const _onAmount = new KeyPressedOnMoneyInput(this.amountInput, this.locale, event)
                 _onAmount.value = !_onAmount.empty ? this.format(_onAmount.toStandardDecimalForFormater(_onAmount.initValue)) : ''
                 if(_onAmount.pressed('Backspace')) {
                     _onAmount.cursor = _onAmount.calculateCursorPositionAfterBackspace()
@@ -87,7 +87,7 @@ export default (opts) => ({
         if(onAmount.aValidNumericKeyIsPressed) {
             if(onAmount.aDecimalIsPressed) {
                 if(onAmount.aDecimalIsPresent) return
-                onAmount.value = this.format(onAmount.toStandardDecimalForFormater(onAmount.firstSegment)) + onAmount.key + this.removeThousands(onAmount.lastSegment)
+                onAmount.value = this.format(onAmount.toStandardDecimalForFormater(onAmount.firstSegment)) + onAmount.key + onAmount.removeThousands(onAmount.lastSegment)
                 onAmount.cursor++
                 return
             }
@@ -106,37 +106,13 @@ export default (opts) => ({
         return this.nf.format(number)
     },
 
-    toStandardDecimalForFormater(number) {
-        return this.replaceCommasForDots(this.removeThousands(number))
-    },
-
     reformatInput(onAmount) {
         onAmount.value =  this.format(onAmount.toStandardDecimalForFormater(onAmount.compound)) 
-        onAmount.cursor = this.calculateCurosrPosition(onAmount)
-    },
-
-    replaceCommasForDots(segment) {
-        return segment.replace(',', '.')
+        onAmount.cursor = onAmount.calculateCurosrPosition((number) => this.format(number))
     },
 
     formatInput() {
-        const amount = new ImprovedInput(this.amountInput, this.locale)
+        const amount = new MoneyInput(this.amountInput, this.locale)
         amount.value = this.format(amount.toStandardDecimalForFormater(amount.value))
-    },
-
-    calculateCurosrPosition(onAmount) {
-        let intialPosition = onAmount.positionWithoutThousands(onAmount.firstSegment.length, onAmount.firstSegment) + 1
-        let newFirstSegment = this.removeThousands(onAmount.compound).slice(0, intialPosition + 1)
-        return intialPosition + this.estimateThousands(newFirstSegment)
-    },
-
-    estimateThousands(segment) {
-        let formated = this.nf.format(segment)
-        let thousands = formated.match(this.locale.thousandsRegExp)
-        return thousands ? thousands.length : 0
-    },
-
-    removeThousands(segment) {
-        return segment.replaceAll(this.locale.thousands, '')
     },
 })

@@ -1,4 +1,4 @@
-export default class ImprovedInput {
+export default class MoneyInput {
     /**
      * 
      * @param {HTMLInputElement} input 
@@ -60,5 +60,11 @@ export default class ImprovedInput {
 
     removeThousands(segment) {
         return segment.replaceAll(this.locale.thousands, '')
+    }
+
+    estimateThousands(segment, format) {
+        let formated = format(segment)
+        let thousands = formated.match(this.locale.thousandsRegExp)
+        return thousands ? thousands.length : 0
     }
 }

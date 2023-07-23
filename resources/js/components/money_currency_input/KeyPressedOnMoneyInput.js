@@ -1,6 +1,6 @@
-import ImprovedInput from "./improvedInput"
+import MoneyInput from "./moneyInput"
 
-export default class KeyPressedOnImprovedInput extends ImprovedInput {
+export default class KeyPressedOnMoneyInput extends MoneyInput {
     /**
      * 
      * @param {HTMLInputElement} input 
@@ -49,5 +49,11 @@ export default class KeyPressedOnImprovedInput extends ImprovedInput {
     
     get aDecimalIsPressedAgain() {
         return this.key == this.locale.decimal && this.initValue.includes(this.locale.decimal)
+    }
+
+    calculateCurosrPosition(format) {
+        let intialPosition = this.positionWithoutThousands(this.firstSegment.length, this.firstSegment) + 1
+        let newFirstSegment = this.removeThousands(this.compound).slice(0, intialPosition + 1)
+        return intialPosition + this.estimateThousands(newFirstSegment, format)
     }
 }
