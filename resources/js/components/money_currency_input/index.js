@@ -77,7 +77,9 @@ export default (opts) => ({
                 _onAmount.value = !_onAmount.empty ? this.format(_onAmount.toStandardDecimalForFormater(_onAmount.initValue)) : ''
                 if(_onAmount.pressed('Backspace')) {
                     _onAmount.cursor = _onAmount.calculateCursorPositionAfterBackspace()
+                    return
                 }
+                _onAmount.cursor = _onAmount.cursor
             })
             return
         }
@@ -97,6 +99,7 @@ export default (opts) => ({
                 onAmount.cursor++
                 return
             }
+            
             this.reformatInput(onAmount)
             this.amount = onAmount.value
         }
