@@ -22,7 +22,7 @@ export default class KeyPressedOnMoneyInput extends MoneyInput {
             || this.code.includes('Backspace')
             || this.code.includes('Arrow')
     }
-
+    
     get isErasingAThousand () {
         return this.code.includes('Backspace') && this.firstSegment.at(-1) == this.locale.thousands
     }

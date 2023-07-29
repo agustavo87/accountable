@@ -44,21 +44,17 @@ export default (opts) => ({
         })
     },
     setupLocale() {
-        if(this.lang.includes('es')) {
-            this.locale = {
-                decimal: ',',
-                thousands: '.',
-                decimalRegExp: /,/g,
-                thousandsRegExp: /\./g,
-            }
-            return
-        } 
+        const parts = this.nf.formatToParts(25325.5);
+        const decimal = parts.find(part => part.type == 'decimal').value
+        const thousands = parts.find(part => part.type == 'group').value
+
         this.locale = {
-            decimal: '.',
-            thousands :',',
-            decimalRegExp: /\./g,
-            thousandsRegExp: /,/g,
+            decimal: decimal,
+            thousands: thousands,
+            decimalRx: new RegExp(`\\${decimal}`, 'g'),
+            thousandsRx: new RegExp(`\\${thousands}`, 'g')
         }
+        return;
     },
     inputAmount(event) {
 
@@ -99,7 +95,7 @@ export default (opts) => ({
                 onAmount.cursor++
                 return
             }
-            
+
             this.reformatInput(onAmount)
             this.amount = onAmount.value
         }

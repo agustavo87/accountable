@@ -26,7 +26,7 @@ export default class MoneyInput {
     }
 
     thousandsSignsIn(segment) {
-        let segmentThousands = segment.match(this.locale.thousandsRegExp)
+        let segmentThousands = segment.match(this.locale.thousandsRx)
         return segmentThousands ? segmentThousands.length : 0
     }
 
@@ -64,7 +64,7 @@ export default class MoneyInput {
 
     estimateThousands(segment, format) {
         let formated = format(segment)
-        let thousands = formated.match(this.locale.thousandsRegExp)
+        let thousands = formated.match(this.locale.thousandsRx)
         return thousands ? thousands.length : 0
     }
 }
