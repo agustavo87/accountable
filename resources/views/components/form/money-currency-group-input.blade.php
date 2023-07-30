@@ -9,6 +9,7 @@
         currencyHint: @entangle($currency->attributes->wire('hint')),
         errors: @entangle($attributes->wire('errors')),
         lang: '{{$lang}}',
+        scale: 2,
     })"
     {{ $attributes }}
 >
@@ -25,9 +26,9 @@
                     'type' => 'text',
                     'inputmode' => 'numeric',
                     'class' => "amount-input text-input sin-apariencia",
-                    'placeholder' => "0.00",
                     'autocomplete' => "off",
                 ])}}
+                x-bind:placeholder="placeholder"
                 x-on:keydown="inputAmount($event)"
                 x-on:blur="formatInput"
                 x-ref="amount"

@@ -10,6 +10,8 @@ export default (opts) => ({
     errors: opts.errors,
     amount: opts.amount,
     lang: opts.lang,
+    scale: opts.scale,
+    placeholder: '0.00',
     nf: new Intl.NumberFormat(opts.lang),
     get amountInput() {
         return this.$refs.amount
@@ -54,6 +56,7 @@ export default (opts) => ({
             decimalRx: new RegExp(`\\${decimal}`, 'g'),
             thousandsRx: new RegExp(`\\${thousands}`, 'g')
         }
+        this.placeholder = new Intl.NumberFormat(this.lang, {minimumFractionDigits: this.scale}).format(0);
         return;
     },
     inputAmount(event) {
