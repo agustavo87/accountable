@@ -27,10 +27,10 @@
     }
 
     .money-container .money-currency-input-group .money-sign {
-        @apply pointer-events-none absolute inset-y-0 left-0 flex  items-center pl-3;
+        @apply pointer-events-none absolute inset-y-0 left-0 flex items-center pl-3 font-mono;
     }
     .money-container .money-currency-input-group .money-sign span {
-        @apply mt-0.5;
+        margin-top: 0.22rem;
     }
 
     .money-container .money-currency-input-group .currency-input-container .currency-input {

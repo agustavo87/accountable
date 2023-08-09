@@ -12,6 +12,14 @@ export default class MoneyInput {
         this.lastSegment = this.initValue.slice(this.cursor)
         this.firstSegment = this.initValue.slice(0,this.cursor)
     }
+
+    partsOf(number) {
+        const integerAndFractional = number.split(this.locale.decimal)
+        return {
+            integer: integerAndFractional[0],
+            fractional:integerAndFractional.length > 1 ? integerAndFractional[1] : null
+        } 
+    }
     
     get value() {
         return this.input.value
@@ -50,7 +58,7 @@ export default class MoneyInput {
         return !this.initValue.length
     }
 
-    toStandardDecimalForFormater(number) {
+    toStandardDecimal(number) {
         return this.replaceCommasForDots(this.removeThousands(number))
     }
 

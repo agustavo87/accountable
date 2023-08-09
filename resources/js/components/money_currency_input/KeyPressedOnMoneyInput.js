@@ -27,8 +27,17 @@ export default class KeyPressedOnMoneyInput extends MoneyInput {
         return this.code.includes('Backspace') && this.firstSegment.at(-1) == this.locale.thousands
     }
 
+    jumpOnePositionBack() {
+        this.keyEvent.preventDefault()
+        this.cursor--
+    }
+
     pressed (keyName) {
         return this.code.includes(keyName)
+    }
+
+    preventDefault() {
+        this.keyEvent.preventDefault()
     }
 
     calculateCursorPositionAfterBackspace() {

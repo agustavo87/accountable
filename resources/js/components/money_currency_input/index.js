@@ -8,11 +8,13 @@ export default (opts) => ({
     _currency: '',
     currencyHint: opts.currencyHint,
     errors: opts.errors,
-    amount: opts.amount,
+    _amount: opts.amount,
     lang: opts.lang,
     scale: opts.scale,
     placeholder: '0.00',
-    nf: new Intl.NumberFormat(opts.lang),
+    nf: new Intl.NumberFormat(opts.lang, {
+        maximumFractionDigits: opts.scale
+    }),
     get amountInput() {
         return this.$refs.amount
     },
@@ -21,7 +23,11 @@ export default (opts) => ({
     },
     get showCurrencies() {
         return !this._hideCurrencies && (this.onCurrencyInput || this.onCurrenciesList);
-    },    
+    },
+    set formatedAmount(amount)
+    {
+        this._amount = amount
+    },
     onCurrencyInput:false,
     onCurrenciesList:false,
     _hideCurrencies: false,
@@ -56,7 +62,10 @@ export default (opts) => ({
             decimalRx: new RegExp(`\\${decimal}`, 'g'),
             thousandsRx: new RegExp(`\\${thousands}`, 'g')
         }
-        this.placeholder = new Intl.NumberFormat(this.lang, {minimumFractionDigits: this.scale}).format(0);
+
+        this.placeholder = Intl.NumberFormat(this.lang, {
+            minimumFractionDigits: this.scale
+        }).format(0);
         return;
     },
     inputAmount(event) {
@@ -66,14 +75,15 @@ export default (opts) => ({
         if (onAmount.aFunctionalKeyIsPressed) {
             if(onAmount.isErasingAThousand) {
                 // we don't want to erase thousands groups, just jump over them.
-                onAmount.keyEvent.preventDefault()
-                onAmount.cursor--
+                onAmount.jumpOnePositionBack()
                 return
             } 
             // After the default event handler has made effect.
             this.$nextTick(() => {
+                // new instance with previous event, but updated imput
                 const _onAmount = new KeyPressedOnMoneyInput(this.amountInput, this.locale, event)
-                _onAmount.value = !_onAmount.empty ? this.format(_onAmount.toStandardDecimalForFormater(_onAmount.initValue)) : ''
+                _onAmount.value = !_onAmount.empty ? this.format(_onAmount.toStandardDecimal(_onAmount.initValue)) : ''
+                this.formatedAmount = _onAmount.toStandardDecimal(_onAmount.value)
                 if(_onAmount.pressed('Backspace')) {
                     _onAmount.cursor = _onAmount.calculateCursorPositionAfterBackspace()
                     return
@@ -83,24 +93,32 @@ export default (opts) => ({
             return
         }
         
-        onAmount.keyEvent.preventDefault()
+        onAmount.preventDefault()
 
         if(onAmount.aValidNumericKeyIsPressed) {
             if(onAmount.aDecimalIsPressed) {
                 if(onAmount.aDecimalIsPresent) return
-                onAmount.value = this.format(onAmount.toStandardDecimalForFormater(onAmount.firstSegment)) + onAmount.key + onAmount.removeThousands(onAmount.lastSegment)
+                onAmount.value = this.format(onAmount.toStandardDecimal(onAmount.firstSegment)) + onAmount.key + onAmount.removeThousands(onAmount.lastSegment)
+                if(onAmount.lastSegment) {
+                    // if there's something at the right of the decimal sign.
+                    this.formatedAmount = onAmount.toStandardDecimal(onAmount.value)
+                }
                 onAmount.cursor++
                 return
             }
 
             if(onAmount.cursorIsOnFractionSide) {
                 onAmount.value = onAmount.compound
+                // only save if the fractional part is inbound of scale
+                if(onAmount.partsOf(onAmount.value).fractional.length <= this.scale) {
+                    this.formatedAmount = onAmount.toStandardDecimal(onAmount.value)
+                }
                 onAmount.cursor++
                 return
             }
 
             this.reformatInput(onAmount)
-            this.amount = onAmount.value
+            this.formatedAmount = onAmount.toStandardDecimal(onAmount.value)
         }
     },
 
@@ -109,12 +127,13 @@ export default (opts) => ({
     },
 
     reformatInput(onAmount) {
-        onAmount.value =  this.format(onAmount.toStandardDecimalForFormater(onAmount.compound)) 
+        onAmount.value =  this.format(onAmount.toStandardDecimal(onAmount.compound)) 
         onAmount.cursor = onAmount.calculateCurosrPosition((number) => this.format(number))
     },
 
     formatInput() {
         const amount = new MoneyInput(this.amountInput, this.locale)
-        amount.value = this.format(amount.toStandardDecimalForFormater(amount.value))
+        amount.value = this.format(amount.toStandardDecimal(amount.value))
+        this.formatedAmount = amount.toStandardDecimal(amount.value)
     },
 })
