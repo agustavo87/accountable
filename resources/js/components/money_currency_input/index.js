@@ -33,6 +33,7 @@ export default (opts) => ({
     _hideCurrencies: false,
     hideCurrencies: function () {
         this._hideCurrencies = true
+        this.onCurrenciesList = false
         window.setTimeout(() => {
             this._hideCurrencies = false
         }, 500);
