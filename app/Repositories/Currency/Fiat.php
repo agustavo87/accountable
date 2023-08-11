@@ -7,7 +7,7 @@ use Brick\Money\Currency as BrickCurrency;
 
 class Fiat extends AbstractCurrencyRepository
 {
-    public const TYPE = CurrencyType::Crypto;
+    public const TYPE = CurrencyType::Fiat;
 
     public function getByNumber(int $code): Currency|WrappedBrickCurrency
     {
