@@ -18,7 +18,7 @@ interface Money
 
     public function equals(Money $money): bool;
 
-    public function getCurrency(): Currency;
+    public function getCurrency(): EnhancedCurrency;
 
     /**
      * @throws \App\Exceptions\MathException

@@ -3,7 +3,7 @@
 namespace App\Repositories\Currency;
 
 use App\Models\CryptoCurrency;
-use App\Values\{Currency, CurrencyType, WrappedBrickCurrency};
+use App\Values\{Currency, CurrencyType, EnhancedCurrency, WrappedBrickCurrency};
 use Brick\Money\Currency as BrickCurrency;
 
 class Crypto extends AbstractCurrencyRepository
@@ -20,12 +20,12 @@ class Crypto extends AbstractCurrencyRepository
         ]);
     }
 
-    public function getByNumber(int $code): Currency|WrappedBrickCurrency
+    public function getByNumber(int $code): EnhancedCurrency
     {
         return $this->getCurrencyFromModel(CryptoCurrency::whereNumericCode($code)->first());
     }
 
-    protected function getCurrencyFromModel(CryptoCurrency $currencyModel): WrappedBrickCurrency
+    protected function getCurrencyFromModel(CryptoCurrency $currencyModel): EnhancedCurrency
     {
         return new WrappedBrickCurrency(new BrickCurrency(
             currencyCode:$currencyModel->code,
@@ -35,7 +35,7 @@ class Crypto extends AbstractCurrencyRepository
         ), self::TYPE);
     }
 
-    public function get(string $code): Currency|WrappedBrickCurrency
+    public function get(string $code): EnhancedCurrency
     {
         return $this->getCurrencyFromModel(CryptoCurrency::whereCode($code)->first());
     }

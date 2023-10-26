@@ -16,10 +16,8 @@ class DatabaseSeeder extends Seeder
     {
         $this->call([
             CryptoCurrencySeeder::class,
+            ISOCurrencySeeder::class,
             JohnDoeSeeder::class,
-            // ISOCurrencySeeder::class,
-            // CountrySeeder::class,
-            // CountryCurrencySeeder::class,
         ]);
     }
 }

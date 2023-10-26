@@ -4,6 +4,7 @@ namespace Tests\Feature\Livewire\Account;
 
 use App\Http\Livewire\Account\Create as CreateAccount;
 use App\Models\Account;
+use App\Models\ISOCurrency;
 use App\Models\User;
 use App\Support\Facades\Money;
 use App\Values\CurrencyType;
@@ -15,9 +16,29 @@ class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function seedFiatCurrencies()
+    {
+        ISOCurrency::create([
+            'code' => 'USD',
+            'number'  => 840,
+            'name'  => 'US Dollar',
+            'minor_units' => 2,
+            'symbol'    => '$',
+        ]);
+
+        ISOCurrency::create([
+            'code' => 'ARS',
+            'number'  => 032,
+            'name'  => 'Argentine Peso',
+            'minor_units' => 2,
+            'symbol'    => '$',
+        ]);
+    }
+
     /** @test */
     public function the_component_can_render()
     {
+        $this->seedFiatCurrencies();
         $component = Livewire::test(CreateAccount::class);
 
         $component->assertStatus(200);
@@ -26,6 +47,7 @@ class CreateTest extends TestCase
     /** @test */
     function can_create_account()
     {
+        $this->seedFiatCurrencies();
         $this->actingAs(User::factory()->create());
     
         Livewire::test(CreateAccount::class)
@@ -43,6 +65,7 @@ class CreateTest extends TestCase
     /** @test */
     function can_create_account_with_fiat_money()
     {
+        $this->seedFiatCurrencies();
         $this->actingAs(User::factory()->create());
 
         Livewire::test(CreateAccount::class)

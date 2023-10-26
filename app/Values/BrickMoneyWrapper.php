@@ -9,9 +9,20 @@ use Brick\Money\{
 };
 use Stringable;
 
+/**
+ * A Brick Money Wrapper
+ */
 class BrickMoneyWrapper implements Stringable
 {
     protected BrickMoney|RationalMoney $money;
+
+    /**
+     * Currency that wraps a Brick Currency
+     * 
+     * So also has a type
+     *
+     * @var WrappedBrickCurrency
+     */
     protected WrappedBrickCurrency $currency;
 
     public function __construct(AbstractMoney|null $money = null, ?WrappedBrickCurrency $currency = null)

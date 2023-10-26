@@ -1,4 +1,7 @@
 <div class="bg-gray-100">
+    {{-- <x-any-errors-notice /> --}}
+    {{-- {{ $accountBalance }}
+    {{ $currency }} --}}
     <div class="mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
         <div>
             <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -25,25 +28,37 @@
                                             Account Name
                                         </x-slot>
                                         <x-slot:input 
-                                            wire:model.debounce="accountName" 
+                                            wire:model.defer="accountName" 
                                             autocomplete="off"
                                             placeholder="Bank XXX CC..."
                                         >
                                         </x-slot>
                                     </x-form.input>
-                                    <x-form.money-input 
+                                    <x-form.money-currency-group-input
+                                        lang="{{$locale}}"
+                                        wire:errors="errors" 
+                                        label="Balance"
                                         class="col-span-6 sm:col-span-3"
-                                        id="balance"
                                     >
-                                        <x-slot:input
-                                            wire:model.debounce="accountBalance"
+                                        <x-slot:amount
+                                            id="accountBalance" 
+                                            wire:model.defer="accountBalance"
                                         ></x-slot>
-                                        <x-slot:currencies wire:model="currency">
-                                            @foreach ($currencies as $currency)
-                                                <option value="{{$currency}}">{{ $currency }}</option>
-                                            @endforeach
+                                        <x-slot:currency
+                                            {{-- Selected currency back <-> front --}}
+                                            wire:model="currency"
+                                            {{-- Options to select back -> front --}}
+                                            wire:options="currencyOptions"
+                                            {{-- Hint for the search back <- front --}}
+                                            wire:hint="currencyHint"
+                                            wire:parameters="currencyParameters"
+                                            placeholder="..."
+                                        ></x-slot>
+                                        <x-slot:errors>
+                                            <x-error for="amount" class="mt-0.5" />
+                                            <x-error for="currency" class="mt-0.5" />
                                         </x-slot>
-                                    </x-form.money-input>
+                                    </x-form.money-currency-group-input >
                                 </div>
 
                                 <x-form.text-area 

@@ -6,10 +6,21 @@ use Brick\Money\Currency as BrickCurrency;
 use App\Values\Currency;
 use Illuminate\Contracts\Support\Arrayable;
 
-class WrappedBrickCurrency implements Currency, Arrayable
+/**
+ * A Currency implementation that wraps a Brick Currency
+ * 
+ * It allows to work with diferent types of currency.
+ */
+class WrappedBrickCurrency extends EnhancedCurrency implements Arrayable
 {
+    /**
+     * Wrapped brick currency
+     */
     protected BrickCurrency $brick;
 
+    /**
+     * Currency type
+     */
     protected CurrencyType $type;
 
     public static function getBrickCurrency(Currency $currency): BrickCurrency

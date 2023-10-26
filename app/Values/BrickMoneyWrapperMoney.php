@@ -9,6 +9,9 @@ use App\Exceptions\RoundingNecessaryException;
 use Brick\Money\Money as BrickMoney;
 use App\Values\Currency;
 
+/**
+ * A Money implementation that works wrapping a Brick Money Instance
+ */
 class BrickMoneyWrapperMoney extends BrickMoneyWrapper implements Money
 {
     public function setFromMinor(string $amount, Currency|WrappedBrickCurrency $currency)
@@ -60,7 +63,7 @@ class BrickMoneyWrapperMoney extends BrickMoneyWrapper implements Money
         return $this->money->isEqualTo($money->getWrapped());
     }
 
-    public function getCurrency(): Currency|WrappedBrickCurrency
+    public function getCurrency(): EnhancedCurrency
     {
         return $this->currency;
     }

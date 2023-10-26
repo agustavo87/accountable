@@ -4,7 +4,7 @@ namespace App\Repositories\Currency;
 
 use App\Exceptions\CurrencyNotFoundException;
 use App\Models\{CustomCurrency, User};
-use App\Values\{Currency, CurrencyType, WrappedBrickCurrency};
+use App\Values\{Currency, CurrencyType, EnhancedCurrency, WrappedBrickCurrency};
 use Brick\Money\Currency as BrickCurrency;
 use Illuminate\Support\Collection;
 
@@ -29,7 +29,7 @@ class Custom extends AbstractCurrencyRepository
         ]);
     }
 
-    public function getByNumber(int $number): Currency|WrappedBrickCurrency
+    public function getByNumber(int $number): EnhancedCurrency
     {
         return $this->getCurrencyFromModel(CustomCurrency::find($number)->first());
     }
@@ -44,7 +44,7 @@ class Custom extends AbstractCurrencyRepository
         ), self::TYPE);
     }
 
-    public function get(string $code): Currency|WrappedBrickCurrency
+    public function get(string $code): EnhancedCurrency
     {
         $currency = CustomCurrency::where([
             ['user_id', $this->user->id],

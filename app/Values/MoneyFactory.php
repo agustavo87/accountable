@@ -13,7 +13,14 @@ use Brick\Math\RoundingMode as BrickRoundingMode;
 
 class MoneyFactory
 {
+    /**
+     * The type of the money factory
+     */
     protected CurrencyType $type;
+
+    /**
+     * A currency repository of the money factory type
+     */
     protected CurrencyRepository $currencies;
 
     public function __construct(CurrencyType $type = CurrencyType::Fiat, array $params = [])
@@ -22,7 +29,7 @@ class MoneyFactory
         $this->currencies = static::currencies($type, $params);
     }
 
-    public static function currencies(CurrencyType $type, $params): CurrencyRepository
+    public static function currencies(CurrencyType $type, $params = []): CurrencyRepository
     {
         return (new CurrencyRepositoryFactory())->for($type, $params);
     }

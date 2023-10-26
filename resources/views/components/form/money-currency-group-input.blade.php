@@ -1,11 +1,13 @@
 @props([
     'lang' => 'en',
+    'label' => 'balance'
 ])
 <div
     x-data="MoneyCurrencyGroupInput({
         amount: @entangle($amount->attributes->wire('model')),
         currency: @entangle($currency->attributes->wire('model')),
         currencyOptions: @entangle($currency->attributes->wire('options')),
+        currencyParameters: @entangle($currency->attributes->wire('parameters')),
         currencyHint: @entangle($currency->attributes->wire('hint')),
         errors: @entangle($attributes->wire('errors')),
         lang: '{{$lang}}',
@@ -14,10 +16,11 @@
     {{ $attributes }}
 >
     <label for="{{ $amount->attributes['id'] }}" class="block text-sm font-medium text-gray-700">
-        Balance
+        {{ $label }}
     </label>
     <div 
-    wire:ignore {{-- We just ignore this part so the errors can be handled by livewire--}}
+    wire:ignore 
+    {{-- We just ignore this part so the errors can be handled by livewire--}}
     class="money-container">
         <div class="money-currency-input-group">
             <input
@@ -46,7 +49,6 @@
                     x-on:input="currencyHint = $el.value"
                     x-on:focusin="
                         onCurrencyInput = true;
-                        _currency = currency
                     "
                     x-on:focusout=" onCurrencyInput = false"
                     :class="hasCurrencyError && 'errored'"

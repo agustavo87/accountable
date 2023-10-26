@@ -4,6 +4,9 @@ namespace App\Support\Facades;
 
 use Illuminate\Support\Facades\Facade;
 
+/**
+ * @mixin \App\Values\MoneyFactory
+ */
 class Money extends Facade
 {
     /**

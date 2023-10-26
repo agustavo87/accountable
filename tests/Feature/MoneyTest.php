@@ -3,14 +3,31 @@
 namespace Tests\Feature;
 
 use Tests\TestCase;
-use App\Models\User;
-use App\Models\Account;
+use App\Models\{
+    User,
+    Account,
+    ISOCurrency
+};
 use App\Support\Facades\Money;
 use App\Repositories\Currency\Crypto;
-use App\Values\{BrickMoneyWrapper, BrickMoneyWrapperMoney, Currency, CurrencyType, RoundingMode};
-use App\Exceptions\{CurrencyNotFoundException,MoneyMismatchException, RoundingNecessaryException};
+use App\Values\{
+    BrickMoneyWrapper, 
+    BrickMoneyWrapperMoney, 
+    Currency, 
+    CurrencyType, 
+    RoundingMode
+};
+use App\Exceptions\{
+    CurrencyNotFoundException,
+    MoneyMismatchException,
+    RoundingNecessaryException
+};
 use Brick\Math\RoundingMode as BrickRoundingMode;
-use Brick\Money\Context\{CashContext, CustomContext, AutoContext};
+use Brick\Money\Context\{
+    CashContext, 
+    CustomContext, 
+    AutoContext
+};
 use Brick\Money\Exception\MoneyMismatchException as BrickMoneyMismatchException;
 use Brick\Math\Exception\RoundingNecessaryException as BrickRoundingNecessaryException;
 use Illuminate\Foundation\Testing\RefreshDatabase;
@@ -19,9 +36,38 @@ class MoneyTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function seedFiatCurrencies()
+    {
+        ISOCurrency::create([
+            'code' => 'USD',
+            'number'  => 840,
+            'name'  => 'US Dollar',
+            'minor_units' => 2,
+            'symbol'    => '$',
+        ]);
+
+        ISOCurrency::create([
+            'code' => 'EUR',
+            'number'  => 978,
+            'name'  => 'Euro',
+            'minor_units' => 2,
+            'symbol'    => '€',
+        ]);
+
+        ISOCurrency::create([
+            'code' => 'CHF',
+            'number'  => 756,
+            'name'  => 'Swiss franc',
+            'minor_units' => 2,
+            'symbol'    => 'CHF',
+        ]);
+    }
+
     /** @test **/
     public function the_money_can_be_created_persisted_and_retrieved()
     {
+        $this->seedFiatCurrencies();
+
         $user = User::factory()->create();
 
         $someMoney = Money::of('15.25', 'USD');
@@ -45,6 +91,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function it_is_possible_to_make_basic_operations_and_is_inmutable()
     {
+        $this->seedFiatCurrencies();
         $money = Money::of(50, 'USD');
 
         $this->assertEquals('USD 54.99', "{$money->plus('4.99')}");
@@ -56,6 +103,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function it_is_possible_to_make_basic_operation_with_money_model()
     {
+        $this->seedFiatCurrencies();
         $money = Money::of(50, 'USD');
 
         $this->assertEquals('USD 54.99', "{$money->plus(Money::of('4.99', 'USD'))}");
@@ -65,6 +113,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function it_is_possible_operate_and_save_money_models()
     {
+        $this->seedFiatCurrencies();
         $user = User::factory()->create();
         $someMoney = Money::of(50, 'USD');
 
@@ -94,45 +143,50 @@ class MoneyTest extends TestCase
     /** @test */
     public function exception_is_thrown_if_brick_monies_are_not_the_same()
     {
+        $this->seedFiatCurrencies();
         $this->expectException(BrickMoneyMismatchException::class);
         $a = Money::brickOf(1, 'USD');
         $b = Money::brickOf(1, 'EUR');
 
-        $a->plus($b); // MoneyMismatchException
+        $a->plus($b); // Brick MoneyMismatchException
     }
 
     /** @test */
     public function exception_is_thrown_if_monies_are_not_the_same()
     {
+        $this->seedFiatCurrencies();
         $this->expectException(MoneyMismatchException::class);
         $a = Money::of(1, 'USD');
         $b = Money::of(1, 'EUR');
 
-        $a->plus($b); // MoneyException
+        $a->plus($b); // MoneyMismatchException
         $this->assertTrue(true);
     }
 
     /** @test */
     public function if_rounding_needed_in_brick_money_exception_is_thrown()
     {
+        $this->seedFiatCurrencies();
         $this->expectException(BrickRoundingNecessaryException::class);
         $money = Money::brickOf(50, 'USD');
 
-        $money->plus('0.999'); // RoundingNecessaryException
+        $money->plus('0.999'); // Brick RoundingNecessaryException
     }
 
     /** @test */
     public function if_rounding_needed_exception_is_thrown()
     {
+        $this->seedFiatCurrencies();
         $this->expectException(RoundingNecessaryException::class);
         $money = Money::of(50, 'USD');
 
-        $money->plus('0.999'); // MathException
+        $money->plus('0.999'); // RoundingNecessaryException
     }
 
     /** @test */
     public function if_a_rounding_mode_is_passed_to_brick_money_no_exception_is_thrown_when_rounding_is_neccesary()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf(50, 'USD');
 
         // $money->plus('0.999'); // RoundingNecessaryException
@@ -151,6 +205,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function if_a_rounding_mode_is_passed_no_exception_is_thrown_when_rounding_is_neccesary()
     {
+        $this->seedFiatCurrencies();
         $money = Money::of(50, 'USD');
 
         // $money->plus('0.999'); // MathException
@@ -169,6 +224,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function brick_money_cash_context_work()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf(10, 'CHF', new CashContext(5)); // CHF 10.00
         
         $this->assertEquals('CHF 3.30', "{$money->dividedBy(3, BrickRoundingMode::DOWN)}"); 
@@ -179,6 +235,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function brick_money_custom_scales_works()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf(10, 'USD', new CustomContext(4));
         $this->assertEquals('USD 10.0000', "{$money}");
         $this->assertEquals('USD 1.4286', "{$money->dividedBy(7, BrickRoundingMode::UP)}");
@@ -187,6 +244,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function brick_money_auto_scale_works()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf('1.10', 'USD', new AutoContext()); // USD 1.1
         $this->assertEquals('USD 1.1', "{$money}");
         $this->assertEquals('USD 2.75', "{$money->multipliedBy('2.5')}");
@@ -196,6 +254,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function btrick_money_works_with_rational_numbers()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf('9.5', 'EUR');
         $this->assertEquals('EUR 9.50', "$money"); 
         $rMoney = $money->toRational(); 
@@ -213,6 +272,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function split_allocation_works_with_brick_money()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf(100, 'USD');
         $this->assertEquals(
             ['USD 33.34', 'USD 33.33', 'USD 33.33'],
@@ -223,6 +283,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function sub_elements_of_multiple_brick_monies_returned_are_wrapped()
     {
+        $this->seedFiatCurrencies();
         $money = Money::brickOf(100, 'USD');
         $monies = $money->split(3);
         foreach ($monies as $subMoney) {
@@ -233,6 +294,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function split_allocation_works_with_money()
     {
+        $this->seedFiatCurrencies();
         $money = Money::of(100, 'USD');
         $this->assertEquals(
             ['USD 33.34', 'USD 33.33', 'USD 33.33'],
@@ -243,6 +305,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function sub_elements_of_multiple_monies_returned_are_wrapped()
     {
+        $this->seedFiatCurrencies();
         $money = Money::of(100, 'USD');
         $monies = $money->split(3);
         foreach ($monies as $subMoney) {
@@ -263,6 +326,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function distribution_allocation_works_with_money()
     {
+        $this->seedFiatCurrencies();
         $profit = Money::of('987.65', 'CHF');
         $this->assertEquals(
             ['CHF 474.08', 'CHF 404.93', 'CHF 108.64'],
@@ -273,6 +337,7 @@ class MoneyTest extends TestCase
     /** @test */
     public function distribution_allocation_sub_items_are_money()
     {
+        $this->seedFiatCurrencies();
         $profit = Money::of('987.65', 'CHF');
         $profits = $profit->allocate(48, 41, 11);
         foreach ($profits as $subProfit) {
@@ -491,8 +556,12 @@ class MoneyTest extends TestCase
         );
     }
 
-    protected function seedCustomMoneyFor(User $user)
+    /**
+     * Seed custom currencies for a user
+     */
+    protected function seedCustomCurrencies(User $user)
     {
+        // The custom currencies always belong to a user
         $customCurrencies = Money::customCurrenciesOf($user);
         $customCurrencies->put('ARA', 'Argentinian Austral', 3);
         $customCurrencies->put('ARP', 'Argentinan Patacon', 4);
@@ -502,11 +571,11 @@ class MoneyTest extends TestCase
     public function custom_monies_can_be_created()
     {
         $user = User::factory()->create();
-        $this->seedCustomMoneyFor($user);
+        $this->seedCustomCurrencies($user);
 
-        $custom = Money::from(CurrencyType::Custom, [$user]);
+        $customMoney = Money::from(CurrencyType::Custom, [$user]);
 
-        $someARA = $custom->of('4', 'ARA');
+        $someARA = $customMoney->of('4', 'ARA');
 
         $this->assertEquals("ARA 4.000", "{$someARA}");
     }
@@ -516,7 +585,7 @@ class MoneyTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->seedCustomMoneyFor($user);
+        $this->seedCustomCurrencies($user);
         
         $userB = User::factory()->create();
 
@@ -536,7 +605,7 @@ class MoneyTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->seedCustomMoneyFor($user);
+        $this->seedCustomCurrencies($user);
         
         $someMoney = Money::from(CurrencyType::Custom, [$user])->of('15.25', 'ARA');
 
@@ -561,7 +630,7 @@ class MoneyTest extends TestCase
     {
         $user = User::factory()->create();
 
-        $this->seedCustomMoneyFor($user);
+        $this->seedCustomCurrencies($user);
         
         $someMoney = Money::from(CurrencyType::Custom, [$user])->of('50', 'ARA');
 
@@ -593,7 +662,7 @@ class MoneyTest extends TestCase
         $this->expectException(MoneyMismatchException::class);
 
         $user = User::factory()->create();
-        $this->seedCustomMoneyFor($user);
+        $this->seedCustomCurrencies($user);
         $customMoney = Money::from(CurrencyType::Custom, [$user]);
 
         $a = $customMoney->of(1, 'ARA');
@@ -607,15 +676,14 @@ class MoneyTest extends TestCase
      public function custom_currencies_of_a_diferent_user_can_not_be_retrieved_by_other_user()
      {
         $this->expectException(CurrencyNotFoundException::class);
-        $user = User::factory()->create();
+        $userA = User::factory()->create();
 
-        $this->seedCustomMoneyFor($user);
+        $this->seedCustomCurrencies($userA);
         
         $userB = User::factory()->create();
         Money::customCurrenciesOf($userB)->put('ESP', 'Spanish Peseta', 4);
 
-        $userBCustomMoney = Money::from(CurrencyType::Custom, [$userB]);
-        $someMoney = $userBCustomMoney->of('1', 'ARA');
+        $userACustomMoney = Money::from(CurrencyType::Custom, [$userA]);
+        $someMoney = $userACustomMoney->of('1', 'ESP');
      }
-
 }

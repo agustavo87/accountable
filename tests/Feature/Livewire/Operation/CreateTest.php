@@ -4,22 +4,62 @@ namespace Tests\Feature\Livewire\Operation;
 
 use App\Http\Livewire\Operation\Create as CreateOperation;
 use App\Models\Account;
+use App\Models\ISOCurrency;
 use App\Models\Movement;
 use App\Models\Operation;
 use App\Models\OperationCategory;
 use App\Models\User;
-use Illuminate\Database\Eloquent\Factories\Sequence;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Livewire\Livewire;
 use Tests\TestCase;
 
+/**
+ * @todo Add regresion test of validation of inputs.
+ *  Specifically, when the input is empty an error is issued.
+ */
 class CreateTest extends TestCase
 {
     use RefreshDatabase;
 
+    protected function seedFiatCurrencies()
+    {
+        ISOCurrency::create([
+            'code' => 'USD',
+            'number'  => 840,
+            'name'  => 'US Dollar',
+            'minor_units' => 2,
+            'symbol'    => '$',
+        ]);
+
+        ISOCurrency::create([
+            'code' => 'ARS',
+            'number'  => 32,
+            'name'  => 'Argentine Peso',
+            'minor_units' => 2,
+            'symbol'    => '$',
+        ]);
+
+        ISOCurrency::create([
+            'code' => 'MXN',
+            'number'  => 484,
+            'name'  => 'Mexican Peso',
+            'minor_units' => 2,
+            'symbol'    => '$',
+        ]);
+
+        ISOCurrency::create([
+            'code' => 'EUR',
+            'number'  => 978,
+            'name'  => 'Euro',
+            'minor_units' => 2,
+            'symbol'    => '€',
+        ]);
+    }
+
     /** @test */
     public function the_component_can_render()
     {
+        $this->seedFiatCurrencies();
         $this->withoutExceptionHandling();
         $component = Livewire::test(CreateOperation::class);
 
@@ -29,6 +69,7 @@ class CreateTest extends TestCase
     /** @test */
     public function an_operation_can_be_registered_with_an_account_movement()
     {
+        $this->seedFiatCurrencies();
         $user = User::factory()->create();
 
         $account = Account::factory()
@@ -42,7 +83,6 @@ class CreateTest extends TestCase
                                     ->for($user)
                                     ->create();
                         
-
         Livewire::actingAs($user)
                 ->test(CreateOperation::class)
                 ->set('category', $category->id)

@@ -1,9 +1,10 @@
 
-import KeyPressedOnMoneyInput from "./KeyPressedOnMoneyInput";
+import KeyPressedOnMoneyInput from "./keyPressedOnMoneyInput";
 import MoneyInput from "./moneyInput";
 
 export default (opts) => ({
     currencyOptions: opts.currencyOptions,
+    currencyParameters: opts.currencyParameters,
     currency: opts.currency,
     _currency: '',
     currencyHint: opts.currencyHint,
@@ -12,9 +13,7 @@ export default (opts) => ({
     lang: opts.lang,
     scale: opts.scale,
     placeholder: '0.00',
-    nf: new Intl.NumberFormat(opts.lang, {
-        maximumFractionDigits: opts.scale
-    }),
+    nf: null,
     get amountInput() {
         return this.$refs.amount
     },
@@ -40,11 +39,21 @@ export default (opts) => ({
     },
     setCurrency: function(code) {
         this._currency = code
+        this.currencyHint = code
         this.hideCurrencies()
     },
     init: function () {
         this.setupLocale()
-        this.$watch('currency',v => this.$refs.currencyInput.value = v)
+        this.$refs.currencyInput.value = this._currency = this.currency
+        this.$refs.currencyInput.value = this.currency
+        this.$watch('currency', (v) => {
+            this.$refs.currencyInput.value = v
+ 
+        })
+        this.$watch('currencyParameters', () => {
+            this.setupLocale()
+            this.formatInput()
+        })
         this.$watch('showCurrencies', (v) => {
             if(!v) {
                 this.$refs.currencyInput.value = this._currency
@@ -53,19 +62,28 @@ export default (opts) => ({
         })
     },
     setupLocale() {
-        const parts = this.nf.formatToParts(25325.5);
+        // formatter to format input
+        this.nf = new Intl.NumberFormat(this.lang, {
+            maximumFractionDigits: this.currencyParameters.scale
+        })
+
+        // formatter to extract localized stuff
+        const nf2 = new Intl.NumberFormat(this.lang)
+        const parts = nf2.formatToParts(25325.5);   // just some random number with some 
+                                                    // decimal and numbers to group
         const decimal = parts.find(part => part.type == 'decimal').value
         const thousands = parts.find(part => part.type == 'group').value
-
+        
         this.locale = {
             decimal: decimal,
             thousands: thousands,
             decimalRx: new RegExp(`\\${decimal}`, 'g'),
             thousandsRx: new RegExp(`\\${thousands}`, 'g')
         }
-
+        
+        // a formater for the placeholder
         this.placeholder = Intl.NumberFormat(this.lang, {
-            minimumFractionDigits: this.scale
+            minimumFractionDigits: this.currencyParameters.scale
         }).format(0);
         return;
     },
