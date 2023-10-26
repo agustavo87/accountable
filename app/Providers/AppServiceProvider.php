@@ -24,7 +24,6 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot()
     {
-        View::share('locale', ['js' => 'en-US']);
-        View::share('currencies', config('accountable.currencies'));
+        View::share('locale', ['js' => config('accountable.locale')]);
     }
 }

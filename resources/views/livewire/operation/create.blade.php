@@ -97,6 +97,7 @@
                                                                     data-amount="{{$_movement['decimal_amount']}}"
                                                                     data-currency-code="{{$_movement['account']['currency']['code']}}"
                                                                     data-scale="{{$_movement['account']['currency']['scale']}}"
+                                                                    data-locale="{{$locale['js']}}"
                                                                     x-text="formated"
                                                                     class="font-medium opacity-80"
                                                                     x-bind:class="{{$_movement['type']}} ? 'text-green-800' : 'text-red-800'"

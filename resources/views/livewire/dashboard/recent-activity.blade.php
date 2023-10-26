@@ -49,6 +49,7 @@
                                                             x-bind:data-amount="movement.decimal_amount"
                                                             x-bind:data-currency-code="movement.account.currency.code"
                                                             x-bind:data-scale="movement.account.currency.scale"
+                                                            data-locale="{{ $locale['js'] }}"
                                                             x-text="formated"
                                                             class="font-medium"
                                                         ></p>
@@ -232,6 +233,7 @@
                                                             x-bind:data-amount="movement.decimal_amount"
                                                             x-bind:data-currency-code="movement.account.currency.code"
                                                             x-bind:data-scale="movement.account.currency.scale"
+                                                            data-locale="{{ $locale['js'] }}"
                                                             x-text="formated"
                                                         ></p>
                                                 </td>

@@ -55,6 +55,7 @@
                         x-bind:data-amount="kpi.account.balance"
                         x-bind:data-currency-code="kpi.account.currency"
                         x-bind:data-currency-scale="kpi.account.currency_scale"
+                        data-locale="{{ $locale['js'] }}"
                         class="text-lg font-medium text-gray-900"
                     >
                         $0,00
@@ -86,6 +87,7 @@
                         x-bind:data-amount="kpi.account.period_balance"
                         x-bind:data-currency-code="kpi.account.currency"
                         x-bind:data-currency-scale="kpi.account.currency_scale"
+                        data-locale="{{ $locale['js'] }}"
                         class="text-lg font-medium text-gray-900"
                     >
                         $0,00

@@ -6,7 +6,8 @@ export default (opts) => ({
 
         const mf =  moneyFormat({
             code: this.$el.dataset.currencyCode,
-            scale: this.$el.dataset.scale
+            scale: this.$el.dataset.scale,
+            locale: this.$el.dataset.locale
         })
         return mf.format(this.$el.dataset.amount)
         
