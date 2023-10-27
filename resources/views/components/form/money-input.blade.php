@@ -1,28 +1,49 @@
 @props([
-    'id'
+    'lang' => 'en',
+    'label' => 'balance'
 ])
-<div {{ $attributes }}>
-    <label for="{{ $id }}"
-        class="block text-sm font-medium text-gray-700">Balance</label>
-    <div class="money-container flex relative rounded-md shadow-sm">
-        <input id="{{ $id }}" {{ $input->attributes->merge([
-            'name' => $id,
-            'type' => 'number',
-            'class' => "text-input sin-apariencia pl-7 pr-12",
-            'placeholder' => "0.00",
-            'autocomplete' => "off"
-        ])}} >
-        <div class="absolute inset-y-0 right-0 flex items-center">
-            <label for="currency" class="sr-only">Currency</label>
-            <select {{ $currencies->attributes->wire('model') }}  id="currency" name="currency"
-                class="select mt-0 shadow-none bg-transparent border-transparent py-0 pl-2 pr-7 hover:bg-transparent hover:border-transparent focus:border-transparent focus:bg-transparent">
-                {{ $currencies }}
-            </select>
-        </div>
-        <div class="money-sign pointer-events-none absolute inset-y-0 left-0 flex  items-center pl-3">
-            <span class="money-sign">$</span>
+<div
+    x-data="MoneyInputComponent({
+        amount: @entangle($amount->attributes->wire('model')),
+        currencyParameters: @entangle($attributes->wire('parameters')),
+        lang: '{{$lang}}',
+    })"
+    {{$attributes->whereDoesntStartWith('wire:model') }}
+>
+    <label for="{{ $amount->attributes['id'] }}" class="block text-sm font-medium text-gray-700">
+        {{ $label }}
+    </label>
+    <div 
+        {{-- We just ignore this part so the errors can be handled by livewire--}}
+        wire:ignore 
+        class="money-container"
+    >
+        <div class="money-currency-input-group">
+            <input
+                {{ $amount->attributes->whereDoesntStartWith('wire:model')->merge([
+                    'name' => $amount->attributes['id'] ,
+                    'type' => 'text',
+                    'inputmode' => 'numeric',
+                    'class' => "amount-input text-input sin-apariencia",
+                    'autocomplete' => "off",
+                ])}}
+                x-bind:placeholder="placeholder"
+                x-on:keydown="inputAmount($event)"
+                x-on:blur="formatInput"
+                x-ref="amount"
+            >
+            <div class="currency-code-container">
+                <span
+                    class="currency-code"
+                    x-text="currencyParameters.code"
+                >USD</span>
+            </div>
+            <div class="money-sign">
+                <span>$</span>
+            </div>
         </div>
     </div>
-    <x-error for="{{ $input->attributes->wire('model')->value() }}" />
-    <x-error for="{{ $currencies->attributes->wire('model')->value() }}" />
+    <div>
+        {{ $errors }}
+    </div>
 </div>

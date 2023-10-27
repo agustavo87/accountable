@@ -21,6 +21,16 @@
     .money-container .amount-input:focus ~ div .currency-input {
         @apply text-deep
     }
+    .money-container .amount-input:focus ~ div .currency-code {
+        @apply text-deep
+    }
+
+    .money-container .currency-code-container {
+        @apply absolute inset-y-0 right-0 flex items-center
+    }
+    .money-container .currency-code-container .currency-code {
+        @apply mt-0 mr-3 w-20 font-semibold text-gray-700 text-right pointer-events-none cursor-auto;
+    }
 
     .money-container .money-currency-input-group .currency-input-container {
         @apply absolute inset-y-0 right-0 flex items-center;

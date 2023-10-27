@@ -53,7 +53,7 @@ class CreateTest extends TestCase
         Livewire::test(CreateAccount::class)
             ->set('accountName', 'my city bank')
             ->set('accountBalance', 0)
-            ->set('currency', 'USD')
+            ->set('currencyCode', 'USD')
             ->call('create');
     
         $account = Account::whereName('my city bank')->first();
@@ -71,7 +71,7 @@ class CreateTest extends TestCase
         Livewire::test(CreateAccount::class)
             ->set('accountName', 'my city bank')
             ->set('accountBalance', '2.25')
-            ->set('currency', 'ARS' )
+            ->set('currencyCode', 'ARS' )
             ->call('create');
     
         $account = Account::whereName('my city bank')->first();

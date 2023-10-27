@@ -25,13 +25,13 @@ class Create extends Component
 
     protected $rules = [
         'accountName' => 'required',
-        'accountBalance' => 'required|numeric',
-        'currency'      => 'required|string',
+        'accountBalance' => 'required|numeric|min:0',
+        'currencyCode'      => 'required|string',
     ];
 
     public $currencyOptions;
 
-    public $currency;
+    public $currencyCode;
 
     public ?string $currencyHint = null;
 
@@ -44,10 +44,10 @@ class Create extends Component
     public function mount()
     {
         $this->locale = config('app.locale');
-        $this->currency = config('accountable.currencies.default');
-        $this->currencyHint = $this->currency;
+        $this->currencyCode = config('accountable.currencies.default');
+        $this->currencyHint = $this->currencyCode;
         $this->fetchCurrencies();
-        $this->setCurrencyParameters($this->currency);
+        $this->setCurrencyParameters($this->currencyCode);
         $this->account = new Account();
     }
 
@@ -80,7 +80,7 @@ class Create extends Component
     {
         if($value) {
             $this->validateOnly($propertyName);
-            if($propertyName == 'currency') {
+            if($propertyName == 'currencyCode') {
                 $this->setCurrencyParameters($value);
             }
         }
@@ -91,7 +91,7 @@ class Create extends Component
         $data = $this->validate();
         $account = new Account();
         $account->name = $data['accountName'];
-        $account->balance = Money::of("{$data['accountBalance']}", $this->currency);
+        $account->balance = Money::of("{$data['accountBalance']}", $this->currencyCode);
         $account->user()->associate(Auth::user());
         $account->save();
         return redirect()->route('home');

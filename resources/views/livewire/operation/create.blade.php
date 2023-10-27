@@ -134,7 +134,7 @@
 
                                                     <div class="grid grid-cols-6 gap-6">
                                                         <x-form.complex-select 
-                                                            wire:model.defer="movement.account_id"
+                                                            wire:model="movement.account_id"
                                                             id="category" 
                                                             class="col-span-6 sm:col-span-3 "
                                                         >
@@ -155,20 +155,25 @@
                                                                 <a  
                                                                     href="{{ route('account.create') }}"
                                                                     class="link mt-1 mr-1 self-end text-xs font-medium"
-                                                                    >Create</a>
+                                                                >
+                                                                    Create
+                                                                </a>
                                                             </div>
                                                         </x-form.complex-select>
 
-                                                        <x-form.input id="amount" class="col-span-6 sm:col-span-3">
+                                                        <x-form.money-input 
+                                                            wire:parameters="currencyParameters"
+                                                            class=" col-span-6 sm:col-span-3"
+                                                        >
                                                             <x-slot:label>Amount</x-slot>
-                                                            <x-slot:input
-                                                                class="bg-white focus:bg-white sin-apariencia"
-                                                                type="number"
-                                                                wire:model.defer="amount"
-                                                                autocomplete="off"
-                                                            >
+                                                            <x-slot:amount
+                                                                id="amount" 
+                                                                wire:model="amount"
+                                                            ></x-slot>
+                                                            <x-slot:errors>
+                                                                <x-error for="amount" />
                                                             </x-slot>
-                                                        </x-form.input>
+                                                        </x-form.money-input>
 
                                                         <x-form.input id="notes" class="col-span-6">
                                                             <x-slot:label>Notes</x-slot>

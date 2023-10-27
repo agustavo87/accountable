@@ -19,9 +19,10 @@
         {{ $label }}
     </label>
     <div 
-    wire:ignore 
-    {{-- We just ignore this part so the errors can be handled by livewire--}}
-    class="money-container">
+        {{-- We just ignore this part so the errors can be handled by livewire--}}
+        wire:ignore 
+        class="money-container"
+    >
         <div class="money-currency-input-group">
             <input
                 {{ $amount->attributes->whereDoesntStartWith('wire:model')->merge([

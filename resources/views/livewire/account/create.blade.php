@@ -1,7 +1,5 @@
 <div class="bg-gray-100">
     {{-- <x-any-errors-notice /> --}}
-    {{-- {{ $accountBalance }}
-    {{ $currency }} --}}
     <div class="mx-auto max-w-6xl py-6 sm:px-6 lg:px-8">
         <div>
             <div class="md:grid md:grid-cols-3 md:gap-6">
@@ -46,7 +44,7 @@
                                         ></x-slot>
                                         <x-slot:currency
                                             {{-- Selected currency back <-> front --}}
-                                            wire:model="currency"
+                                            wire:model="currencyCode"
                                             {{-- Options to select back -> front --}}
                                             wire:options="currencyOptions"
                                             {{-- Hint for the search back <- front --}}
@@ -56,7 +54,7 @@
                                         ></x-slot>
                                         <x-slot:errors>
                                             <x-error for="amount" class="mt-0.5" />
-                                            <x-error for="currency" class="mt-0.5" />
+                                            <x-error for="currencyCode" class="mt-0.5" />
                                         </x-slot>
                                     </x-form.money-currency-group-input >
                                 </div>

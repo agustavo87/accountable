@@ -1,4 +1,4 @@
-import MoneyInput from "./moneyInput"
+import MoneyInput from "./moneyInputDecorator"
 
 export default class KeyPressedOnMoneyInput extends MoneyInput {
     /**

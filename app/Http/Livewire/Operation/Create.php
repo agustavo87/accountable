@@ -31,16 +31,20 @@ class Create extends Component
 
     public $amount;
 
+    public array $errors;
+
     public array $movements = [];
+
+    public array $currencyParameters;
 
     protected $operationRules = [
         'category' => ['required', 'exists:operation_categories,id'],
-        'amount' => ['required', 'numeric', 'min:0'],
         'operation.name' => ['required', 'max:100', 'min:3'],
         'operation.notes' => ['sometimes', 'max:3000'],
     ];
 
     protected $movementRules = [
+        'amount' => ['required', 'numeric', 'min:0'],
         'movement.account_id' => ['required', 'exists:accounts,id'],
         'movement.type' => ['required', 'boolean'],
         'movement.note' => ['sometimes', 'max:200'],
@@ -63,8 +67,14 @@ class Create extends Component
         $user = Auth::user();
         $this->accounts = $user->accounts ?? new EloquentCollection() ;
         $this->hidrateCategories();
+        $this->setCurrencyParameters(config('accountable.currencies.default'));
         $this->operation = new Operation();
         $this->newMovement();
+    }
+
+    protected function setCurrencyParameters($charCode)
+    {
+        $this->currencyParameters = Money::currencies(CurrencyType::Fiat)->get($charCode)->toArray();
     }
 
     protected function hidrateCategories()
@@ -155,6 +165,12 @@ class Create extends Component
                 ->first()
                 ->decrementBalance($movement['decimal_amount'])
                 ->save();
+        }
+    }
+
+    public function updatedMovement($value, $attribute) {
+        if($attribute == 'account_id') {
+            $this->currencyParameters = Account::find($value)->currency->toArray();
         }
     }
 
