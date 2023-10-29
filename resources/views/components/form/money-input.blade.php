@@ -1,6 +1,7 @@
 @props([
     'lang' => 'en',
-    'label' => 'balance'
+    'label' => 'balance',
+    'listen' => 'money-input-updated'
 ])
 <div
     x-data="MoneyInputComponent({
@@ -28,7 +29,8 @@
                     'autocomplete' => "off",
                 ])}}
                 x-bind:placeholder="placeholder"
-                x-on:keydown="inputAmount($event)"
+                x-on:keydown.stop="console.log('keydown', $event); $event.stopPropagation(); inputAmount($event)"
+                x-on:{{$listen}}.window="updatedInput"
                 x-on:blur="formatInput"
                 x-ref="amount"
             >

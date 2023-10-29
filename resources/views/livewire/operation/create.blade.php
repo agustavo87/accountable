@@ -126,107 +126,105 @@
                                                 </div>
                                             </li>
                                         @endforeach
-
-                                        <li>
-                                            <div wire:keydown.enter.prevent="commitMovement" class="block bg-gray-50" >
-
-                                                <div class="px-4 py-4 sm:px-6">
-
-                                                    <div class="grid grid-cols-6 gap-6">
-                                                        <x-form.complex-select 
-                                                            wire:model="movement.account_id"
-                                                            id="category" 
-                                                            class="col-span-6 sm:col-span-3 "
-                                                        >
-                                                            <x-slot:label>
-                                                                Account
-                                                            </x-slot>
-                                                            <x-slot:options
-                                                                class="bg-white focus:bg-white"
-                                                                autocomplete="category"
-                                                            >
-                                                                <option selected hidden>Select an account</option>
-                                                                @foreach ($accounts as $account)
-                                                                    <option value="{{$account->id}}">{{$account->name}}</option>
-                                                                @endforeach
-                                                            </x-slot>
-                                                            <div class="flex justify-end">
-                                                                <x-error class="flex-1" for="movement.account_id" />
-                                                                <a  
-                                                                    href="{{ route('account.create') }}"
-                                                                    class="link mt-1 mr-1 self-end text-xs font-medium"
-                                                                >
-                                                                    Create
-                                                                </a>
-                                                            </div>
-                                                        </x-form.complex-select>
-
-                                                        <x-form.money-input 
-                                                            wire:parameters="currencyParameters"
-                                                            class=" col-span-6 sm:col-span-3"
-                                                        >
-                                                            <x-slot:label>Amount</x-slot>
-                                                            <x-slot:amount
-                                                                id="amount" 
-                                                                wire:model="amount"
-                                                            ></x-slot>
-                                                            <x-slot:errors>
-                                                                <x-error for="amount" />
-                                                            </x-slot>
-                                                        </x-form.money-input>
-
-                                                        <x-form.input id="notes" class="col-span-6">
-                                                            <x-slot:label>Notes</x-slot>
-                                                            <x-slot:input
-                                                                class="bg-white focus:bg-white"
-                                                                wire:model.defer="movement.note"
-                                                                autocomplete="off"
-                                                            >
-                                                            </x-slot>
-                                                        </x-form.input>
-
-                                                        <div class="col-span-6 sm:col-span-3">
-                                                            <fieldset>
-                                                                <div class="flex justify-around m-2">
-                                                                    <div class="flex items-center">
-                                                                        <input id="debit"
-                                                                            wire:model="movement.type"
-                                                                            name="type"
-                                                                            type="radio"
-                                                                            value="0"
-                                                                            class="h-4 w-4 border-gray-300 text-deep-light focus:ring-deep">
-                                                                        <label for="debit"
-                                                                            class="ml-3 block text-sm font-medium text-gray-700">
-                                                                            Debit</label>
-                                                                    </div>
-                                                                    <div class="flex items-center">
-                                                                        <input id="credit"
-                                                                            wire:model="movement.type"
-                                                                            name="type"
-                                                                            type="radio"
-                                                                            value="1"
-                                                                            class="h-4 w-4 border-gray-300 text-deep-light focus:ring-deep">
-                                                                        <label for="credit"
-                                                                            class="ml-3 block text-sm font-medium text-gray-700">
-                                                                            Credit</label>
-                                                                    </div>
-                                                                    
-                                                                </div>
-                                                            </fieldset>
-                                                            <x-error for="movement.type" />
-                                                        </div>
-
-                                                        <div class="col-span-6 flex items-center justify-end sm:col-span-3">
-                                                            <x-tertiary-button wire:click="commitMovement" type="button" class="px-3" >
-                                                                Add transaction
-                                                            </x-tertiary-button>
-                                                        </div>
-                                                    </div>
-                                                </div>
-                                                <x-error for="movements" class="px-6 py-5" non-specific />
-                                            </div>
-                                        </li>
                                     </ul>
+                                    <div wire:keydown.enter.prevent="commitMovement" class="block bg-gray-50" >
+
+                                        <div class="px-4 py-4 sm:px-6">
+        
+                                            <div class="grid grid-cols-6 gap-6">
+                                                <x-form.complex-select 
+                                                    wire:model="movement.account_id"
+                                                    id="category" 
+                                                    class="col-span-6 sm:col-span-3 "
+                                                >
+                                                    <x-slot:label>
+                                                        Account
+                                                    </x-slot>
+                                                    <x-slot:options
+                                                        class="bg-white focus:bg-white"
+                                                        autocomplete="category"
+                                                    >
+                                                        <option selected hidden>Select an account</option>
+                                                        @foreach ($accounts as $account)
+                                                            <option value="{{$account->id}}">{{$account->name}}</option>
+                                                        @endforeach
+                                                    </x-slot>
+                                                    <div class="flex justify-end">
+                                                        <x-error class="flex-1" for="movement.account_id" />
+                                                        <a  
+                                                            href="{{ route('account.create') }}"
+                                                            class="link mt-1 mr-1 self-end text-xs font-medium"
+                                                        >
+                                                            Create
+                                                        </a>
+                                                    </div>
+                                                </x-form.complex-select>
+        
+                                                <x-form.money-input 
+                                                    wire:parameters="currencyParameters"
+                                                    class=" col-span-6 sm:col-span-3"
+                                                    listen="money-input-updated"
+                                                >
+                                                    <x-slot:label>Amount</x-slot>
+                                                    <x-slot:amount
+                                                        id="amount" 
+                                                        wire:model="amount"
+                                                    ></x-slot>
+                                                    <x-slot:errors>
+                                                        <x-error for="amount" />
+                                                    </x-slot>
+                                                </x-form.money-input>
+        
+                                                <x-form.input id="notes" class="col-span-6">
+                                                    <x-slot:label>Notes</x-slot>
+                                                    <x-slot:input
+                                                        class="bg-white focus:bg-white"
+                                                        wire:model.defer="movement.note"
+                                                        autocomplete="off"
+                                                    >
+                                                    </x-slot>
+                                                </x-form.input>
+        
+                                                <div class="col-span-6 sm:col-span-3">
+                                                    <fieldset>
+                                                        <div class="flex justify-around m-2">
+                                                            <div class="flex items-center">
+                                                                <input id="debit"
+                                                                    wire:model="movement.type"
+                                                                    name="type"
+                                                                    type="radio"
+                                                                    value="0"
+                                                                    class="h-4 w-4 border-gray-300 text-deep-light focus:ring-deep">
+                                                                <label for="debit"
+                                                                    class="ml-3 block text-sm font-medium text-gray-700">
+                                                                    Debit</label>
+                                                            </div>
+                                                            <div class="flex items-center">
+                                                                <input id="credit"
+                                                                    wire:model="movement.type"
+                                                                    name="type"
+                                                                    type="radio"
+                                                                    value="1"
+                                                                    class="h-4 w-4 border-gray-300 text-deep-light focus:ring-deep">
+                                                                <label for="credit"
+                                                                    class="ml-3 block text-sm font-medium text-gray-700">
+                                                                    Credit</label>
+                                                            </div>
+                                                            
+                                                        </div>
+                                                    </fieldset>
+                                                    <x-error for="movement.type" />
+                                                </div>
+        
+                                                <div class="col-span-6 flex items-center justify-end sm:col-span-3">
+                                                    <x-tertiary-button wire:click="commitMovement" type="button" class="px-3" >
+                                                        Add transaction
+                                                    </x-tertiary-button>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <x-error for="movements" class="px-6 py-5" non-specific />
+                                    </div>
                                 </div>
 
                             </div>

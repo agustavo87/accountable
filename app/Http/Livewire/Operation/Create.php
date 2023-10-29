@@ -95,10 +95,12 @@ class Create extends Component
         $account = Account::find($this->movement->account_id);
       
         $this->movement->amount = Money::from(CurrencyType::from($account->balance_currency_type))
-                                        ->of("$this->amount", $account->balance_currency_number);
+                                        ->ofCurrencyNumber($account->balance_currency_number, "$this->amount");
 
         $this->movements[$this->movementId ?? $this->getId()] = $this->movement->load('account')->toArray();
         $this->newMovement();
+        $this->amount = null;
+        $this->dispatchBrowserEvent('money-input-updated');
     }
 
     public function remove($id)
@@ -113,6 +115,9 @@ class Create extends Component
         $this->movementId = $id;
         $this->movement = new Movement($movement);
         $this->movement->account_id = $movement['account_id'];
+        $this->amount = $this->movement->decimal_amount;
+
+        $this->dispatchBrowserEvent('money-input-updated');
     }
 
     protected function getId()

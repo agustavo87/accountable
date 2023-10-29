@@ -72,6 +72,24 @@ class MoneyFactory
 
         return $money;
     }
+
+    public function ofCurrencyNumber(int $code, string|int $decimal, RoundingMode $rounding = RoundingMode::UNNECESSARY): Money
+    {
+        $money = new BrickMoneyWrapperMoney();
+        try {
+            $money->setFromDecimal(
+                $decimal, 
+                $this->currencies->getByNumber($code),
+                $rounding
+            );
+        } catch (CurrencyNotFoundException $th) {
+            throw new CurrencyNotFoundException("Problem creating money from '$decimal' and currency '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
+        } catch (\Throwable $th) {
+            throw new MoneyException("Problem creating money from '$decimal' and currency '$code', with Rounding: $rounding->value.\n {$th->getMessage()}");
+        }
+
+        return $money;
+    }
     
     public function getCurrency(string|int $code): Currency
     {
