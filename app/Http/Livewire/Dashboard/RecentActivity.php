@@ -36,6 +36,7 @@ class RecentActivity extends Component
     public function search($content)
     {
         $this->search = $content;
+        $this->resetPage();
         $this->fetchOperations();
     }
 
@@ -77,23 +78,20 @@ class RecentActivity extends Component
     {
         /** @var Builder */
         $query = Operation::where('user_id', Auth::id())
-                           ->with(['movements.account', 'category'])
-                           ->withCount('movements');
+                           ->with(['movements.account', 'category']);
+                        //    ->withCount('movements')
+                        //    ->dd();
 
         $query->when($this->category, function(Builder $query, $category) {
-
                 $query->where('category_id', $category);
-
-            })->when($this->search, function(Builder $query, $search) {
-
-                $query->join('movements', 'operations.id', '=',  'movements.operation_id')
-                      ->select('operations.*');
-
+            })
+            ->when($this->search, function(Builder $query, $search) {
                 $query->where(function(Builder $query) use ($search) {
                     $query->where('name', 'LIKE', "%{$search}%")
-                          ->orWhere('movements.note', 'LIKE', "%{$search}%");
+                        ->orWhereHas('movements', function(Builder $query) use ($search) {
+                            $query->where('note', 'LIKE', "%{$search}%");
+                        });
                 });
-
             });
 
         $query->when($this->account, function(Builder $query, $account) {
@@ -109,6 +107,7 @@ class RecentActivity extends Component
         $this->operations = $results['data'];
         unset($results['data']);
         $this->pagination = $results;
+        // $this->resetPage();
     }
 
     public function render()
