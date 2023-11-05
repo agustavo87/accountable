@@ -18,7 +18,7 @@
         </div>
         <input
             x-model="search"
-            x-on:change.debouce="fetch"
+            x-on:input.debounce.2500="fetch"
             name="search-field"
             id="search-field"
             placeholder="{{$placeholder}}"
