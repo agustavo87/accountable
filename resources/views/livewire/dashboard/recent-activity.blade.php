@@ -119,8 +119,7 @@
                     :class="operations.length > 0 ? 'shadow' : ''"
                 >
                     <div x-show="operations.length > 0">
-
-                        <table class="min-w-full">
+                        <table class="w-full min-w-full table-fixed">
                             <thead class=" border-b border-gray-200 ">
                                 <tr>
                                     <th
@@ -130,25 +129,25 @@
                                         Date
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3  text-sm font-semibold text-gray-600 border-0"
+                                        class="  w-2/12 bg-gray-50 px-6 py-3  text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Category
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
+                                        class="  w-4/12 bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Operation
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
+                                        class="  w-2/12 bg-gray-50 px-6 py-3 text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Transaction
                                     </th>
                                     <th
-                                        class="bg-gray-50 px-6 py-3 text-right text-sm font-semibold text-gray-600 border-0"
+                                        class="  w-2/12 bg-gray-50 px-6 py-3 text-right text-sm font-semibold text-gray-600 border-0"
                                         scope="col"
                                     >
                                         Amount
