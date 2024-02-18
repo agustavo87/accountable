@@ -205,7 +205,7 @@
                                                         'border-b': border(moveIndex, opIndex, operation),
                                                         'pb-0': !lastMove(moveIndex, operation),
                                                     }"
-                                                    class=" whitespace-nowrap px-6 py-4 text-left text-sm text-gray-500"
+                                                    class="whitespace-nowrap overflow-hidden px-6 py-4 text-left text-sm text-gray-500"
                                                 >
                                                     <div 
                                                         class="text-gray-500"
@@ -225,7 +225,7 @@
                                                         'text-green-800': movement.type == 1,
                                                         'text-red-800': !(movement.type == 1)
                                                     }"
-                                                    class=" opacity-90  whitespace-nowrap px-6 py-4 text-right text-sm text-gray-500"
+                                                    class=" opacity-90  whitespace-nowrap  px-6 py-4 text-right text-sm text-gray-500"
                                                 >
                                                         <p 
                                                             x-data="Money"
