@@ -29,7 +29,7 @@
                     'autocomplete' => "off",
                 ])}}
                 x-bind:placeholder="placeholder"
-                x-on:keydown.stop="console.log('keydown', $event); $event.stopPropagation(); inputAmount($event)"
+                x-on:keydown.stop="$event.stopPropagation(); inputAmount($event)"
                 x-on:{{$listen}}.window="updatedInput"
                 x-on:blur="formatInput"
                 x-ref="amount"

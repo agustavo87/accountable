@@ -88,14 +88,17 @@ class Create extends Component
         $this->movementId = $this->movement->id;
     }
 
+    public function getAccountProperty()
+    {
+        return Account::find($this->movement->account_id);
+    }
+
     public function commitMovement()
     {
         $this->validate($this->movementRules);
-
-        $account = Account::find($this->movement->account_id);
-      
-        $this->movement->amount = Money::from(CurrencyType::from($account->balance_currency_type))
-                                        ->ofCurrencyNumber($account->balance_currency_number, "$this->amount");
+        
+        $this->movement->amount = Money::from(CurrencyType::from($this->account->balance_currency_type))
+                                        ->ofCurrencyNumber($this->account->balance_currency_number, "$this->amount");
 
         $this->movements[$this->movementId ?? $this->getId()] = $this->movement->load('account')->toArray();
         $this->newMovement();
@@ -116,6 +119,7 @@ class Create extends Component
         $this->movement = new Movement($movement);
         $this->movement->account_id = $movement['account_id'];
         $this->amount = $this->movement->decimal_amount;
+        $this->updateCurrencyParameters();
 
         $this->dispatchBrowserEvent('money-input-updated');
     }
@@ -175,8 +179,13 @@ class Create extends Component
 
     public function updatedMovement($value, $attribute) {
         if($attribute == 'account_id') {
-            $this->currencyParameters = Account::find($value)->currency->toArray();
+            $this->updateCurrencyParameters();
         }
+    }
+
+    public function updateCurrencyParameters()
+    {
+        $this->currencyParameters = Account::find($this->movement->account_id)->currency->toArray();
     }
 
     public function render()

@@ -30,6 +30,7 @@ export default (opts) => ({
         this.setupLocale()
     },
     updatedInput() {
+        this.setupLocale()
         this.amountInput.value = this.format(this._amount)
     },
 
