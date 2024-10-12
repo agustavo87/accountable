@@ -5,6 +5,7 @@ namespace App\Repositories\Currency;
 use App\Models\CryptoCurrency;
 use App\Values\{Currency, CurrencyType, EnhancedCurrency, WrappedBrickCurrency};
 use Brick\Money\Currency as BrickCurrency;
+use Illuminate\Contracts\Database\Eloquent\Builder;
 
 class Crypto extends AbstractCurrencyRepository
 {
@@ -38,5 +39,16 @@ class Crypto extends AbstractCurrencyRepository
     public function get(string $code): EnhancedCurrency
     {
         return $this->getCurrencyFromModel(CryptoCurrency::whereCode($code)->first());
+    }
+
+    public function search($field, $hint, $count = 5): array 
+    {
+        return CryptoCurrency::query()
+            ->when($hint, function (Builder $query, $value) use ($field) {
+                return $query->where($field, 'LIKE', "%$value%");
+            })
+            ->take($count)
+            ->get()
+            ->toArray();
     }
 }
