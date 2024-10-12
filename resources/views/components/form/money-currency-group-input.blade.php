@@ -3,10 +3,13 @@
     'label' => 'balance'
 ])
 <div
+    id="money-currency-input"
     x-data="MoneyCurrencyGroupInput({
         amount: @entangle($amount->attributes->wire('model')),
         currency: @entangle($currency->attributes->wire('model')),
+        currencyType: @entangle($currency->attributes->wire('type')),
         currencyOptions: @entangle($currency->attributes->wire('options')),
+        cryptoCurrencyOptions: @entangle($currency->attributes->wire('crypto-options')),
         currencyParameters: @entangle($currency->attributes->wire('parameters')),
         currencyHint: @entangle($currency->attributes->wire('hint')),
         errors: @entangle($attributes->wire('errors')),
@@ -84,7 +87,19 @@
                     <span class="block truncate font-semibold" x-text="cy.code"></span>
                 </li>
             </template>
-            <li x-show="currencyOptions.length == 0" class="px-3 py-2 text-gray-400">Nothing found</li>
+            <li x-show="cryptoCurrencyOptions.length" style="font-size: 10px" class="  leading-3 tracking-wide text-gray-500 uppercase font-normal border-b px-3 py-1">Crypto</li>
+            <template x-for="cryc in cryptoCurrencyOptions" x-bind:key="cryc.code">
+                <li
+                    :data-code="cryc.code"
+                    @click="setCriptoCurrency($el.dataset.code)"
+                    class="relative flex justify-between cursor-pointer select-none py-2 px-3 text-gray-700 hover:text-white hover:bg-indigo-600"
+                    role="option" 
+                >
+                    <span class="block truncate opacity-60" x-text="cryc.name"></span>
+                    <span class="block truncate font-semibold" x-text="cryc.code"></span>
+                </li>
+            </template>
+            <li x-show="currencyOptions.length == 0 && cryptoCurrencyOptions.length == 0" class="px-3 py-2 text-gray-400">Nothing found</li>
         </ul>
     </div>
     <div>

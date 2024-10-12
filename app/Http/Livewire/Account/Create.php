@@ -4,6 +4,7 @@ namespace App\Http\Livewire\Account;
 
 use App\Models\Account;
 use App\Models\ISOCurrency;
+use App\Repositories\Currency\Crypto;
 use App\Repositories\Currency\Factory as CurrencyRepositoryFactory;
 use App\Repositories\Currency\Fiat;
 use App\Support\Facades\Money;
@@ -29,9 +30,11 @@ class Create extends Component
         'currencyCode'      => 'required|string',
     ];
 
+    public $cryptoCurrencyOptions;
     public $currencyOptions;
 
     public $currencyCode;
+    public $currencyType;
 
     public ?string $currencyHint = null;
 
@@ -45,6 +48,7 @@ class Create extends Component
     {
         $this->locale = config('app.locale');
         $this->currencyCode = config('accountable.currencies.default');
+        $this->currencyType = CurrencyType::Fiat->stringCode();
         $this->currencyHint = $this->currencyCode;
         $this->fetchCurrencies();
         $this->setCurrencyParameters($this->currencyCode);
@@ -59,11 +63,14 @@ class Create extends Component
     protected function fetchCurrencies()
     {
         $this->currencyOptions = (new Fiat())->search('code', $this->currencyHint, 5);
+        $this->cryptoCurrencyOptions = (new Crypto())->search('code', $this->currencyHint, 5);
     }
 
     protected function setCurrencyParameters($charCode)
     {
-        $this->currencyParameters = Money::currencies(CurrencyType::Fiat)->get($charCode)->toArray();
+        $this->currencyParameters = Money::currencies(
+                CurrencyType::fromStringCode($this->currencyType)
+            )->get($charCode)->toArray();
     }
 
     public function render()

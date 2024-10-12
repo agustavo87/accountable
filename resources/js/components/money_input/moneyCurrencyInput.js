@@ -4,9 +4,12 @@ import setupLocale from "./setupLocale";
 
 export default (opts) => ({
     currencyOptions: opts.currencyOptions,
+    cryptoCurrencyOptions: opts.cryptoCurrencyOptions,
     currencyParameters: opts.currencyParameters,
     currency: opts.currency,
+    currencyType: opts.currencyType,
     _currency: '',
+    _currencyType: '',
     currencyHint: opts.currencyHint,
     errors: opts.errors,
     _amount: opts.amount,
@@ -38,6 +41,23 @@ export default (opts) => ({
         }, 500);
     },
     setCurrency: function(code) {
+        /**
+         * @todo Hacer que el setting the una currency sea mediante un método
+         * porque se necesita el código y el tipo de currency, y si no, se debe
+         * actualizar las propiedades una a la vez, en orden (primero el tipo y luego el código)
+         * en distintas requests. Hay que modificar
+         *  - setCurrency
+         *  - setCriptoCurrency
+         *  - $watch('showCurrencies', (showCurrencies) => {...}
+         */
+        this._currency = code
+        this._currencyType = 'fiat'
+        this.currencyHint = code
+        this.hideCurrencies()
+    },
+    setCriptoCurrency: function(code) {
+        console.log('selected crypto currency', code)
+        this._currencyType = 'crypto'
         this._currency = code
         this.currencyHint = code
         this.hideCurrencies()
@@ -45,6 +65,7 @@ export default (opts) => ({
     init: function () {
         this.setupLocale()
         this.$refs.currencyInput.value = this._currency = this.currency
+        this._currencyType = this.currencyType
         this.$refs.currencyInput.value = this.currency
         this.$watch('currency', (v) => {
             this.$refs.currencyInput.value = v
@@ -54,9 +75,10 @@ export default (opts) => ({
             this.setupLocale()
             this.formatInput()
         })
-        this.$watch('showCurrencies', (v) => {
-            if(!v) {
+        this.$watch('showCurrencies', (showCurrencies) => {
+            if(!showCurrencies) {
                 this.$refs.currencyInput.value = this._currency
+                this.currencyType = this._currencyType
                 this.currency = this._currency
             }
         })

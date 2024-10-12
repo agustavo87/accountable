@@ -45,8 +45,10 @@
                                         <x-slot:currency
                                             {{-- Selected currency back <-> front --}}
                                             wire:model="currencyCode"
+                                            wire:type="currencyType"
                                             {{-- Options to select back -> front --}}
                                             wire:options="currencyOptions"
+                                            wire:crypto-options="cryptoCurrencyOptions"
                                             {{-- Hint for the search back <- front --}}
                                             wire:hint="currencyHint"
                                             wire:parameters="currencyParameters"
