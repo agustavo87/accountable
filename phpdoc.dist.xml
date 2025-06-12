@@ -10,12 +10,20 @@
         <output>docs/build</output>
         <cache>docs/cache</cache>
     </paths>
-    <version number="3.0.0">
-        <api>
+    <version number="latest">
+        <api format="php">
             <source dsn=".">
                 <path>app</path>
                 <path>database</path>
+                <!-- <path>vendor/laravel/framework/src</path> -->
             </source>
+            <ignore hidden="true" symlinks="true">
+                <path>tests/**/*</path>
+            </ignore>
+            <extensions>
+                <extension>php</extension>
+            </extensions>
+            <default-package-name>Accountable</default-package-name>
         </api>
     </version>
     <setting name="template.color" value="deep-purple" />
